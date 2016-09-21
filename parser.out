@@ -1,0 +1,1143 @@
+Created by PLY version 3.9 (http://www.dabeaz.com/ply)
+
+Grammar
+
+Rule 0     S' -> program
+Rule 1     empty -> <empty>
+Rule 2     program -> KEYWORD_PROGRAM IDENTIFIER COLON program_vars block_start
+Rule 3     program_vars -> vars
+Rule 4     program_vars -> empty
+Rule 5     vars -> KEYWORD_VAR var_declaration_start
+Rule 6     var_declaration_start -> IDENTIFIER var_declaration_end
+Rule 7     var_declaration_end -> COMMA var_declaration_start
+Rule 8     var_declaration_end -> var_type_start
+Rule 9     var_type_start -> COLON var_type_def SEMICOLON var_type_end
+Rule 10    var_type_end -> var_declaration_start
+Rule 11    var_type_end -> empty
+Rule 12    var_type_def -> KEYWORD_TYPE_INT
+Rule 13    var_type_def -> KEYWORD_TYPE_FLOAT
+Rule 14    block_start -> LEFT_BRACKET block_end
+Rule 15    block_end -> statement block_end
+Rule 16    block_end -> RIGHT_BRACKET block_end_output
+Rule 17    block_end_output -> empty
+Rule 18    statement -> assign
+Rule 19    statement -> condition
+Rule 20    statement -> output
+Rule 21    assign -> IDENTIFIER EQUAL_OPERATOR expression SEMICOLON
+Rule 22    expression -> exp_start exp_comparison
+Rule 23    exp_comparison -> exp_comparison_output exp_start
+Rule 24    exp_comparison -> empty
+Rule 25    exp_comparison_output -> COMPARISON_OPERATOR
+Rule 26    exp_start -> term_start exp_end
+Rule 27    exp_end -> exp_end_f
+Rule 28    exp_end -> empty
+Rule 29    exp_end_f -> EXP_OPERATOR exp_start
+Rule 30    term_start -> factor term_end
+Rule 31    term_end -> term_end_output
+Rule 32    term_end -> empty
+Rule 33    term_end_output -> TERM_OPERATOR term_start
+Rule 34    output -> output_output write_start
+Rule 35    output_output -> KEYWORD_PRINT LEFT_PARENTHESIS
+Rule 36    write_start -> write_start_output write_end
+Rule 37    write_start -> expression write_end
+Rule 38    write_start_output -> CONST_STRING
+Rule 39    write_end -> PERIOD write_start
+Rule 40    write_end -> RIGHT_PARENTHESIS SEMICOLON
+Rule 41    condition -> KEYWORD_IF LEFT_PARENTHESIS expression RIGHT_PARENTHESIS block_start condition_else
+Rule 42    condition_else -> KEYWORD_ELSE block_start
+Rule 43    condition_else -> empty
+Rule 44    factor -> LEFT_PARENTHESIS expression RIGHT_PARENTHESIS
+Rule 45    factor -> EXP_OPERATOR constant_val
+Rule 46    factor -> constant_val
+Rule 47    constant_val -> IDENTIFIER
+Rule 48    constant_val -> CONST_NUMBER_INT
+Rule 49    constant_val -> CONST_NUMBER_FLOAT
+
+Terminals, with rules where they appear
+
+COLON                : 2 9
+COMMA                : 7
+COMPARISON_OPERATOR  : 25
+CONST_NUMBER_FLOAT   : 49
+CONST_NUMBER_INT     : 48
+CONST_STRING         : 38
+EQUAL_OPERATOR       : 21
+EXP_OPERATOR         : 29 45
+IDENTIFIER           : 2 6 21 47
+KEYWORD_ELSE         : 42
+KEYWORD_IF           : 41
+KEYWORD_PRINT        : 35
+KEYWORD_PROGRAM      : 2
+KEYWORD_TYPE_FLOAT   : 13
+KEYWORD_TYPE_INT     : 12
+KEYWORD_VAR          : 5
+LEFT_BRACKET         : 14
+LEFT_PARENTHESIS     : 35 41 44
+PERIOD               : 39
+RIGHT_BRACKET        : 16
+RIGHT_PARENTHESIS    : 40 41 44
+SEMICOLON            : 9 21 40
+TERM_OPERATOR        : 33
+error                : 
+
+Nonterminals, with rules where they appear
+
+assign               : 18
+block_end            : 14 15
+block_end_output     : 16
+block_start          : 2 41 42
+condition            : 19
+condition_else       : 41
+constant_val         : 45 46
+empty                : 4 11 17 24 28 32 43
+exp_comparison       : 22
+exp_comparison_output : 23
+exp_end              : 26
+exp_end_f            : 27
+exp_start            : 22 23 29
+expression           : 21 37 41 44
+factor               : 30
+output               : 20
+output_output        : 34
+program              : 0
+program_vars         : 2
+statement            : 15
+term_end             : 30
+term_end_output      : 31
+term_start           : 26 33
+var_declaration_end  : 6
+var_declaration_start : 5 7 10
+var_type_def         : 9
+var_type_end         : 9
+var_type_start       : 8
+vars                 : 3
+write_end            : 36 37
+write_start          : 34 39
+write_start_output   : 36
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . program
+    (2) program -> . KEYWORD_PROGRAM IDENTIFIER COLON program_vars block_start
+
+    KEYWORD_PROGRAM shift and go to state 1
+
+    program                        shift and go to state 2
+
+state 1
+
+    (2) program -> KEYWORD_PROGRAM . IDENTIFIER COLON program_vars block_start
+
+    IDENTIFIER      shift and go to state 3
+
+
+state 2
+
+    (0) S' -> program .
+
+
+
+state 3
+
+    (2) program -> KEYWORD_PROGRAM IDENTIFIER . COLON program_vars block_start
+
+    COLON           shift and go to state 4
+
+
+state 4
+
+    (2) program -> KEYWORD_PROGRAM IDENTIFIER COLON . program_vars block_start
+    (3) program_vars -> . vars
+    (4) program_vars -> . empty
+    (5) vars -> . KEYWORD_VAR var_declaration_start
+    (1) empty -> .
+
+    KEYWORD_VAR     shift and go to state 6
+    LEFT_BRACKET    reduce using rule 1 (empty -> .)
+
+    empty                          shift and go to state 8
+    program_vars                   shift and go to state 7
+    vars                           shift and go to state 5
+
+state 5
+
+    (3) program_vars -> vars .
+
+    LEFT_BRACKET    reduce using rule 3 (program_vars -> vars .)
+
+
+state 6
+
+    (5) vars -> KEYWORD_VAR . var_declaration_start
+    (6) var_declaration_start -> . IDENTIFIER var_declaration_end
+
+    IDENTIFIER      shift and go to state 10
+
+    var_declaration_start          shift and go to state 9
+
+state 7
+
+    (2) program -> KEYWORD_PROGRAM IDENTIFIER COLON program_vars . block_start
+    (14) block_start -> . LEFT_BRACKET block_end
+
+    LEFT_BRACKET    shift and go to state 12
+
+    block_start                    shift and go to state 11
+
+state 8
+
+    (4) program_vars -> empty .
+
+    LEFT_BRACKET    reduce using rule 4 (program_vars -> empty .)
+
+
+state 9
+
+    (5) vars -> KEYWORD_VAR var_declaration_start .
+
+    LEFT_BRACKET    reduce using rule 5 (vars -> KEYWORD_VAR var_declaration_start .)
+
+
+state 10
+
+    (6) var_declaration_start -> IDENTIFIER . var_declaration_end
+    (7) var_declaration_end -> . COMMA var_declaration_start
+    (8) var_declaration_end -> . var_type_start
+    (9) var_type_start -> . COLON var_type_def SEMICOLON var_type_end
+
+    COMMA           shift and go to state 16
+    COLON           shift and go to state 14
+
+    var_type_start                 shift and go to state 15
+    var_declaration_end            shift and go to state 13
+
+state 11
+
+    (2) program -> KEYWORD_PROGRAM IDENTIFIER COLON program_vars block_start .
+
+    $end            reduce using rule 2 (program -> KEYWORD_PROGRAM IDENTIFIER COLON program_vars block_start .)
+
+
+state 12
+
+    (14) block_start -> LEFT_BRACKET . block_end
+    (15) block_end -> . statement block_end
+    (16) block_end -> . RIGHT_BRACKET block_end_output
+    (18) statement -> . assign
+    (19) statement -> . condition
+    (20) statement -> . output
+    (21) assign -> . IDENTIFIER EQUAL_OPERATOR expression SEMICOLON
+    (41) condition -> . KEYWORD_IF LEFT_PARENTHESIS expression RIGHT_PARENTHESIS block_start condition_else
+    (34) output -> . output_output write_start
+    (35) output_output -> . KEYWORD_PRINT LEFT_PARENTHESIS
+
+    RIGHT_BRACKET   shift and go to state 20
+    IDENTIFIER      shift and go to state 24
+    KEYWORD_IF      shift and go to state 17
+    KEYWORD_PRINT   shift and go to state 19
+
+    block_end                      shift and go to state 18
+    statement                      shift and go to state 22
+    output_output                  shift and go to state 21
+    output                         shift and go to state 23
+    assign                         shift and go to state 25
+    condition                      shift and go to state 26
+
+state 13
+
+    (6) var_declaration_start -> IDENTIFIER var_declaration_end .
+
+    LEFT_BRACKET    reduce using rule 6 (var_declaration_start -> IDENTIFIER var_declaration_end .)
+
+
+state 14
+
+    (9) var_type_start -> COLON . var_type_def SEMICOLON var_type_end
+    (12) var_type_def -> . KEYWORD_TYPE_INT
+    (13) var_type_def -> . KEYWORD_TYPE_FLOAT
+
+    KEYWORD_TYPE_INT shift and go to state 28
+    KEYWORD_TYPE_FLOAT shift and go to state 27
+
+    var_type_def                   shift and go to state 29
+
+state 15
+
+    (8) var_declaration_end -> var_type_start .
+
+    LEFT_BRACKET    reduce using rule 8 (var_declaration_end -> var_type_start .)
+
+
+state 16
+
+    (7) var_declaration_end -> COMMA . var_declaration_start
+    (6) var_declaration_start -> . IDENTIFIER var_declaration_end
+
+    IDENTIFIER      shift and go to state 10
+
+    var_declaration_start          shift and go to state 30
+
+state 17
+
+    (41) condition -> KEYWORD_IF . LEFT_PARENTHESIS expression RIGHT_PARENTHESIS block_start condition_else
+
+    LEFT_PARENTHESIS shift and go to state 31
+
+
+state 18
+
+    (14) block_start -> LEFT_BRACKET block_end .
+
+    $end            reduce using rule 14 (block_start -> LEFT_BRACKET block_end .)
+    KEYWORD_ELSE    reduce using rule 14 (block_start -> LEFT_BRACKET block_end .)
+    RIGHT_BRACKET   reduce using rule 14 (block_start -> LEFT_BRACKET block_end .)
+    IDENTIFIER      reduce using rule 14 (block_start -> LEFT_BRACKET block_end .)
+    KEYWORD_IF      reduce using rule 14 (block_start -> LEFT_BRACKET block_end .)
+    KEYWORD_PRINT   reduce using rule 14 (block_start -> LEFT_BRACKET block_end .)
+
+
+state 19
+
+    (35) output_output -> KEYWORD_PRINT . LEFT_PARENTHESIS
+
+    LEFT_PARENTHESIS shift and go to state 32
+
+
+state 20
+
+    (16) block_end -> RIGHT_BRACKET . block_end_output
+    (17) block_end_output -> . empty
+    (1) empty -> .
+
+    $end            reduce using rule 1 (empty -> .)
+    KEYWORD_ELSE    reduce using rule 1 (empty -> .)
+    RIGHT_BRACKET   reduce using rule 1 (empty -> .)
+    IDENTIFIER      reduce using rule 1 (empty -> .)
+    KEYWORD_IF      reduce using rule 1 (empty -> .)
+    KEYWORD_PRINT   reduce using rule 1 (empty -> .)
+
+    empty                          shift and go to state 33
+    block_end_output               shift and go to state 34
+
+state 21
+
+    (34) output -> output_output . write_start
+    (36) write_start -> . write_start_output write_end
+    (37) write_start -> . expression write_end
+    (38) write_start_output -> . CONST_STRING
+    (22) expression -> . exp_start exp_comparison
+    (26) exp_start -> . term_start exp_end
+    (30) term_start -> . factor term_end
+    (44) factor -> . LEFT_PARENTHESIS expression RIGHT_PARENTHESIS
+    (45) factor -> . EXP_OPERATOR constant_val
+    (46) factor -> . constant_val
+    (47) constant_val -> . IDENTIFIER
+    (48) constant_val -> . CONST_NUMBER_INT
+    (49) constant_val -> . CONST_NUMBER_FLOAT
+
+    CONST_STRING    shift and go to state 39
+    LEFT_PARENTHESIS shift and go to state 46
+    EXP_OPERATOR    shift and go to state 38
+    IDENTIFIER      shift and go to state 43
+    CONST_NUMBER_INT shift and go to state 37
+    CONST_NUMBER_FLOAT shift and go to state 41
+
+    write_start_output             shift and go to state 36
+    constant_val                   shift and go to state 35
+    term_start                     shift and go to state 40
+    factor                         shift and go to state 42
+    expression                     shift and go to state 44
+    exp_start                      shift and go to state 45
+    write_start                    shift and go to state 47
+
+state 22
+
+    (15) block_end -> statement . block_end
+    (15) block_end -> . statement block_end
+    (16) block_end -> . RIGHT_BRACKET block_end_output
+    (18) statement -> . assign
+    (19) statement -> . condition
+    (20) statement -> . output
+    (21) assign -> . IDENTIFIER EQUAL_OPERATOR expression SEMICOLON
+    (41) condition -> . KEYWORD_IF LEFT_PARENTHESIS expression RIGHT_PARENTHESIS block_start condition_else
+    (34) output -> . output_output write_start
+    (35) output_output -> . KEYWORD_PRINT LEFT_PARENTHESIS
+
+    RIGHT_BRACKET   shift and go to state 20
+    IDENTIFIER      shift and go to state 24
+    KEYWORD_IF      shift and go to state 17
+    KEYWORD_PRINT   shift and go to state 19
+
+    block_end                      shift and go to state 48
+    statement                      shift and go to state 22
+    output_output                  shift and go to state 21
+    output                         shift and go to state 23
+    assign                         shift and go to state 25
+    condition                      shift and go to state 26
+
+state 23
+
+    (20) statement -> output .
+
+    RIGHT_BRACKET   reduce using rule 20 (statement -> output .)
+    IDENTIFIER      reduce using rule 20 (statement -> output .)
+    KEYWORD_IF      reduce using rule 20 (statement -> output .)
+    KEYWORD_PRINT   reduce using rule 20 (statement -> output .)
+
+
+state 24
+
+    (21) assign -> IDENTIFIER . EQUAL_OPERATOR expression SEMICOLON
+
+    EQUAL_OPERATOR  shift and go to state 49
+
+
+state 25
+
+    (18) statement -> assign .
+
+    RIGHT_BRACKET   reduce using rule 18 (statement -> assign .)
+    IDENTIFIER      reduce using rule 18 (statement -> assign .)
+    KEYWORD_IF      reduce using rule 18 (statement -> assign .)
+    KEYWORD_PRINT   reduce using rule 18 (statement -> assign .)
+
+
+state 26
+
+    (19) statement -> condition .
+
+    RIGHT_BRACKET   reduce using rule 19 (statement -> condition .)
+    IDENTIFIER      reduce using rule 19 (statement -> condition .)
+    KEYWORD_IF      reduce using rule 19 (statement -> condition .)
+    KEYWORD_PRINT   reduce using rule 19 (statement -> condition .)
+
+
+state 27
+
+    (13) var_type_def -> KEYWORD_TYPE_FLOAT .
+
+    SEMICOLON       reduce using rule 13 (var_type_def -> KEYWORD_TYPE_FLOAT .)
+
+
+state 28
+
+    (12) var_type_def -> KEYWORD_TYPE_INT .
+
+    SEMICOLON       reduce using rule 12 (var_type_def -> KEYWORD_TYPE_INT .)
+
+
+state 29
+
+    (9) var_type_start -> COLON var_type_def . SEMICOLON var_type_end
+
+    SEMICOLON       shift and go to state 50
+
+
+state 30
+
+    (7) var_declaration_end -> COMMA var_declaration_start .
+
+    LEFT_BRACKET    reduce using rule 7 (var_declaration_end -> COMMA var_declaration_start .)
+
+
+state 31
+
+    (41) condition -> KEYWORD_IF LEFT_PARENTHESIS . expression RIGHT_PARENTHESIS block_start condition_else
+    (22) expression -> . exp_start exp_comparison
+    (26) exp_start -> . term_start exp_end
+    (30) term_start -> . factor term_end
+    (44) factor -> . LEFT_PARENTHESIS expression RIGHT_PARENTHESIS
+    (45) factor -> . EXP_OPERATOR constant_val
+    (46) factor -> . constant_val
+    (47) constant_val -> . IDENTIFIER
+    (48) constant_val -> . CONST_NUMBER_INT
+    (49) constant_val -> . CONST_NUMBER_FLOAT
+
+    LEFT_PARENTHESIS shift and go to state 46
+    EXP_OPERATOR    shift and go to state 38
+    IDENTIFIER      shift and go to state 43
+    CONST_NUMBER_INT shift and go to state 37
+    CONST_NUMBER_FLOAT shift and go to state 41
+
+    constant_val                   shift and go to state 35
+    factor                         shift and go to state 42
+    term_start                     shift and go to state 40
+    expression                     shift and go to state 51
+    exp_start                      shift and go to state 45
+
+state 32
+
+    (35) output_output -> KEYWORD_PRINT LEFT_PARENTHESIS .
+
+    CONST_STRING    reduce using rule 35 (output_output -> KEYWORD_PRINT LEFT_PARENTHESIS .)
+    LEFT_PARENTHESIS reduce using rule 35 (output_output -> KEYWORD_PRINT LEFT_PARENTHESIS .)
+    EXP_OPERATOR    reduce using rule 35 (output_output -> KEYWORD_PRINT LEFT_PARENTHESIS .)
+    IDENTIFIER      reduce using rule 35 (output_output -> KEYWORD_PRINT LEFT_PARENTHESIS .)
+    CONST_NUMBER_INT reduce using rule 35 (output_output -> KEYWORD_PRINT LEFT_PARENTHESIS .)
+    CONST_NUMBER_FLOAT reduce using rule 35 (output_output -> KEYWORD_PRINT LEFT_PARENTHESIS .)
+
+
+state 33
+
+    (17) block_end_output -> empty .
+
+    $end            reduce using rule 17 (block_end_output -> empty .)
+    KEYWORD_ELSE    reduce using rule 17 (block_end_output -> empty .)
+    RIGHT_BRACKET   reduce using rule 17 (block_end_output -> empty .)
+    IDENTIFIER      reduce using rule 17 (block_end_output -> empty .)
+    KEYWORD_IF      reduce using rule 17 (block_end_output -> empty .)
+    KEYWORD_PRINT   reduce using rule 17 (block_end_output -> empty .)
+
+
+state 34
+
+    (16) block_end -> RIGHT_BRACKET block_end_output .
+
+    $end            reduce using rule 16 (block_end -> RIGHT_BRACKET block_end_output .)
+    KEYWORD_ELSE    reduce using rule 16 (block_end -> RIGHT_BRACKET block_end_output .)
+    RIGHT_BRACKET   reduce using rule 16 (block_end -> RIGHT_BRACKET block_end_output .)
+    IDENTIFIER      reduce using rule 16 (block_end -> RIGHT_BRACKET block_end_output .)
+    KEYWORD_IF      reduce using rule 16 (block_end -> RIGHT_BRACKET block_end_output .)
+    KEYWORD_PRINT   reduce using rule 16 (block_end -> RIGHT_BRACKET block_end_output .)
+
+
+state 35
+
+    (46) factor -> constant_val .
+
+    TERM_OPERATOR   reduce using rule 46 (factor -> constant_val .)
+    EXP_OPERATOR    reduce using rule 46 (factor -> constant_val .)
+    COMPARISON_OPERATOR reduce using rule 46 (factor -> constant_val .)
+    PERIOD          reduce using rule 46 (factor -> constant_val .)
+    RIGHT_PARENTHESIS reduce using rule 46 (factor -> constant_val .)
+    SEMICOLON       reduce using rule 46 (factor -> constant_val .)
+
+
+state 36
+
+    (36) write_start -> write_start_output . write_end
+    (39) write_end -> . PERIOD write_start
+    (40) write_end -> . RIGHT_PARENTHESIS SEMICOLON
+
+    PERIOD          shift and go to state 52
+    RIGHT_PARENTHESIS shift and go to state 54
+
+    write_end                      shift and go to state 53
+
+state 37
+
+    (48) constant_val -> CONST_NUMBER_INT .
+
+    TERM_OPERATOR   reduce using rule 48 (constant_val -> CONST_NUMBER_INT .)
+    EXP_OPERATOR    reduce using rule 48 (constant_val -> CONST_NUMBER_INT .)
+    COMPARISON_OPERATOR reduce using rule 48 (constant_val -> CONST_NUMBER_INT .)
+    RIGHT_PARENTHESIS reduce using rule 48 (constant_val -> CONST_NUMBER_INT .)
+    PERIOD          reduce using rule 48 (constant_val -> CONST_NUMBER_INT .)
+    SEMICOLON       reduce using rule 48 (constant_val -> CONST_NUMBER_INT .)
+
+
+state 38
+
+    (45) factor -> EXP_OPERATOR . constant_val
+    (47) constant_val -> . IDENTIFIER
+    (48) constant_val -> . CONST_NUMBER_INT
+    (49) constant_val -> . CONST_NUMBER_FLOAT
+
+    IDENTIFIER      shift and go to state 43
+    CONST_NUMBER_INT shift and go to state 37
+    CONST_NUMBER_FLOAT shift and go to state 41
+
+    constant_val                   shift and go to state 55
+
+state 39
+
+    (38) write_start_output -> CONST_STRING .
+
+    PERIOD          reduce using rule 38 (write_start_output -> CONST_STRING .)
+    RIGHT_PARENTHESIS reduce using rule 38 (write_start_output -> CONST_STRING .)
+
+
+state 40
+
+    (26) exp_start -> term_start . exp_end
+    (27) exp_end -> . exp_end_f
+    (28) exp_end -> . empty
+    (29) exp_end_f -> . EXP_OPERATOR exp_start
+    (1) empty -> .
+
+    EXP_OPERATOR    shift and go to state 58
+    COMPARISON_OPERATOR reduce using rule 1 (empty -> .)
+    PERIOD          reduce using rule 1 (empty -> .)
+    RIGHT_PARENTHESIS reduce using rule 1 (empty -> .)
+    SEMICOLON       reduce using rule 1 (empty -> .)
+
+    exp_end                        shift and go to state 56
+    exp_end_f                      shift and go to state 57
+    empty                          shift and go to state 59
+
+state 41
+
+    (49) constant_val -> CONST_NUMBER_FLOAT .
+
+    TERM_OPERATOR   reduce using rule 49 (constant_val -> CONST_NUMBER_FLOAT .)
+    EXP_OPERATOR    reduce using rule 49 (constant_val -> CONST_NUMBER_FLOAT .)
+    COMPARISON_OPERATOR reduce using rule 49 (constant_val -> CONST_NUMBER_FLOAT .)
+    RIGHT_PARENTHESIS reduce using rule 49 (constant_val -> CONST_NUMBER_FLOAT .)
+    PERIOD          reduce using rule 49 (constant_val -> CONST_NUMBER_FLOAT .)
+    SEMICOLON       reduce using rule 49 (constant_val -> CONST_NUMBER_FLOAT .)
+
+
+state 42
+
+    (30) term_start -> factor . term_end
+    (31) term_end -> . term_end_output
+    (32) term_end -> . empty
+    (33) term_end_output -> . TERM_OPERATOR term_start
+    (1) empty -> .
+
+    TERM_OPERATOR   shift and go to state 60
+    EXP_OPERATOR    reduce using rule 1 (empty -> .)
+    COMPARISON_OPERATOR reduce using rule 1 (empty -> .)
+    PERIOD          reduce using rule 1 (empty -> .)
+    RIGHT_PARENTHESIS reduce using rule 1 (empty -> .)
+    SEMICOLON       reduce using rule 1 (empty -> .)
+
+    term_end_output                shift and go to state 61
+    term_end                       shift and go to state 62
+    empty                          shift and go to state 63
+
+state 43
+
+    (47) constant_val -> IDENTIFIER .
+
+    TERM_OPERATOR   reduce using rule 47 (constant_val -> IDENTIFIER .)
+    EXP_OPERATOR    reduce using rule 47 (constant_val -> IDENTIFIER .)
+    COMPARISON_OPERATOR reduce using rule 47 (constant_val -> IDENTIFIER .)
+    RIGHT_PARENTHESIS reduce using rule 47 (constant_val -> IDENTIFIER .)
+    PERIOD          reduce using rule 47 (constant_val -> IDENTIFIER .)
+    SEMICOLON       reduce using rule 47 (constant_val -> IDENTIFIER .)
+
+
+state 44
+
+    (37) write_start -> expression . write_end
+    (39) write_end -> . PERIOD write_start
+    (40) write_end -> . RIGHT_PARENTHESIS SEMICOLON
+
+    PERIOD          shift and go to state 52
+    RIGHT_PARENTHESIS shift and go to state 54
+
+    write_end                      shift and go to state 64
+
+state 45
+
+    (22) expression -> exp_start . exp_comparison
+    (23) exp_comparison -> . exp_comparison_output exp_start
+    (24) exp_comparison -> . empty
+    (25) exp_comparison_output -> . COMPARISON_OPERATOR
+    (1) empty -> .
+
+    COMPARISON_OPERATOR shift and go to state 65
+    PERIOD          reduce using rule 1 (empty -> .)
+    RIGHT_PARENTHESIS reduce using rule 1 (empty -> .)
+    SEMICOLON       reduce using rule 1 (empty -> .)
+
+    exp_comparison_output          shift and go to state 66
+    empty                          shift and go to state 67
+    exp_comparison                 shift and go to state 68
+
+state 46
+
+    (44) factor -> LEFT_PARENTHESIS . expression RIGHT_PARENTHESIS
+    (22) expression -> . exp_start exp_comparison
+    (26) exp_start -> . term_start exp_end
+    (30) term_start -> . factor term_end
+    (44) factor -> . LEFT_PARENTHESIS expression RIGHT_PARENTHESIS
+    (45) factor -> . EXP_OPERATOR constant_val
+    (46) factor -> . constant_val
+    (47) constant_val -> . IDENTIFIER
+    (48) constant_val -> . CONST_NUMBER_INT
+    (49) constant_val -> . CONST_NUMBER_FLOAT
+
+    LEFT_PARENTHESIS shift and go to state 46
+    EXP_OPERATOR    shift and go to state 38
+    IDENTIFIER      shift and go to state 43
+    CONST_NUMBER_INT shift and go to state 37
+    CONST_NUMBER_FLOAT shift and go to state 41
+
+    constant_val                   shift and go to state 35
+    term_start                     shift and go to state 40
+    factor                         shift and go to state 42
+    expression                     shift and go to state 69
+    exp_start                      shift and go to state 45
+
+state 47
+
+    (34) output -> output_output write_start .
+
+    RIGHT_BRACKET   reduce using rule 34 (output -> output_output write_start .)
+    IDENTIFIER      reduce using rule 34 (output -> output_output write_start .)
+    KEYWORD_IF      reduce using rule 34 (output -> output_output write_start .)
+    KEYWORD_PRINT   reduce using rule 34 (output -> output_output write_start .)
+
+
+state 48
+
+    (15) block_end -> statement block_end .
+
+    $end            reduce using rule 15 (block_end -> statement block_end .)
+    KEYWORD_ELSE    reduce using rule 15 (block_end -> statement block_end .)
+    RIGHT_BRACKET   reduce using rule 15 (block_end -> statement block_end .)
+    IDENTIFIER      reduce using rule 15 (block_end -> statement block_end .)
+    KEYWORD_IF      reduce using rule 15 (block_end -> statement block_end .)
+    KEYWORD_PRINT   reduce using rule 15 (block_end -> statement block_end .)
+
+
+state 49
+
+    (21) assign -> IDENTIFIER EQUAL_OPERATOR . expression SEMICOLON
+    (22) expression -> . exp_start exp_comparison
+    (26) exp_start -> . term_start exp_end
+    (30) term_start -> . factor term_end
+    (44) factor -> . LEFT_PARENTHESIS expression RIGHT_PARENTHESIS
+    (45) factor -> . EXP_OPERATOR constant_val
+    (46) factor -> . constant_val
+    (47) constant_val -> . IDENTIFIER
+    (48) constant_val -> . CONST_NUMBER_INT
+    (49) constant_val -> . CONST_NUMBER_FLOAT
+
+    LEFT_PARENTHESIS shift and go to state 46
+    EXP_OPERATOR    shift and go to state 38
+    IDENTIFIER      shift and go to state 43
+    CONST_NUMBER_INT shift and go to state 37
+    CONST_NUMBER_FLOAT shift and go to state 41
+
+    constant_val                   shift and go to state 35
+    term_start                     shift and go to state 40
+    factor                         shift and go to state 42
+    expression                     shift and go to state 70
+    exp_start                      shift and go to state 45
+
+state 50
+
+    (9) var_type_start -> COLON var_type_def SEMICOLON . var_type_end
+    (10) var_type_end -> . var_declaration_start
+    (11) var_type_end -> . empty
+    (6) var_declaration_start -> . IDENTIFIER var_declaration_end
+    (1) empty -> .
+
+    IDENTIFIER      shift and go to state 10
+    LEFT_BRACKET    reduce using rule 1 (empty -> .)
+
+    var_type_end                   shift and go to state 71
+    var_declaration_start          shift and go to state 72
+    empty                          shift and go to state 73
+
+state 51
+
+    (41) condition -> KEYWORD_IF LEFT_PARENTHESIS expression . RIGHT_PARENTHESIS block_start condition_else
+
+    RIGHT_PARENTHESIS shift and go to state 74
+
+
+state 52
+
+    (39) write_end -> PERIOD . write_start
+    (36) write_start -> . write_start_output write_end
+    (37) write_start -> . expression write_end
+    (38) write_start_output -> . CONST_STRING
+    (22) expression -> . exp_start exp_comparison
+    (26) exp_start -> . term_start exp_end
+    (30) term_start -> . factor term_end
+    (44) factor -> . LEFT_PARENTHESIS expression RIGHT_PARENTHESIS
+    (45) factor -> . EXP_OPERATOR constant_val
+    (46) factor -> . constant_val
+    (47) constant_val -> . IDENTIFIER
+    (48) constant_val -> . CONST_NUMBER_INT
+    (49) constant_val -> . CONST_NUMBER_FLOAT
+
+    CONST_STRING    shift and go to state 39
+    LEFT_PARENTHESIS shift and go to state 46
+    EXP_OPERATOR    shift and go to state 38
+    IDENTIFIER      shift and go to state 43
+    CONST_NUMBER_INT shift and go to state 37
+    CONST_NUMBER_FLOAT shift and go to state 41
+
+    write_start_output             shift and go to state 36
+    constant_val                   shift and go to state 35
+    term_start                     shift and go to state 40
+    factor                         shift and go to state 42
+    expression                     shift and go to state 44
+    exp_start                      shift and go to state 45
+    write_start                    shift and go to state 75
+
+state 53
+
+    (36) write_start -> write_start_output write_end .
+
+    RIGHT_BRACKET   reduce using rule 36 (write_start -> write_start_output write_end .)
+    IDENTIFIER      reduce using rule 36 (write_start -> write_start_output write_end .)
+    KEYWORD_IF      reduce using rule 36 (write_start -> write_start_output write_end .)
+    KEYWORD_PRINT   reduce using rule 36 (write_start -> write_start_output write_end .)
+
+
+state 54
+
+    (40) write_end -> RIGHT_PARENTHESIS . SEMICOLON
+
+    SEMICOLON       shift and go to state 76
+
+
+state 55
+
+    (45) factor -> EXP_OPERATOR constant_val .
+
+    TERM_OPERATOR   reduce using rule 45 (factor -> EXP_OPERATOR constant_val .)
+    EXP_OPERATOR    reduce using rule 45 (factor -> EXP_OPERATOR constant_val .)
+    COMPARISON_OPERATOR reduce using rule 45 (factor -> EXP_OPERATOR constant_val .)
+    PERIOD          reduce using rule 45 (factor -> EXP_OPERATOR constant_val .)
+    RIGHT_PARENTHESIS reduce using rule 45 (factor -> EXP_OPERATOR constant_val .)
+    SEMICOLON       reduce using rule 45 (factor -> EXP_OPERATOR constant_val .)
+
+
+state 56
+
+    (26) exp_start -> term_start exp_end .
+
+    COMPARISON_OPERATOR reduce using rule 26 (exp_start -> term_start exp_end .)
+    SEMICOLON       reduce using rule 26 (exp_start -> term_start exp_end .)
+    PERIOD          reduce using rule 26 (exp_start -> term_start exp_end .)
+    RIGHT_PARENTHESIS reduce using rule 26 (exp_start -> term_start exp_end .)
+
+
+state 57
+
+    (27) exp_end -> exp_end_f .
+
+    COMPARISON_OPERATOR reduce using rule 27 (exp_end -> exp_end_f .)
+    PERIOD          reduce using rule 27 (exp_end -> exp_end_f .)
+    RIGHT_PARENTHESIS reduce using rule 27 (exp_end -> exp_end_f .)
+    SEMICOLON       reduce using rule 27 (exp_end -> exp_end_f .)
+
+
+state 58
+
+    (29) exp_end_f -> EXP_OPERATOR . exp_start
+    (26) exp_start -> . term_start exp_end
+    (30) term_start -> . factor term_end
+    (44) factor -> . LEFT_PARENTHESIS expression RIGHT_PARENTHESIS
+    (45) factor -> . EXP_OPERATOR constant_val
+    (46) factor -> . constant_val
+    (47) constant_val -> . IDENTIFIER
+    (48) constant_val -> . CONST_NUMBER_INT
+    (49) constant_val -> . CONST_NUMBER_FLOAT
+
+    LEFT_PARENTHESIS shift and go to state 46
+    EXP_OPERATOR    shift and go to state 38
+    IDENTIFIER      shift and go to state 43
+    CONST_NUMBER_INT shift and go to state 37
+    CONST_NUMBER_FLOAT shift and go to state 41
+
+    constant_val                   shift and go to state 35
+    term_start                     shift and go to state 40
+    factor                         shift and go to state 42
+    exp_start                      shift and go to state 77
+
+state 59
+
+    (28) exp_end -> empty .
+
+    COMPARISON_OPERATOR reduce using rule 28 (exp_end -> empty .)
+    PERIOD          reduce using rule 28 (exp_end -> empty .)
+    RIGHT_PARENTHESIS reduce using rule 28 (exp_end -> empty .)
+    SEMICOLON       reduce using rule 28 (exp_end -> empty .)
+
+
+state 60
+
+    (33) term_end_output -> TERM_OPERATOR . term_start
+    (30) term_start -> . factor term_end
+    (44) factor -> . LEFT_PARENTHESIS expression RIGHT_PARENTHESIS
+    (45) factor -> . EXP_OPERATOR constant_val
+    (46) factor -> . constant_val
+    (47) constant_val -> . IDENTIFIER
+    (48) constant_val -> . CONST_NUMBER_INT
+    (49) constant_val -> . CONST_NUMBER_FLOAT
+
+    LEFT_PARENTHESIS shift and go to state 46
+    EXP_OPERATOR    shift and go to state 38
+    IDENTIFIER      shift and go to state 43
+    CONST_NUMBER_INT shift and go to state 37
+    CONST_NUMBER_FLOAT shift and go to state 41
+
+    term_start                     shift and go to state 78
+    constant_val                   shift and go to state 35
+    factor                         shift and go to state 42
+
+state 61
+
+    (31) term_end -> term_end_output .
+
+    EXP_OPERATOR    reduce using rule 31 (term_end -> term_end_output .)
+    COMPARISON_OPERATOR reduce using rule 31 (term_end -> term_end_output .)
+    PERIOD          reduce using rule 31 (term_end -> term_end_output .)
+    RIGHT_PARENTHESIS reduce using rule 31 (term_end -> term_end_output .)
+    SEMICOLON       reduce using rule 31 (term_end -> term_end_output .)
+
+
+state 62
+
+    (30) term_start -> factor term_end .
+
+    EXP_OPERATOR    reduce using rule 30 (term_start -> factor term_end .)
+    COMPARISON_OPERATOR reduce using rule 30 (term_start -> factor term_end .)
+    PERIOD          reduce using rule 30 (term_start -> factor term_end .)
+    RIGHT_PARENTHESIS reduce using rule 30 (term_start -> factor term_end .)
+    SEMICOLON       reduce using rule 30 (term_start -> factor term_end .)
+
+
+state 63
+
+    (32) term_end -> empty .
+
+    EXP_OPERATOR    reduce using rule 32 (term_end -> empty .)
+    COMPARISON_OPERATOR reduce using rule 32 (term_end -> empty .)
+    PERIOD          reduce using rule 32 (term_end -> empty .)
+    RIGHT_PARENTHESIS reduce using rule 32 (term_end -> empty .)
+    SEMICOLON       reduce using rule 32 (term_end -> empty .)
+
+
+state 64
+
+    (37) write_start -> expression write_end .
+
+    RIGHT_BRACKET   reduce using rule 37 (write_start -> expression write_end .)
+    IDENTIFIER      reduce using rule 37 (write_start -> expression write_end .)
+    KEYWORD_IF      reduce using rule 37 (write_start -> expression write_end .)
+    KEYWORD_PRINT   reduce using rule 37 (write_start -> expression write_end .)
+
+
+state 65
+
+    (25) exp_comparison_output -> COMPARISON_OPERATOR .
+
+    LEFT_PARENTHESIS reduce using rule 25 (exp_comparison_output -> COMPARISON_OPERATOR .)
+    EXP_OPERATOR    reduce using rule 25 (exp_comparison_output -> COMPARISON_OPERATOR .)
+    IDENTIFIER      reduce using rule 25 (exp_comparison_output -> COMPARISON_OPERATOR .)
+    CONST_NUMBER_INT reduce using rule 25 (exp_comparison_output -> COMPARISON_OPERATOR .)
+    CONST_NUMBER_FLOAT reduce using rule 25 (exp_comparison_output -> COMPARISON_OPERATOR .)
+
+
+state 66
+
+    (23) exp_comparison -> exp_comparison_output . exp_start
+    (26) exp_start -> . term_start exp_end
+    (30) term_start -> . factor term_end
+    (44) factor -> . LEFT_PARENTHESIS expression RIGHT_PARENTHESIS
+    (45) factor -> . EXP_OPERATOR constant_val
+    (46) factor -> . constant_val
+    (47) constant_val -> . IDENTIFIER
+    (48) constant_val -> . CONST_NUMBER_INT
+    (49) constant_val -> . CONST_NUMBER_FLOAT
+
+    LEFT_PARENTHESIS shift and go to state 46
+    EXP_OPERATOR    shift and go to state 38
+    IDENTIFIER      shift and go to state 43
+    CONST_NUMBER_INT shift and go to state 37
+    CONST_NUMBER_FLOAT shift and go to state 41
+
+    term_start                     shift and go to state 40
+    factor                         shift and go to state 42
+    exp_start                      shift and go to state 79
+    constant_val                   shift and go to state 35
+
+state 67
+
+    (24) exp_comparison -> empty .
+
+    PERIOD          reduce using rule 24 (exp_comparison -> empty .)
+    RIGHT_PARENTHESIS reduce using rule 24 (exp_comparison -> empty .)
+    SEMICOLON       reduce using rule 24 (exp_comparison -> empty .)
+
+
+state 68
+
+    (22) expression -> exp_start exp_comparison .
+
+    RIGHT_PARENTHESIS reduce using rule 22 (expression -> exp_start exp_comparison .)
+    PERIOD          reduce using rule 22 (expression -> exp_start exp_comparison .)
+    SEMICOLON       reduce using rule 22 (expression -> exp_start exp_comparison .)
+
+
+state 69
+
+    (44) factor -> LEFT_PARENTHESIS expression . RIGHT_PARENTHESIS
+
+    RIGHT_PARENTHESIS shift and go to state 80
+
+
+state 70
+
+    (21) assign -> IDENTIFIER EQUAL_OPERATOR expression . SEMICOLON
+
+    SEMICOLON       shift and go to state 81
+
+
+state 71
+
+    (9) var_type_start -> COLON var_type_def SEMICOLON var_type_end .
+
+    LEFT_BRACKET    reduce using rule 9 (var_type_start -> COLON var_type_def SEMICOLON var_type_end .)
+
+
+state 72
+
+    (10) var_type_end -> var_declaration_start .
+
+    LEFT_BRACKET    reduce using rule 10 (var_type_end -> var_declaration_start .)
+
+
+state 73
+
+    (11) var_type_end -> empty .
+
+    LEFT_BRACKET    reduce using rule 11 (var_type_end -> empty .)
+
+
+state 74
+
+    (41) condition -> KEYWORD_IF LEFT_PARENTHESIS expression RIGHT_PARENTHESIS . block_start condition_else
+    (14) block_start -> . LEFT_BRACKET block_end
+
+    LEFT_BRACKET    shift and go to state 12
+
+    block_start                    shift and go to state 82
+
+state 75
+
+    (39) write_end -> PERIOD write_start .
+
+    RIGHT_BRACKET   reduce using rule 39 (write_end -> PERIOD write_start .)
+    IDENTIFIER      reduce using rule 39 (write_end -> PERIOD write_start .)
+    KEYWORD_IF      reduce using rule 39 (write_end -> PERIOD write_start .)
+    KEYWORD_PRINT   reduce using rule 39 (write_end -> PERIOD write_start .)
+
+
+state 76
+
+    (40) write_end -> RIGHT_PARENTHESIS SEMICOLON .
+
+    RIGHT_BRACKET   reduce using rule 40 (write_end -> RIGHT_PARENTHESIS SEMICOLON .)
+    IDENTIFIER      reduce using rule 40 (write_end -> RIGHT_PARENTHESIS SEMICOLON .)
+    KEYWORD_IF      reduce using rule 40 (write_end -> RIGHT_PARENTHESIS SEMICOLON .)
+    KEYWORD_PRINT   reduce using rule 40 (write_end -> RIGHT_PARENTHESIS SEMICOLON .)
+
+
+state 77
+
+    (29) exp_end_f -> EXP_OPERATOR exp_start .
+
+    COMPARISON_OPERATOR reduce using rule 29 (exp_end_f -> EXP_OPERATOR exp_start .)
+    PERIOD          reduce using rule 29 (exp_end_f -> EXP_OPERATOR exp_start .)
+    RIGHT_PARENTHESIS reduce using rule 29 (exp_end_f -> EXP_OPERATOR exp_start .)
+    SEMICOLON       reduce using rule 29 (exp_end_f -> EXP_OPERATOR exp_start .)
+
+
+state 78
+
+    (33) term_end_output -> TERM_OPERATOR term_start .
+
+    EXP_OPERATOR    reduce using rule 33 (term_end_output -> TERM_OPERATOR term_start .)
+    COMPARISON_OPERATOR reduce using rule 33 (term_end_output -> TERM_OPERATOR term_start .)
+    PERIOD          reduce using rule 33 (term_end_output -> TERM_OPERATOR term_start .)
+    RIGHT_PARENTHESIS reduce using rule 33 (term_end_output -> TERM_OPERATOR term_start .)
+    SEMICOLON       reduce using rule 33 (term_end_output -> TERM_OPERATOR term_start .)
+
+
+state 79
+
+    (23) exp_comparison -> exp_comparison_output exp_start .
+
+    PERIOD          reduce using rule 23 (exp_comparison -> exp_comparison_output exp_start .)
+    RIGHT_PARENTHESIS reduce using rule 23 (exp_comparison -> exp_comparison_output exp_start .)
+    SEMICOLON       reduce using rule 23 (exp_comparison -> exp_comparison_output exp_start .)
+
+
+state 80
+
+    (44) factor -> LEFT_PARENTHESIS expression RIGHT_PARENTHESIS .
+
+    TERM_OPERATOR   reduce using rule 44 (factor -> LEFT_PARENTHESIS expression RIGHT_PARENTHESIS .)
+    EXP_OPERATOR    reduce using rule 44 (factor -> LEFT_PARENTHESIS expression RIGHT_PARENTHESIS .)
+    COMPARISON_OPERATOR reduce using rule 44 (factor -> LEFT_PARENTHESIS expression RIGHT_PARENTHESIS .)
+    PERIOD          reduce using rule 44 (factor -> LEFT_PARENTHESIS expression RIGHT_PARENTHESIS .)
+    RIGHT_PARENTHESIS reduce using rule 44 (factor -> LEFT_PARENTHESIS expression RIGHT_PARENTHESIS .)
+    SEMICOLON       reduce using rule 44 (factor -> LEFT_PARENTHESIS expression RIGHT_PARENTHESIS .)
+
+
+state 81
+
+    (21) assign -> IDENTIFIER EQUAL_OPERATOR expression SEMICOLON .
+
+    RIGHT_BRACKET   reduce using rule 21 (assign -> IDENTIFIER EQUAL_OPERATOR expression SEMICOLON .)
+    IDENTIFIER      reduce using rule 21 (assign -> IDENTIFIER EQUAL_OPERATOR expression SEMICOLON .)
+    KEYWORD_IF      reduce using rule 21 (assign -> IDENTIFIER EQUAL_OPERATOR expression SEMICOLON .)
+    KEYWORD_PRINT   reduce using rule 21 (assign -> IDENTIFIER EQUAL_OPERATOR expression SEMICOLON .)
+
+
+state 82
+
+    (41) condition -> KEYWORD_IF LEFT_PARENTHESIS expression RIGHT_PARENTHESIS block_start . condition_else
+    (42) condition_else -> . KEYWORD_ELSE block_start
+    (43) condition_else -> . empty
+    (1) empty -> .
+
+    KEYWORD_ELSE    shift and go to state 83
+    RIGHT_BRACKET   reduce using rule 1 (empty -> .)
+    IDENTIFIER      reduce using rule 1 (empty -> .)
+    KEYWORD_IF      reduce using rule 1 (empty -> .)
+    KEYWORD_PRINT   reduce using rule 1 (empty -> .)
+
+    empty                          shift and go to state 84
+    condition_else                 shift and go to state 85
+
+state 83
+
+    (42) condition_else -> KEYWORD_ELSE . block_start
+    (14) block_start -> . LEFT_BRACKET block_end
+
+    LEFT_BRACKET    shift and go to state 12
+
+    block_start                    shift and go to state 86
+
+state 84
+
+    (43) condition_else -> empty .
+
+    RIGHT_BRACKET   reduce using rule 43 (condition_else -> empty .)
+    IDENTIFIER      reduce using rule 43 (condition_else -> empty .)
+    KEYWORD_IF      reduce using rule 43 (condition_else -> empty .)
+    KEYWORD_PRINT   reduce using rule 43 (condition_else -> empty .)
+
+
+state 85
+
+    (41) condition -> KEYWORD_IF LEFT_PARENTHESIS expression RIGHT_PARENTHESIS block_start condition_else .
+
+    RIGHT_BRACKET   reduce using rule 41 (condition -> KEYWORD_IF LEFT_PARENTHESIS expression RIGHT_PARENTHESIS block_start condition_else .)
+    IDENTIFIER      reduce using rule 41 (condition -> KEYWORD_IF LEFT_PARENTHESIS expression RIGHT_PARENTHESIS block_start condition_else .)
+    KEYWORD_IF      reduce using rule 41 (condition -> KEYWORD_IF LEFT_PARENTHESIS expression RIGHT_PARENTHESIS block_start condition_else .)
+    KEYWORD_PRINT   reduce using rule 41 (condition -> KEYWORD_IF LEFT_PARENTHESIS expression RIGHT_PARENTHESIS block_start condition_else .)
+
+
+state 86
+
+    (42) condition_else -> KEYWORD_ELSE block_start .
+
+    RIGHT_BRACKET   reduce using rule 42 (condition_else -> KEYWORD_ELSE block_start .)
+    IDENTIFIER      reduce using rule 42 (condition_else -> KEYWORD_ELSE block_start .)
+    KEYWORD_IF      reduce using rule 42 (condition_else -> KEYWORD_ELSE block_start .)
+    KEYWORD_PRINT   reduce using rule 42 (condition_else -> KEYWORD_ELSE block_start .)
+
