@@ -17,7 +17,7 @@ tokens = (
     'OP_MENOR_QUE', 'OP_MAYOR_QUE', 'OP_MENOR_IGUAL', 'OP_MAYOR_IGUAL',
     'OP_DIFERENTE_DE', 'OP_IGUAL_A', 'OP_AND', 'OP_OR', 'OP_ASIGNACION',
     'OP_PARENTESIS_IZQ', 'OP_PARENTESIS_DER', 'OP_LLAVE_IZQ', 'OP_LLAVE_DER',
-    'OP_CORCHETE_IZQ', 'OP_CORCHETE_DER', 'OP_PUNTO_COMA', 'OP_COMILLA',
+    'OP_CORCHETE_IZQ', 'OP_CORCHETE_DER', 'OP_PUNTO_COMA',
     'OP_COMA', 'OP_PUNTO',
 
     'ID', 'CTE_I', 'CTE_F', 'CTE_S',
@@ -53,22 +53,22 @@ reserved = {
 }
 
 # Tokens
-t_OP_PUNTO_Y_COMA = r'\;'
+t_OP_TERMINO = r'\+|\-'
+t_OP_FACTOR = r'\*|\/|\%'
+t_OP_COMPARADOR = r'[<]|[>]|[>][=]|[<][=]|[=][=]|![=]'
+t_OP_AND = r'[&][&]'
+t_OP_OR = r'[|][|]'
+t_OP_ASIGNACION = r'[=]'
+t_OP_PARENTESIS_IZQ = r'\('
+t_OP_PARENTESIS_DER = r'\)'
+t_OP_LLAVE_IZQ = r'\{'
+t_OP_LLAVE_DER = r'\}'
+t_OP_CORCHETE_IZQ = r'\['
+t_OP_CORCHETE_DER = r'\]'
+
+t_OP_PUNTO_COMA = r'\;'
 t_OP_PUNTO = r'[\.]'
 t_OP_COMA = r'[\,]'
-t_OP_LLAVE_IZQUIERDA = r'\{'
-t_OP_LLAVE_DERECHA = r'\}'
-t_OP_PARENTESIS_IZQUIERDO = r'\('
-t_OP_PARENTESIS_DERECHO = r'\)'
-t_OP_OPERADOR_ASIGNACION = r'\='
-t_OP_MENOR_QUE = r'[<]'
-t_OP_MAYOR_QUE = r'[>]'
-t_OP_MAYOR_IGUAL = r'[>][=]'
-t_OP_MENOR_IGUAL = r'[<][=]'
-t_OP_IGUAL_A = r'[=][=]'
-t_OP_DIFERENTE_A = r'![=]'
-t_OP_EXP_OPERATOR = r'\+|\-'
-t_OP_TERM_OPERATOR = r'\*|\/'
 
 
 def t_CONST_NUMBER_FLOAT(t):
