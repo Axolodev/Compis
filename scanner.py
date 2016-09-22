@@ -3,7 +3,7 @@
 #
 # A simple calculator with variables.
 # -----------------------------------------------------------------------------
-
+from __future__ import print_function
 tokens = (
     'KW_INICIO', 'KW_FUNCION', 'KW_NORTE', 'KW_SUR',
     'KW_ESTE', 'KW_OESTE', 'KW_MIENTRAS', 'KW_SI',
@@ -20,11 +20,11 @@ tokens = (
     'OP_CORCHETE_IZQ', 'OP_CORCHETE_DER', 'OP_PUNTO_COMA',
     'OP_COMA', 'OP_PUNTO',
 
-    'ID', 'CTE_I', 'CTE_F', 'CTE_S',
+    'ID', 'CTE_E', 'CTE_F', 'CTE_S',
 )
 
 reserved = {
-    'inicio': 'KW_INICIOP_O',
+    'inicio': 'KW_INICIO',
     'funcion': 'KW_FUNCION',
     'norte': 'KW_NORTE',
     'sur': 'KW_SUR',
@@ -35,8 +35,10 @@ reserved = {
     'si_no': 'KW_SI_NO',
     'flotante': 'KW_FLOTANTE',
     'string': 'KW_STRING',
+
     'verdadero': 'KW_VERDADERO',
     'falso': 'KW_FALSO',
+
     'camina': 'KW_CAMINA',
     'gira': 'KW_GIRA',
     'mira': 'KW_MIRA',
@@ -71,24 +73,24 @@ t_OP_PUNTO = r'[\.]'
 t_OP_COMA = r'[\,]'
 
 
-def t_CONST_NUMBER_FLOAT(t):
+def t_CTE_F(t):
     r'[0-9]+\.[0-9]+'
     t.value = float(t.value)
     return t
 
-def t_CONST_NUMBER_INT(t):
+def t_CTE_E(t):
     r'\d+'
     t.value = int(t.value)
     return t
 
-def t_IDENTIFIER(t):
+def t_ID(t):
     r'[a-zA-Z_][a-zA-Z0-9_]*'
     if t.value in reserved:
         t.type = reserved[t.value]
     return t
 
 
-t_CONST_STRING = r'\"[A-Za-z0-9_\(\)\{\}\[\]\<\>\!]*\"'
+t_CTE_S = r'\"[A-Za-z0-9_\(\)\{\}\[\]\<\>\!]*\"'
 
 # Ignored characters
 t_ignore = " \t"
@@ -109,13 +111,137 @@ import ply.lex as lex
 
 lexer = lex.lex()
 
-start = 'program'
-
+start = 'inicio'
 
 def p_empty(p):
     'empty :'
     pass
 
+def p_inicio(p):
+    'inicio : crear_var_glob crear_funciones KW_INICIO funcion'
+    pass
+
+def p_crear_funciones(p):
+    '''
+    crear_funciones : funcion crear_funciones
+                    | empty
+    '''
+    pass
+
+def p_crear_var_glob(p):
+    '''
+    crear_var_glob : crear_var crear_var_glob
+                    | empty
+    '''
+    pass
+
+def p_funcion(p):
+    '''
+    funcion : KW_FUNCION tipo_funcion print_id OP_PARENTESIS_IZQ parametros OP_PARENTESIS_DER bloque_func
+    '''
+    pass
+
+def p_print_id(p):
+    'print_id : ID'
+    print (p[1])
+
+def p_tipo_funcion(p):
+    '''
+    tipo_funcion : tipo
+                    | empty
+    '''
+    pass
+
+def p_tipo(p):
+    '''
+    tipo : KW_ENTERO
+        | KW_FLOTANTE
+        | KW_STRING
+    '''
+    print(p[1] + " ", end="")
+
+def p_parametos(p):
+    '''
+    parametros : toma_parametro
+                | empty
+    '''
+    pass
+
+def p_toma_parametro(p):
+    '''
+    toma_parametro : tipo ID otro_parametro
+    '''
+    pass
+
+
+
+def p_otro_parametro(p):
+    '''
+    otro_parametro : print_coma toma_parametro
+                    | empty
+    '''
+    pass
+
+def p_print_coma(p):
+    '''
+    print_coma : OP_COMA
+    '''
+    print(", ", end="")
+
+def p_bloque_func(p):
+    '''
+    bloque_func : OP_LLAVE_IZQ crear_var estatuto OP_LLAVE_DERECHA
+    '''
+    pass
+
+def p_crear_var(p):
+    '''
+    crear_var : tipo def_var otra_var OP_PUNTO_COMA
+    '''
+    pass
+
+def p_def_var(p):
+    '''
+    def_var : print_id arr_not arr_not
+    '''
+    pass
+
+def p_arr_not(p):
+    '''
+    arr_not : OP_CORCHETE_IZQ CTE_E OP_CORCHETE_DER
+    '''
+    print ("[" + p[2] + "]", end="")
+
+def p_otra_var(p):
+    '''
+    otra_var : print_coma def_var p_otra_var
+            | empty
+    '''
+    pass
+
+def p_estatuto(p):
+    '''
+    estatuto : asignacion
+            | condicion
+            | ciclo
+            | ejec_funcion
+            | funcion_predef
+    '''
+
+def p_condicion(p):
+    '''
+    condicion : KW_SI OP_PARENTESIS_IZQ expresion OP_PARENTESIS_DER bloque_est si_no
+    '''
+
+def p_si_no(p):
+    '''
+    si_no : KW_SI_NO bloque_est
+            | empty
+    '''
+
+'''
+-------------------------
+'''
 
 def p_program(p):
     '''
