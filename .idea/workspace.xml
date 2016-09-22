@@ -2,7 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="eea470b8-f70d-4415-8efd-7f7b31973dd4" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/parser.out" afterPath="$PROJECT_DIR$/parser.out" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/parsetab.py" afterPath="$PROJECT_DIR$/parsetab.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/scanner.py" afterPath="$PROJECT_DIR$/scanner.py" />
     </list>
     <ignored path="Compis.iws" />
@@ -29,8 +31,8 @@
           <file leaf-file-name="scanner.py" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/scanner.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="418">
-                  <caret line="405" column="44" selection-start-line="405" selection-start-column="44" selection-end-line="405" selection-end-column="44" />
+                <state relative-caret-position="-2286">
+                  <caret line="230" column="17" selection-start-line="230" selection-start-column="6" selection-end-line="230" selection-end-column="17" />
                   <folding />
                 </state>
               </provider>
@@ -43,8 +45,8 @@
           <file leaf-file-name="scanner.py" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/scanner.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="550">
-                  <caret line="55" column="12" selection-start-line="55" selection-start-column="0" selection-end-line="55" selection-end-column="12" />
+                <state relative-caret-position="216">
+                  <caret line="60" column="8" selection-start-line="60" selection-start-column="7" selection-end-line="60" selection-end-column="8" />
                   <folding />
                 </state>
               </provider>
@@ -391,8 +393,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/scanner.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="418">
-          <caret line="405" column="44" selection-start-line="405" selection-start-column="44" selection-end-line="405" selection-end-column="44" />
+        <state relative-caret-position="-2286">
+          <caret line="230" column="17" selection-start-line="230" selection-start-column="6" selection-end-line="230" selection-end-column="17" />
           <folding />
         </state>
       </provider>

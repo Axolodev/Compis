@@ -16,7 +16,7 @@ tokens = (
     'OP_COMPARADOR', 'OP_FACTOR', 'OP_TERMINO', 'OP_AND', 'OP_OR', 'OP_ASIGNACION',
     'OP_PARENTESIS_IZQ', 'OP_PARENTESIS_DER', 'OP_LLAVE_IZQ', 'OP_LLAVE_DER',
     'OP_CORCHETE_IZQ', 'OP_CORCHETE_DER', 'OP_PUNTO_COMA',
-    'OP_COMA', 'OP_PUNTO', 'OP_COMPARADOR'
+    'OP_COMA', 'OP_PUNTO',
 
     'ID', 'CTE_E', 'CTE_F', 'CTE_S',
 )
@@ -188,7 +188,7 @@ def p_print_coma(p):
 
 def p_bloque_func(p):
     '''
-    bloque_func : OP_LLAVE_IZQ crear_var estatuto OP_LLAVE_DERECHA
+    bloque_func : OP_LLAVE_IZQ crear_var estatuto OP_LLAVE_DER
     '''
     pass
 
@@ -214,7 +214,7 @@ def p_arr_not(p):
 
 def p_otra_var(p):
     '''
-    otra_var : print_coma def_var p_otra_var
+    otra_var : print_coma def_var otra_var
             | empty
     '''
     pass
@@ -234,6 +234,10 @@ def p_un_estatuto(p):
                 | empty
     '''
 
+def p_asignacion(p):
+    '''
+    asignacion : ID arr_not arr_not OP_ASIGNACION expresion OP_PUNTO_COMA
+    '''
 def p_ciclo(p):
     '''
     ciclo : KW_MIENTRAS OP_PARENTESIS_IZQ expresion OP_PARENTESIS_DER bloque_est
@@ -332,7 +336,7 @@ def p_termino2(p):
 
 def p_factor(p):
     '''
-    factor : OP_PARENTISIS_IZQ expresion OP_PARENTESIS_DER
+    factor : OP_PARENTESIS_IZQ expresion OP_PARENTESIS_DER
             | OP_TERMINO var_cte
             | var_cte
     '''
@@ -435,8 +439,8 @@ def p_a_flotante(p):
 
 def p_a_flotante2(p):
     '''
-    a_flotante_2 : concat_string
-                | cte_f
+    a_flotante2 : concat_string
+                | CTE_F
     '''
 
 def p_reiniciar(p):
@@ -451,7 +455,7 @@ def p_input(p):
 
 def p_input2(p):
     '''
-    input2 : OP_COMMA ID input2
+    input2 : OP_COMA ID input2
             | empty
     '''
 
