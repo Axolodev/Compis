@@ -13,12 +13,10 @@ tokens = (
     'KW_ANCHO', 'KW_ALTO', 'KW_A_FLOTANTE', 'KW_SALTA_A',
     'KW_FALSO', 'KW_ENTERO',
 
-    'OP_SUMA', 'OP_RESTA', 'OP_MULTIPLICACION', 'OP_DIVISION', 'OP_RESIDUO',
-    'OP_MENOR_QUE', 'OP_MAYOR_QUE', 'OP_MENOR_IGUAL', 'OP_MAYOR_IGUAL',
-    'OP_DIFERENTE_DE', 'OP_IGUAL_A', 'OP_AND', 'OP_OR', 'OP_ASIGNACION',
+    'OP_COMPARADOR', 'OP_FACTOR', 'OP_TERMINO', 'OP_AND', 'OP_OR', 'OP_ASIGNACION',
     'OP_PARENTESIS_IZQ', 'OP_PARENTESIS_DER', 'OP_LLAVE_IZQ', 'OP_LLAVE_DER',
     'OP_CORCHETE_IZQ', 'OP_CORCHETE_DER', 'OP_PUNTO_COMA',
-    'OP_COMA', 'OP_PUNTO',
+    'OP_COMA', 'OP_PUNTO', 'OP_COMPARADOR'
 
     'ID', 'CTE_E', 'CTE_F', 'CTE_S',
 )
@@ -273,7 +271,7 @@ def p_funcion_predef(p):
 
 def p_expresion(p):
     '''
-    expresion(p): comp_or otra_expresion_or
+    expresion : comp_or otra_expresion_or
     '''
 
 def p_otra_expresion_or(p):
@@ -351,12 +349,12 @@ def p_gira(p):
 
 def p_mira(p):
     '''
-    mira: KW_MIRA OP_PARENTESIS_IZQ expresion OP_PARENTESIS_DER OP_PUNTO_COMA
+    mira : KW_MIRA OP_PARENTESIS_IZQ expresion OP_PARENTESIS_DER OP_PUNTO_COMA
     '''
 
 def p_a_string(p):
     '''
-    a_string: KW_A_STRING OP_PARENTESIS_IZQ a_string2 OP_PARENTESIS_DER OP_PUNTO_COMA
+    a_string : KW_A_STRING OP_PARENTESIS_IZQ a_string2 OP_PARENTESIS_DER OP_PUNTO_COMA
     '''
 
 def p_a_string2(p):
@@ -405,7 +403,7 @@ def p_var_cte(p):
 def p_var_cte2(p):
     '''
     var_cte2 : arr_not arr_not
-            | PARENTESIS_IZQ var_cte3 PARENTESIS_DER
+            | OP_PARENTESIS_IZQ var_cte3 OP_PARENTESIS_DER
     '''
 
 def p_var_cte3(p):
@@ -467,22 +465,7 @@ import ply.yacc as yacc
 parser = yacc.yacc()
 
 data = '''
-program programa_patito :
-var i_one, i_two, i_three : int ;
-f_one, f_two, f_three : float ; {
-    if(one + 2 < three) {
-        one = 1 + 2;
-        print ("Hello!1234567890");
-    } else {
-        lex = 30;
-        false = one <> two;
-    }
-    one = 1;
-    f_three = 2 * 3 + 5 * 2 + 6 + 6 + 7 + 8;
-    f_two = 2.000;
-    one = 1 + 2;
-    two = one + three + 1.0;
-}
+inicio entero ai(){}
 '''
 
 parser.parse(data)
