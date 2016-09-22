@@ -339,11 +339,6 @@ def p_factor(p):
             | var_cte
     '''
 
-def p_var_cte(p):
-    '''
-    factor2 : var_cte
-    '''
-
 def p_camina(p):
     '''
     camina : KW_CAMINA OP_PARENTESIS_IZQ expresion OP_PARENTESIS_DER OP_PUNTO_COMA
@@ -398,247 +393,74 @@ def p_bloque_est(p):
     '''
     bloque_est : OP_LLAVE_IZQ estatuto OP_LLAVE_DER
     '''
-'''
--------------------------
-'''
 
-def p_program(p):
+def p_var_cte(p):
     '''
-    program : KEYWORD_PROGRAM IDENTIFIER COLON program_vars block_start
+    var_cte : ID var_cte2
+            | CTE_E
+            | CTE_F
+            | concat_string
     '''
-    print("Program start\n\tIdentifier:" + p[2] + "\n")
 
-
-def p_program_vars(p):
+def p_var_cte2(p):
     '''
-    program_vars : vars
-                | empty
+    var_cte2 : arr_not arr_not
+            | PARENTESIS_IZQ var_cte3 PARENTESIS_DER
     '''
-    pass
 
-
-def p_vars(p):
+def p_var_cte3(p):
     '''
-    vars : KEYWORD_VAR var_declaration_start
+    var_cte3 : expresion var_cte4
     '''
-    print("VARIABLES:\n")
 
-
-def p_var_declaration_start(p):
+def p_var_cte4(p):
     '''
-    var_declaration_start : IDENTIFIER var_declaration_end
-    '''
-    print("\t- Identifier: " + p[1] + "\n")
-
-
-def p_var_declaration_end(p):
-    '''
-    var_declaration_end : COMMA var_declaration_start
-                | var_type_start
-    '''
-    pass
-
-
-def p_var_type_start(p):
-    '''
-    var_type_start : COLON var_type_def SEMICOLON var_type_end
-    '''
-    pass
-
-
-def p_var_type_end(p):
-    '''
-    var_type_end : var_declaration_start
-                | empty
-    '''
-    pass
-
-
-def p_var_type_def(p):
-    '''
-    var_type_def : KEYWORD_TYPE_INT
-                | KEYWORD_TYPE_FLOAT
-    '''
-    print("type definition: " + p[1] + "\n")
-
-
-def p_block_start(p):
-    '''
-    block_start : LEFT_BRACKET block_end
-    '''
-    print("block start\n")
-
-
-def p_block_end(p):
-    '''
-    block_end : statement block_end
-                | RIGHT_BRACKET block_end_output
-    '''
-    pass
-
-
-def p_block_end_output(p):
-    '''
-    block_end_output : empty
-    '''
-    print("block end\n")
-
-
-def p_statement(p):
-    '''
-    statement : assign
-                | condition
-                | output
-    '''
-    pass
-
-
-def p_assign(p):
-    '''
-    assign : IDENTIFIER EQUAL_OPERATOR expression SEMICOLON
-    '''
-    print(p[1] + " = ")
-
-
-def p_expression(p):
-    '''
-    expression : exp_start exp_comparison
-    '''
-    pass
-
-
-def p_exp_comparison(p):
-    '''
-    exp_comparison : exp_comparison_output exp_start
-                | empty
-    '''
-    pass
-
-
-def p_exp_comparison_output(p):
-    '''
-    exp_comparison_output : COMPARISON_OPERATOR
-    '''
-    print(" " + p[1])
-
-
-def p_exp_start(p):
-    '''
-    exp_start : term_start exp_end
-    '''
-    pass
-
-
-def p_exp_end(p):
-    '''
-    exp_end : exp_end_f
+    var_cte4 : OP_COMA expresion var_cte4
             | empty
     '''
-    pass
 
-
-def p_exp_end_f(p):
+def p_concat_string(p):
     '''
-    exp_end_f : EXP_OPERATOR exp_start
+    concat_string : CTE_S concat_string2
     '''
-    print(' ' + p[1] + ' ')
 
-
-def p_error(t):
-    print("Syntax error at '%s'" % t.value)
-
-
-def p_term_start(p):
+def p_concat_string2(p):
     '''
-    term_start : factor term_end
-    '''
-    pass
-
-
-def p_term_end(p):
-    '''
-    term_end : term_end_output
+    concat_string2 : OP_PUNTO CTE_S
             | empty
     '''
-    pass
 
-
-def p_term_end_output(p):
+def p_a_flotante(p):
     '''
-    term_end_output : TERM_OPERATOR term_start
+    a_flotante : KW_A_FLOTANTE OP_PARENTESIS_IZQ a_flotante2 OP_PARENTESIS_DER OP_PUNTO_COMA
     '''
-    print(p[1] + ' ')
 
+def p_a_flotante2(p):
+    '''
+    a_flotante_2 : concat_string
+                | cte_f
+    '''
+
+def p_reiniciar(p):
+    '''
+    reiniciar : KW_REINICIAR OP_PARENTESIS_IZQ OP_PARENTESIS_DER
+    '''
+
+def p_input(p):
+    '''
+    input : KW_INPUT OP_PARENTESIS_IZQ ID input2 OP_PARENTESIS_DER
+    '''
+
+def p_input2(p):
+    '''
+    input2 : OP_COMMA ID input2
+            | empty
+    '''
 
 def p_output(p):
     '''
-    output : output_output write_start
+    output : concat_string
     '''
-    pass
-
-
-def p_output_output(p):
-    '''
-    output_output : KEYWORD_PRINT LEFT_PARENTHESIS
-    '''
-    print("print (")
-
-
-def p_write_start(p):
-    '''
-    write_start : write_start_output write_end
-                | expression write_end
-    '''
-    pass
-
-
-def p_write_start_output(p):
-    '''
-    write_start_output : CONST_STRING
-    '''
-    print(p[1] + ' ')
-
-
-def p_write_end(p):
-    '''
-    write_end : PERIOD write_start
-                | RIGHT_PARENTHESIS SEMICOLON
-    '''
-    print("\n")
-
-
-def p_condition(p):
-    '''
-    condition : KEYWORD_IF LEFT_PARENTHESIS expression RIGHT_PARENTHESIS block_start condition_else
-    '''
-    pass
-
-
-def p_condition_else(p):
-    '''
-    condition_else : KEYWORD_ELSE block_start
-                    | empty
-    '''
-    pass
-
-
-def p_factor(p):
-    '''
-    factor : LEFT_PARENTHESIS expression RIGHT_PARENTHESIS
-                | EXP_OPERATOR constant_val
-                | constant_val
-    '''
-    pass
-
-
-def p_constant_val(p):
-    '''
-    constant_val : IDENTIFIER
-        | CONST_NUMBER_INT
-        | CONST_NUMBER_FLOAT
-    '''
-    print(str(p[1]) + ' ')
-
 
 import ply.yacc as yacc
 
