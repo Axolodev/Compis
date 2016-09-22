@@ -196,9 +196,11 @@ def p_bloque_func(p):
 
 def p_crear_var(p):
     '''
-    crear_var : tipo def_var otra_var OP_PUNTO_COMA
+    crear_var : tipo def_var otra_var OP_PUNTO_COMA crear_var
+                | empty
     '''
     pass
+
 
 def p_def_var(p):
     '''
@@ -228,6 +230,159 @@ def p_estatuto(p):
             | funcion_predef
     '''
 
+def p_un_estatuto(p):
+    '''
+    un_estatuto : estatuto un_estatuto
+                | empty
+    '''
+
+def p_ciclo(p):
+    '''
+    ciclo : KW_MIENTRAS OP_PARENTESIS_IZQ expresion OP_PARENTESIS_DER bloque_est
+    '''
+
+def p_ejec_funcion(p):
+    '''
+    ejec_funcion : ID OP_PARENTESIS_IZQ ejec_funcion_medio OP_PARENTESIS_DER OP_PUNTO_COMA
+    '''
+
+def p_ejec_funcion_medio(p):
+    '''
+    ejec_funcion_medio : expresion ejec_funcion_cont
+                        | empty
+    '''
+
+def p_ejec_funcion_cont(p):
+    '''
+    ejec_funcion_cont : OP_COMA expresion ejec_funcion_cont
+                        | empty
+    '''
+
+def p_funcion_predef(p):
+    '''
+    funcion_predef : camina
+                    | gira
+                    | mira
+                    | a_string
+                    | a_entero
+                    | a_flotante
+                    | reiniciar
+                    | input
+                    | output
+    '''
+
+def p_expresion(p):
+    '''
+    expresion(p): comp_or otra_expresion_or
+    '''
+
+def p_otra_expresion_or(p):
+    '''
+    otra_expresion_or : OP_OR comp_or
+                    | empty
+    '''
+
+def p_comp_or(p):
+    '''
+    comp_or : comp_and otra_expresion_and
+    '''
+
+def p_otra_expresion_and(p):
+    '''
+    otra_expresion_and : OP_AND comp_and
+                    | empty
+    '''
+
+def p_comp_and(p):
+    '''
+    comp_and : exp comp_and_end
+    '''
+
+def p_comp_and_end(p):
+    '''
+    comp_and_end : op_comparador exp
+                | empty
+    '''
+
+def p_op_comparador(p):
+    '''
+    op_comparador : OP_COMPARADOR
+    '''
+    print(' ' + p.value + ' ', end="")
+
+def p_exp(p):
+    '''
+    exp : termino exp2
+    '''
+
+def p_exp2(p):
+    '''
+    exp2 : OP_TERMINO exp
+        | empty
+    '''
+
+def p_termino(p):
+    '''
+    termino : factor termino2
+    '''
+
+def p_termino2(p):
+    '''
+    termino2 : OP_FACTOR termino
+            | empty
+    '''
+
+def p_factor(p):
+    '''
+    factor : OP_PARENTISIS_IZQ expresion OP_PARENTESIS_DER
+            | OP_TERMINO var_cte
+            | var_cte
+    '''
+
+def p_var_cte(p):
+    '''
+    factor2 : var_cte
+    '''
+
+def p_camina(p):
+    '''
+    camina : KW_CAMINA OP_PARENTESIS_IZQ expresion OP_PARENTESIS_DER OP_PUNTO_COMA
+    '''
+
+def p_gira(p):
+    '''
+    gira : KW_GIRA OP_PARENTESIS_IZQ expresion OP_PARENTESIS_DER OP_PUNTO_COMA
+    '''
+
+def p_mira(p):
+    '''
+    mira: KW_MIRA OP_PARENTESIS_IZQ expresion OP_PARENTESIS_DER OP_PUNTO_COMA
+    '''
+
+def p_a_string(p):
+    '''
+    a_string: KW_A_STRING OP_PARENTESIS_IZQ a_string2 OP_PARENTESIS_DER OP_PUNTO_COMA
+    '''
+
+def p_a_string2(p):
+    '''
+    a_string2 : CTE_E
+            | CTE_F
+            | ID arr_not arr_not
+    '''
+
+def p_a_entero(p):
+    '''
+    a_entero : KW_ENTERO OP_PARENTESIS_IZQ a_entero2 OP_PARENTESIS_DER OP_PUNTO_COMA
+    '''
+
+
+def p_a_entero2(p):
+    '''
+    a_entero2 : CTE_F
+            | concat_string
+    '''
+
 def p_condicion(p):
     '''
     condicion : KW_SI OP_PARENTESIS_IZQ expresion OP_PARENTESIS_DER bloque_est si_no
@@ -239,6 +394,10 @@ def p_si_no(p):
             | empty
     '''
 
+def p_bloque_est(p):
+    '''
+    bloque_est : OP_LLAVE_IZQ estatuto OP_LLAVE_DER
+    '''
 '''
 -------------------------
 '''
