@@ -6,7 +6,7 @@ tokens = (
     'KW_CAMINA', 'KW_GIRA', 'KW_MIRA', 'KW_A_STRING',
     'KW_REINICIAR', 'KW_INPUT', 'KW_OUTPUT', 'KW_A_ENTERO',
     'KW_ANCHO', 'KW_ALTO', 'KW_A_FLOTANTE', 'KW_SALTA_A',
-    'KW_FALSO', 'KW_ENTERO',
+    'KW_FALSO', 'KW_ENTERO', 'KW_RETORNA',
 
     'OP_COMPARADOR', 'OP_FACTOR', 'OP_TERMINO', 'OP_AND', 'OP_OR', 'OP_ASIGNACION',
     'OP_PARENTESIS_IZQ', 'OP_PARENTESIS_DER', 'OP_LLAVE_IZQ', 'OP_LLAVE_DER',
@@ -17,6 +17,7 @@ tokens = (
 )
 
 reserved = {
+    'retorna' : 'KW_RETORNA',
     'inicio': 'KW_INICIO',
     'funcion': 'KW_FUNCION',
     'norte': 'KW_NORTE',
@@ -129,7 +130,7 @@ def p_funcion(p):
 
 def p_print_id(p):
     'print_id : ID'
-    print (p[1])
+    print (p[1], end="")
 
 def p_tipo_funcion(p):
     '''
@@ -159,8 +160,6 @@ def p_toma_parametro(p):
     '''
     pass
 
-
-
 def p_otro_parametro(p):
     '''
     otro_parametro : print_coma toma_parametro
@@ -182,10 +181,16 @@ def p_bloque_func(p):
 
 def p_crear_var(p):
     '''
-    crear_var : tipo def_var otra_var OP_PUNTO_COMA crear_var
+    crear_var : tipo def_var otra_var op_punto_coma crear_var
                 | empty
     '''
     pass
+
+def p_op_punto_coma(p):
+    '''
+    op_punto_coma : OP_PUNTO_COMA
+    '''
+    print(";")
 
 
 def p_def_var(p):
@@ -197,8 +202,11 @@ def p_def_var(p):
 def p_arr_not(p):
     '''
     arr_not : OP_CORCHETE_IZQ CTE_E OP_CORCHETE_DER
+            | empty
     '''
-    print ("[" + p[2] + "]", end="")
+    if len(p) > 2:
+        print("[" + str(p[2]) + "]", end="")
+
 
 def p_otra_var(p):
     '''
@@ -214,6 +222,7 @@ def p_estatuto(p):
             | ciclo
             | ejec_funcion
             | funcion_predef
+            | retorna
     '''
 
 def p_estatuto_rec(p):
@@ -385,6 +394,11 @@ def p_bloque_est(p):
     bloque_est : OP_LLAVE_IZQ estatuto OP_LLAVE_DER
     '''
 
+def p_retorna(p):
+    '''
+    retorna : KW_RETORNA expresion OP_PUNTO_COMA
+    '''
+
 def p_var_cte(p):
     '''
     var_cte : ID var_cte2
@@ -474,6 +488,20 @@ import ply.yacc as yacc
 parser = yacc.yacc()
 
 
-data = '''inicio entero ai(){}'''
+data = '''
+entero global;
+flotante globalDos[2];
+string una_var[2][3], otra_var;
+funcion prueba(){
+
+}
+funcion flotante cualquiera(){
+    
+}
+inicio funcion entero ai(){
+
+    prueba();
+}
+'''
 
 parser.parse(data)
