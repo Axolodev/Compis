@@ -1,8 +1,3 @@
-# -----------------------------------------------------------------------------
-# calc.py
-#
-# A simple calculator with variables.
-# -----------------------------------------------------------------------------
 from __future__ import print_function
 tokens = (
     'KW_INICIO', 'KW_FUNCION', 'KW_NORTE', 'KW_SUR',
@@ -188,7 +183,7 @@ def p_print_coma(p):
 
 def p_bloque_func(p):
     '''
-    bloque_func : OP_LLAVE_IZQ crear_var estatuto OP_LLAVE_DER
+    bloque_func : OP_LLAVE_IZQ crear_var estatuto_rec OP_LLAVE_DER
     '''
     pass
 
@@ -228,9 +223,9 @@ def p_estatuto(p):
             | funcion_predef
     '''
 
-def p_un_estatuto(p):
+def p_estatuto_rec(p):
     '''
-    un_estatuto : estatuto un_estatuto
+    estatuto_rec : estatuto estatuto_rec
                 | empty
     '''
 
@@ -271,6 +266,7 @@ def p_funcion_predef(p):
                     | reiniciar
                     | input
                     | output
+                    | salta_a
     '''
 
 def p_expresion(p):
@@ -370,7 +366,7 @@ def p_a_string2(p):
 
 def p_a_entero(p):
     '''
-    a_entero : KW_ENTERO OP_PARENTESIS_IZQ a_entero2 OP_PARENTESIS_DER OP_PUNTO_COMA
+    a_entero : KW_A_ENTERO OP_PARENTESIS_IZQ a_entero2 OP_PARENTESIS_DER OP_PUNTO_COMA
     '''
 
 
@@ -402,6 +398,14 @@ def p_var_cte(p):
             | CTE_E
             | CTE_F
             | concat_string
+            | KW_VERDADERO
+            | KW_FALSO
+            | KW_NORTE
+            | KW_SUR
+            | KW_ESTE
+            | KW_OESTE
+            | KW_ANCHO
+            | KW_ALTO
     '''
 
 def p_var_cte2(p):
@@ -445,12 +449,12 @@ def p_a_flotante2(p):
 
 def p_reiniciar(p):
     '''
-    reiniciar : KW_REINICIAR OP_PARENTESIS_IZQ OP_PARENTESIS_DER
+    reiniciar : KW_REINICIAR OP_PARENTESIS_IZQ OP_PARENTESIS_DER OP_PUNTO_COMA
     '''
 
 def p_input(p):
     '''
-    input : KW_INPUT OP_PARENTESIS_IZQ ID input2 OP_PARENTESIS_DER
+    input : KW_INPUT OP_PARENTESIS_IZQ ID input2 OP_PARENTESIS_DER OP_PUNTO_COMA
     '''
 
 def p_input2(p):
@@ -461,7 +465,12 @@ def p_input2(p):
 
 def p_output(p):
     '''
-    output : concat_string
+    output : KW_OUTPUT OP_PARENTESIS_IZQ concat_string OP_PARENTESIS_DER OP_PUNTO_COMA
+    '''
+
+def p_salta_a(p):
+    '''
+    salta_a : KW_SALTA_A OP_PARENTESIS_IZQ CTE_E OP_COMA CTE_E OP_PARENTESIS_DER OP_PUNTO_COMA
     '''
 
 import ply.yacc as yacc
