@@ -48,43 +48,107 @@ reserved = {
     'entero': 'KW_ENTERO',
 }
 
-# Tokens
-t_OP_TERMINO = r'\+|\-'
-t_OP_FACTOR = r'\*|\/|\%'
-t_OP_COMPARADOR = r'[<]|[>]|[>][=]|[<][=]|[=][=]|![=]'
-t_OP_AND = r'[&][&]'
-t_OP_OR = r'[|][|]'
-t_OP_ASIGNACION = r'[=]'
-t_OP_PARENTESIS_IZQ = r'\('
-t_OP_PARENTESIS_DER = r'\)'
-t_OP_LLAVE_IZQ = r'\{'
-t_OP_LLAVE_DER = r'\}'
-t_OP_CORCHETE_IZQ = r'\['
-t_OP_CORCHETE_DER = r'\]'
 
-t_OP_PUNTO_COMA = r'\;'
-t_OP_PUNTO = r'[\.]'
-t_OP_COMA = r'[\,]'
+# Tokens
+def t_OP_TERMINO(t):
+    r'\+|\-'
+    print(t.value, end="")
+    return t
+
+def t_OP_FACTOR(t):
+    r'\*|\/|\%'
+    print(t.value, end="")
+    return t
+
+def t_OP_COMPARADOR(t):
+    r'[<]|[>]|[>][=]|[<][=]|[=][=]|![=]'
+    print(t.value, end="")
+    return t
+
+def t_OP_AND(t):
+    r'[&][&]'
+    print(t.value, end="")
+    return t
+
+def t_OP_OR(t):
+    r'[|][|]'
+    print(t.value, end="")
+    return t
+
+def t_OP_ASIGNACION(t):
+    r'[=]'
+    print(t.value, end="")
+    return t
+
+def t_OP_PARENTESIS_IZQ(t):
+    r'\('
+    print(t.value, end="")
+    return t
+
+def t_OP_PARENTESIS_DER(t):
+    r'\)'
+    print(t.value, end="")
+    return t
+
+def t_OP_LLAVE_IZQ(t):
+    r'\{'
+    print(t.value)
+    return t
+
+def t_OP_LLAVE_DER(t):
+    r'\}'
+    print(t.value)
+    return t
+
+def t_OP_CORCHETE_IZQ(t):
+    r'\['
+    print(t.value, end="")
+    return t
+
+def t_OP_CORCHETE_DER(t):
+    r'\]'
+    print(t.value, end="")
+    return t
+
+def t_OP_PUNTO(t):
+    r'[\.]'
+    print(t.value, end="")
+    return t
 
 
 def t_CTE_F(t):
     r'[0-9]+\.[0-9]+'
+    print(t.value, end="")
     t.value = float(t.value)
     return t
 
 def t_CTE_E(t):
     r'\d+'
+    print(t.value, end="")
     t.value = int(t.value)
     return t
 
+
 def t_ID(t):
     r'[a-zA-Z_][a-zA-Z0-9_]*'
+    print(t.value + " ", end="")
     if t.value in reserved:
         t.type = reserved[t.value]
     return t
 
+def t_OP_PUNTO_COMA(t):
+    r'\;'
+    print(";")
+
+def t_OP_COMA(t):
+    r'[\,]'
+    print(", ", end="")
+
+
+
 
 t_CTE_S = r'\"[A-Za-z0-9_\(\)\{\}\[\]\<\>\!]*\"'
+
 
 # Ignored characters
 t_ignore = " \t"
@@ -204,9 +268,7 @@ def p_arr_not(p):
     arr_not : OP_CORCHETE_IZQ CTE_E OP_CORCHETE_DER
             | empty
     '''
-    if len(p) > 2:
-        print("[" + str(p[2]) + "]", end="")
-
+    pass
 
 def p_otra_var(p):
     '''
@@ -262,9 +324,6 @@ def p_funcion_predef(p):
     funcion_predef : camina
                     | gira
                     | mira
-                    | a_string
-                    | a_entero
-                    | a_flotante
                     | reiniciar
                     | input
                     | output
@@ -308,7 +367,7 @@ def p_op_comparador(p):
     '''
     op_comparador : OP_COMPARADOR
     '''
-    print(' ' + p.value + ' ', end="")
+    pass
 
 def p_exp(p):
     '''
@@ -413,6 +472,9 @@ def p_var_cte(p):
             | KW_OESTE
             | KW_ANCHO
             | KW_ALTO
+            | a_string
+            | a_entero
+            | a_flotante
     '''
 
 def p_var_cte2(p):
@@ -481,7 +543,10 @@ def p_salta_a(p):
     '''
 
 def p_error(p):
-    print("Syntax error in input!")
+    print("-------------------------")
+    print(p)
+    print("\nSyntax error in input!")
+    print("-------------------------")
 
 import ply.yacc as yacc
 
@@ -499,9 +564,8 @@ funcion flotante cualquiera(){
     
 }
 inicio funcion entero ai(){
-
+    output();
     prueba();
-}
-'''
+}'''
 
 parser.parse(data)
