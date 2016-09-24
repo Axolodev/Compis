@@ -543,10 +543,9 @@ def p_salta_a(p):
     '''
 
 def p_error(p):
-    print("-------------------------")
-    print(p)
-    print("\nSyntax error in input!")
-    print("-------------------------")
+
+    print("\nSyntax error with token of type " + p.type + " with value " + p.value + " in line " + str(p.lineno))
+
 
 import ply.yacc as yacc
 
