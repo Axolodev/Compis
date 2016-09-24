@@ -49,101 +49,39 @@ reserved = {
 }
 
 # Tokens
-def t_OP_TERMINO(t):
-    r'\+|\-'
-    print(t.value, end="")
-    return t
+t_OP_TERMINO = r'\+|\-'
+t_OP_FACTOR = r'\*|\/|\%'
+t_OP_COMPARADOR = r'[<]|[>]|[>][=]|[<][=]|[=][=]|![=]'
+t_OP_AND = r'[&][&]'
+t_OP_OR = r'[|][|]'
+t_OP_ASIGNACION = r'[=]'
+t_OP_PARENTESIS_IZQ = r'\('
+t_OP_PARENTESIS_DER = r'\)'
+t_OP_LLAVE_IZQ = r'\{'
+t_OP_LLAVE_DER = r'\}'
+t_OP_CORCHETE_IZQ = r'\['
+t_OP_CORCHETE_DER = r'\]'
 
-def t_OP_FACTOR(t):
-    r'\*|\/|\%'
-    print(t.value, end="")
-    return t
-
-def t_OP_COMPARADOR(t):
-    r'[<]|[>]|[>][=]|[<][=]|[=][=]|![=]'
-    print(t.value, end="")
-    return t
-
-def t_OP_AND(t):
-    r'[&][&]'
-    print(t.value, end="")
-    return t
-
-def t_OP_OR(t):
-    r'[|][|]'
-    print(t.value, end="")
-    return t
-
-def t_OP_ASIGNACION(t):
-    r'[=]'
-    print(t.value, end="")
-    return t
-
-def t_OP_PARENTESIS_IZQ(t):
-    r'\('
-    print(t.value, end="")
-    return t
-
-def t_OP_PARENTESIS_DER(t):
-    r'\)'
-    print(t.value, end="")
-    return t
-
-def t_OP_LLAVE_IZQ(t):
-    r'\{'
-    print(t.value)
-    return t
-
-def t_OP_LLAVE_DER(t):
-    r'\}'
-    print(t.value)
-    return t
-
-def t_OP_CORCHETE_IZQ(t):
-    r'\['
-    print(t.value, end="")
-    return t
-
-def t_OP_CORCHETE_DER(t):
-    r'\]'
-    print(t.value, end="")
-    return t
-
-def t_OP_PUNTO(t):
-    r'[\.]'
-    print(t.value, end="")
-    return t
+t_OP_PUNTO_COMA = r'\;'
+t_OP_PUNTO = r'[\.]'
+t_OP_COMA = r'[\,]'
 
 
 def t_CTE_F(t):
     r'[0-9]+\.[0-9]+'
-    print(t.value, end="")
     t.value = float(t.value)
     return t
 
 def t_CTE_E(t):
     r'\d+'
-    print(t.value, end="")
     t.value = int(t.value)
     return t
 
-
 def t_ID(t):
     r'[a-zA-Z_][a-zA-Z0-9_]*'
-    print(t.value + " ", end="")
     if t.value in reserved:
         t.type = reserved[t.value]
     return t
-
-def t_OP_PUNTO_COMA(t):
-    r'\;'
-    print(";")
-
-def t_OP_COMA(t):
-    r'[\,]'
-    print(", ", end="")
-
-
 
 
 t_CTE_S = r'\"[A-Za-z0-9_\(\)\{\}\[\]\<\>\!]*\"'
@@ -186,10 +124,13 @@ def p_crear_funciones(p):
 
 def p_funcion(p):
     '''
-    funcion : print_funcion tipo_funcion print_id OP_PARENTESIS_IZQ parametros OP_PARENTESIS_DER bloque_func
+    funcion : KW_FUNCION tipo_funcion print_id OP_PARENTESIS_IZQ parametros OP_PARENTESIS_DER bloque_func
     '''
     pass
 
+def p_print_id(p):
+    'print_id : ID'
+    print (p[1], end="")
 
 def p_tipo_funcion(p):
     '''
@@ -204,7 +145,7 @@ def p_tipo(p):
         | KW_FLOTANTE
         | KW_STRING
     '''
-    pass
+    print(p[1] + " ", end="")
 
 def p_parametos(p):
     '''
@@ -221,11 +162,16 @@ def p_toma_parametro(p):
 
 def p_otro_parametro(p):
     '''
-    otro_parametro : print_op_coma toma_parametro
+    otro_parametro : print_coma toma_parametro
                     | empty
     '''
     pass
 
+def p_print_coma(p):
+    '''
+    print_coma : OP_COMA
+    '''
+    print(", ", end="")
 
 def p_bloque_func(p):
     '''
@@ -240,6 +186,13 @@ def p_crear_var(p):
     '''
     pass
 
+def p_op_punto_coma(p):
+    '''
+    op_punto_coma : OP_PUNTO_COMA
+    '''
+    print(";")
+
+
 def p_def_var(p):
     '''
     def_var : print_id arr_not arr_not
@@ -251,12 +204,13 @@ def p_arr_not(p):
     arr_not : OP_CORCHETE_IZQ CTE_E OP_CORCHETE_DER
             | empty
     '''
-    pass
+    if len(p) > 2:
+        print("[" + str(p[2]) + "]", end="")
 
 
 def p_otra_var(p):
     '''
-    otra_var : print_op_coma def_var otra_var
+    otra_var : print_coma def_var otra_var
             | empty
     '''
     pass
@@ -308,6 +262,9 @@ def p_funcion_predef(p):
     funcion_predef : camina
                     | gira
                     | mira
+                    | a_string
+                    | a_entero
+                    | a_flotante
                     | reiniciar
                     | input
                     | output
@@ -351,7 +308,7 @@ def p_op_comparador(p):
     '''
     op_comparador : OP_COMPARADOR
     '''
-    pass
+    print(' ' + p.value + ' ', end="")
 
 def p_exp(p):
     '''
@@ -456,9 +413,6 @@ def p_var_cte(p):
             | KW_OESTE
             | KW_ANCHO
             | KW_ALTO
-            | a_string
-            | a_entero
-            | a_flotante
     '''
 
 def p_var_cte2(p):
@@ -526,34 +480,6 @@ def p_salta_a(p):
     salta_a : KW_SALTA_A OP_PARENTESIS_IZQ CTE_E OP_COMA CTE_E OP_PARENTESIS_DER OP_PUNTO_COMA
     '''
 
-
-'''
----------------------------------------------------------------
-'''
-
-def p_print_id(p):
-    'print_id : ID'
-    #print (p[1], end="")
-
-def p_print_funcion(p):
-    '''
-    print_funcion : KW_FUNCION
-    '''
-    #print("funcion ", end="")
-
-def p_print_op_coma(p):
-    '''
-    print_op_coma : OP_COMA
-    '''
-    #print(", ", end="")
-
-def p_op_punto_coma(p):
-    '''
-    op_punto_coma : OP_PUNTO_COMA
-    '''
-    #print(";")
-
-
 def p_error(p):
     print("Syntax error in input!")
 
@@ -564,14 +490,16 @@ parser = yacc.yacc()
 
 data = '''
 entero global;
+flotante globalDos[2];
+string una_var[2][3], otra_var;
 funcion prueba(){
 
 }
 funcion flotante cualquiera(){
-
+    
 }
 inicio funcion entero ai(){
-    output();
+
     prueba();
 }
 '''
