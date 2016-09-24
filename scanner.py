@@ -111,19 +111,12 @@ def p_empty(p):
     pass
 
 def p_inicio(p):
-    'inicio : crear_var_glob crear_funciones KW_INICIO funcion'
+    'inicio : crear_var crear_funciones KW_INICIO funcion'
     pass
 
 def p_crear_funciones(p):
     '''
     crear_funciones : funcion crear_funciones
-                    | empty
-    '''
-    pass
-
-def p_crear_var_glob(p):
-    '''
-    crear_var_glob : crear_var crear_var_glob
                     | empty
     '''
     pass
@@ -473,12 +466,14 @@ def p_salta_a(p):
     salta_a : KW_SALTA_A OP_PARENTESIS_IZQ CTE_E OP_COMA CTE_E OP_PARENTESIS_DER OP_PUNTO_COMA
     '''
 
+def p_error(p):
+    print("Syntax error in input!")
+
 import ply.yacc as yacc
 
 parser = yacc.yacc()
 
-data = '''
-inicio entero ai(){}
-'''
+
+data = '''inicio entero ai(){}'''
 
 parser.parse(data)
