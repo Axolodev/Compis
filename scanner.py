@@ -245,7 +245,7 @@ def p_estatuto(p):
 
 def p_estatuto_rec(p):
     """
-    estatuto_rec : estatuto estatuto_rec
+    estatuto_rec : estatuto OP_PUNTO_COMA estatuto_rec
                 | empty
     """
     pass
@@ -253,7 +253,7 @@ def p_estatuto_rec(p):
 
 def p_asignacion(p):
     """
-    asignacion : ID arr_not arr_not OP_ASIGNACION expresion OP_PUNTO_COMA
+    asignacion : ID arr_not arr_not OP_ASIGNACION expresion
     """
     pass
 
@@ -267,7 +267,7 @@ def p_ciclo(p):
 
 def p_ejec_funcion(p):
     """
-    ejec_funcion : ID OP_PARENTESIS_IZQ ejec_funcion_medio OP_PARENTESIS_DER OP_PUNTO_COMA
+    ejec_funcion : ID OP_PARENTESIS_IZQ ejec_funcion_medio OP_PARENTESIS_DER
     """
     pass
 
@@ -394,28 +394,28 @@ def p_factor(p):
 
 def p_camina(p):
     """
-    camina : KW_CAMINA OP_PARENTESIS_IZQ expresion OP_PARENTESIS_DER OP_PUNTO_COMA
+    camina : KW_CAMINA OP_PARENTESIS_IZQ expresion OP_PARENTESIS_DER
     """
     pass
 
 
 def p_gira(p):
     """
-    gira : KW_GIRA OP_PARENTESIS_IZQ expresion OP_PARENTESIS_DER OP_PUNTO_COMA
+    gira : KW_GIRA OP_PARENTESIS_IZQ expresion OP_PARENTESIS_DER
     """
     pass
 
 
 def p_mira(p):
     """
-    mira : KW_MIRA OP_PARENTESIS_IZQ expresion OP_PARENTESIS_DER OP_PUNTO_COMA
+    mira : KW_MIRA OP_PARENTESIS_IZQ expresion OP_PARENTESIS_DER
     """
     pass
 
 
 def p_a_string(p):
     """
-    a_string : KW_A_STRING OP_PARENTESIS_IZQ a_string2 OP_PARENTESIS_DER OP_PUNTO_COMA
+    a_string : KW_A_STRING OP_PARENTESIS_IZQ a_string2 OP_PARENTESIS_DER
     """
     pass
 
@@ -431,7 +431,7 @@ def p_a_string2(p):
 
 def p_a_entero(p):
     """
-    a_entero : KW_A_ENTERO OP_PARENTESIS_IZQ a_entero2 OP_PARENTESIS_DER OP_PUNTO_COMA
+    a_entero : KW_A_ENTERO OP_PARENTESIS_IZQ a_entero2 OP_PARENTESIS_DER
     """
     pass
 
@@ -468,7 +468,7 @@ def p_bloque_est(p):
 
 def p_retorna(p):
     """
-    retorna : KW_RETORNA expresion OP_PUNTO_COMA
+    retorna : KW_RETORNA expresion
     """
     pass
 
@@ -517,6 +517,13 @@ def p_var_cte4(p):
     pass
 
 
+def p_valores_string(p):
+    """
+    valores_string : CTE_S
+            | ID
+    """
+
+
 def p_concat_string(p):
     """
     concat_string : CTE_S concat_string2
@@ -534,7 +541,7 @@ def p_concat_string2(p):
 
 def p_a_flotante(p):
     """
-    a_flotante : KW_A_FLOTANTE OP_PARENTESIS_IZQ a_flotante2 OP_PARENTESIS_DER OP_PUNTO_COMA
+    a_flotante : KW_A_FLOTANTE OP_PARENTESIS_IZQ a_flotante2 OP_PARENTESIS_DER
     """
     pass
 
@@ -549,14 +556,14 @@ def p_a_flotante2(p):
 
 def p_reiniciar(p):
     """
-    reiniciar : KW_REINICIAR OP_PARENTESIS_IZQ OP_PARENTESIS_DER OP_PUNTO_COMA
+    reiniciar : KW_REINICIAR OP_PARENTESIS_IZQ OP_PARENTESIS_DER
     """
     pass
 
 
 def p_input(p):
     """
-    input : KW_INPUT OP_PARENTESIS_IZQ ID input2 OP_PARENTESIS_DER OP_PUNTO_COMA
+    input : KW_INPUT OP_PARENTESIS_IZQ ID input2 OP_PARENTESIS_DER
     """
     pass
 
@@ -571,14 +578,14 @@ def p_input2(p):
 
 def p_output(p):
     """
-    output : KW_OUTPUT OP_PARENTESIS_IZQ concat_string OP_PARENTESIS_DER OP_PUNTO_COMA
+    output : KW_OUTPUT OP_PARENTESIS_IZQ concat_string OP_PARENTESIS_DER
     """
     pass
 
 
 def p_salta_a(p):
     """
-    salta_a : KW_SALTA_A OP_PARENTESIS_IZQ CTE_E OP_COMA CTE_E OP_PARENTESIS_DER OP_PUNTO_COMA
+    salta_a : KW_SALTA_A OP_PARENTESIS_IZQ CTE_E OP_COMA CTE_E OP_PARENTESIS_DER
     """
     pass
 
