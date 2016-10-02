@@ -1,6 +1,6 @@
 class Variable:
 
-    def __init__(self, nombre, tipo):
+    def __init__(self, tipo, nombre, scope):
         self.__nombre = nombre
         self.__tipo = tipo
         self.__scope = 0
