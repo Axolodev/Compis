@@ -69,7 +69,7 @@ t_OP_LLAVE_DER = r'\}'
 t_OP_CORCHETE_IZQ = r'\['
 t_OP_CORCHETE_DER = r'\]'
 
-t_OP_PUNTO_COMA = r'\;'
+t_OP_PUNTO_COMA = r';'
 t_OP_PUNTO = r'[\.]'
 t_OP_COMA = r'[\,]'
 
@@ -461,7 +461,7 @@ def p_si_no(p):
 
 def p_bloque_est(p):
     """
-    bloque_est : OP_LLAVE_IZQ estatuto OP_LLAVE_DER
+    bloque_est : OP_LLAVE_IZQ estatuto_rec OP_LLAVE_DER
     """
     pass
 
