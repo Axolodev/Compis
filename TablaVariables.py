@@ -49,7 +49,3 @@ class TablaVariables:
 
     def setValorAVariable(self, nombre, scope, valor):
         self.instancia.setValorAVariable(nombre, scope, valor)
-
-
-
-

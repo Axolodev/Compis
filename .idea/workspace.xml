@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="eea470b8-f70d-4415-8efd-7f7b31973dd4" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/TablaVariables.py" afterPath="$PROJECT_DIR$/TablaVariables.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Variable.py" afterPath="$PROJECT_DIR$/Variable.py" />
     </list>
     <ignored path="Compis.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -49,8 +48,8 @@
       <file leaf-file-name="TablaVariables.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/TablaVariables.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="39">
-              <caret line="29" column="92" selection-start-line="29" selection-start-column="92" selection-end-line="29" selection-end-column="92" />
+            <state relative-caret-position="702">
+              <caret line="49" column="54" selection-start-line="49" selection-start-column="54" selection-end-line="49" selection-end-column="54" />
               <folding />
             </state>
           </provider>
@@ -516,8 +515,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/TablaVariables.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="39">
-          <caret line="29" column="92" selection-start-line="29" selection-start-column="92" selection-end-line="29" selection-end-column="92" />
+        <state relative-caret-position="702">
+          <caret line="49" column="54" selection-start-line="49" selection-start-column="54" selection-end-line="49" selection-end-column="54" />
           <folding />
         </state>
       </provider>
