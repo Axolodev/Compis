@@ -81,7 +81,7 @@ Rule 75    a_entero2 -> concat_string
 Rule 76    condicion -> KW_SI OP_PARENTESIS_IZQ expresion OP_PARENTESIS_DER bloque_est si_no
 Rule 77    si_no -> KW_SI_NO bloque_est
 Rule 78    si_no -> empty
-Rule 79    bloque_est -> OP_LLAVE_IZQ estatuto OP_LLAVE_DER
+Rule 79    bloque_est -> OP_LLAVE_IZQ estatuto_rec OP_LLAVE_DER
 Rule 80    retorna -> KW_RETORNA expresion OP_PUNTO_COMA
 Rule 81    var_cte -> ID var_cte2
 Rule 82    var_cte -> CTE_E
@@ -193,8 +193,8 @@ ejec_funcion         : 28
 ejec_funcion_cont    : 36 38
 ejec_funcion_medio   : 35
 empty                : 4 7 12 15 18 22 24 32 37 39 49 52 55 59 62 78 100 103 110
-estatuto             : 31 79
-estatuto_rec         : 16 31
+estatuto             : 31
+estatuto_rec         : 16 31 79
 exp                  : 53 54 58
 exp2                 : 57
 expresion            : 33 34 36 38 63 66 67 68 76 80 98 99
@@ -2945,7 +2945,6 @@ state 159
 
     (107) reiniciar -> KW_REINICIAR OP_PARENTESIS_IZQ OP_PARENTESIS_DER OP_PUNTO_COMA .
 
-    OP_LLAVE_DER    reduce using rule 107 (reiniciar -> KW_REINICIAR OP_PARENTESIS_IZQ OP_PARENTESIS_DER OP_PUNTO_COMA .)
     ID              reduce using rule 107 (reiniciar -> KW_REINICIAR OP_PARENTESIS_IZQ OP_PARENTESIS_DER OP_PUNTO_COMA .)
     KW_SI           reduce using rule 107 (reiniciar -> KW_REINICIAR OP_PARENTESIS_IZQ OP_PARENTESIS_DER OP_PUNTO_COMA .)
     KW_MIENTRAS     reduce using rule 107 (reiniciar -> KW_REINICIAR OP_PARENTESIS_IZQ OP_PARENTESIS_DER OP_PUNTO_COMA .)
@@ -2957,12 +2956,13 @@ state 159
     KW_INPUT        reduce using rule 107 (reiniciar -> KW_REINICIAR OP_PARENTESIS_IZQ OP_PARENTESIS_DER OP_PUNTO_COMA .)
     KW_OUTPUT       reduce using rule 107 (reiniciar -> KW_REINICIAR OP_PARENTESIS_IZQ OP_PARENTESIS_DER OP_PUNTO_COMA .)
     KW_SALTA_A      reduce using rule 107 (reiniciar -> KW_REINICIAR OP_PARENTESIS_IZQ OP_PARENTESIS_DER OP_PUNTO_COMA .)
+    OP_LLAVE_DER    reduce using rule 107 (reiniciar -> KW_REINICIAR OP_PARENTESIS_IZQ OP_PARENTESIS_DER OP_PUNTO_COMA .)
 
 
 state 160
 
     (76) condicion -> KW_SI OP_PARENTESIS_IZQ expresion OP_PARENTESIS_DER . bloque_est si_no
-    (79) bloque_est -> . OP_LLAVE_IZQ estatuto OP_LLAVE_DER
+    (79) bloque_est -> . OP_LLAVE_IZQ estatuto_rec OP_LLAVE_DER
 
     OP_LLAVE_IZQ    shift and go to state 196
 
@@ -2978,7 +2978,7 @@ state 161
 state 162
 
     (34) ciclo -> KW_MIENTRAS OP_PARENTESIS_IZQ expresion OP_PARENTESIS_DER . bloque_est
-    (79) bloque_est -> . OP_LLAVE_IZQ estatuto OP_LLAVE_DER
+    (79) bloque_est -> . OP_LLAVE_IZQ estatuto_rec OP_LLAVE_DER
 
     OP_LLAVE_IZQ    shift and go to state 196
 
@@ -3398,13 +3398,16 @@ state 195
 
 state 196
 
-    (79) bloque_est -> OP_LLAVE_IZQ . estatuto OP_LLAVE_DER
+    (79) bloque_est -> OP_LLAVE_IZQ . estatuto_rec OP_LLAVE_DER
+    (31) estatuto_rec -> . estatuto estatuto_rec
+    (32) estatuto_rec -> . empty
     (25) estatuto -> . asignacion
     (26) estatuto -> . condicion
     (27) estatuto -> . ciclo
     (28) estatuto -> . ejec_funcion
     (29) estatuto -> . funcion_predef
     (30) estatuto -> . retorna
+    (1) empty -> .
     (33) asignacion -> . ID arr_not arr_not OP_ASIGNACION expresion OP_PUNTO_COMA
     (76) condicion -> . KW_SI OP_PARENTESIS_IZQ expresion OP_PARENTESIS_DER bloque_est si_no
     (34) ciclo -> . KW_MIENTRAS OP_PARENTESIS_IZQ expresion OP_PARENTESIS_DER bloque_est
@@ -3425,6 +3428,7 @@ state 196
     (111) output -> . KW_OUTPUT OP_PARENTESIS_IZQ concat_string OP_PARENTESIS_DER OP_PUNTO_COMA
     (112) salta_a -> . KW_SALTA_A OP_PARENTESIS_IZQ CTE_E OP_COMA CTE_E OP_PARENTESIS_DER OP_PUNTO_COMA
 
+    OP_LLAVE_DER    reduce using rule 1 (empty -> .)
     ID              shift and go to state 69
     KW_SI           shift and go to state 55
     KW_MIENTRAS     shift and go to state 66
@@ -3437,20 +3441,22 @@ state 196
     KW_OUTPUT       shift and go to state 71
     KW_SALTA_A      shift and go to state 49
 
+    reiniciar                      shift and go to state 50
+    camina                         shift and go to state 51
+    gira                           shift and go to state 52
+    ejec_funcion                   shift and go to state 53
     funcion_predef                 shift and go to state 56
     ciclo                          shift and go to state 57
-    asignacion                     shift and go to state 70
-    reiniciar                      shift and go to state 50
-    salta_a                        shift and go to state 72
-    estatuto                       shift and go to state 219
-    mira                           shift and go to state 63
-    output                         shift and go to state 75
-    camina                         shift and go to state 51
+    estatuto                       shift and go to state 58
     condicion                      shift and go to state 59
     retorna                        shift and go to state 60
-    gira                           shift and go to state 52
     input                          shift and go to state 61
-    ejec_funcion                   shift and go to state 53
+    empty                          shift and go to state 62
+    mira                           shift and go to state 63
+    estatuto_rec                   shift and go to state 219
+    asignacion                     shift and go to state 70
+    salta_a                        shift and go to state 72
+    output                         shift and go to state 75
 
 state 197
 
@@ -3474,7 +3480,6 @@ state 198
 
     (34) ciclo -> KW_MIENTRAS OP_PARENTESIS_IZQ expresion OP_PARENTESIS_DER bloque_est .
 
-    OP_LLAVE_DER    reduce using rule 34 (ciclo -> KW_MIENTRAS OP_PARENTESIS_IZQ expresion OP_PARENTESIS_DER bloque_est .)
     ID              reduce using rule 34 (ciclo -> KW_MIENTRAS OP_PARENTESIS_IZQ expresion OP_PARENTESIS_DER bloque_est .)
     KW_SI           reduce using rule 34 (ciclo -> KW_MIENTRAS OP_PARENTESIS_IZQ expresion OP_PARENTESIS_DER bloque_est .)
     KW_MIENTRAS     reduce using rule 34 (ciclo -> KW_MIENTRAS OP_PARENTESIS_IZQ expresion OP_PARENTESIS_DER bloque_est .)
@@ -3486,6 +3491,7 @@ state 198
     KW_INPUT        reduce using rule 34 (ciclo -> KW_MIENTRAS OP_PARENTESIS_IZQ expresion OP_PARENTESIS_DER bloque_est .)
     KW_OUTPUT       reduce using rule 34 (ciclo -> KW_MIENTRAS OP_PARENTESIS_IZQ expresion OP_PARENTESIS_DER bloque_est .)
     KW_SALTA_A      reduce using rule 34 (ciclo -> KW_MIENTRAS OP_PARENTESIS_IZQ expresion OP_PARENTESIS_DER bloque_est .)
+    OP_LLAVE_DER    reduce using rule 34 (ciclo -> KW_MIENTRAS OP_PARENTESIS_IZQ expresion OP_PARENTESIS_DER bloque_est .)
 
 
 state 199
@@ -3537,7 +3543,6 @@ state 203
 
     (35) ejec_funcion -> ID OP_PARENTESIS_IZQ ejec_funcion_medio OP_PARENTESIS_DER OP_PUNTO_COMA .
 
-    OP_LLAVE_DER    reduce using rule 35 (ejec_funcion -> ID OP_PARENTESIS_IZQ ejec_funcion_medio OP_PARENTESIS_DER OP_PUNTO_COMA .)
     ID              reduce using rule 35 (ejec_funcion -> ID OP_PARENTESIS_IZQ ejec_funcion_medio OP_PARENTESIS_DER OP_PUNTO_COMA .)
     KW_SI           reduce using rule 35 (ejec_funcion -> ID OP_PARENTESIS_IZQ ejec_funcion_medio OP_PARENTESIS_DER OP_PUNTO_COMA .)
     KW_MIENTRAS     reduce using rule 35 (ejec_funcion -> ID OP_PARENTESIS_IZQ ejec_funcion_medio OP_PARENTESIS_DER OP_PUNTO_COMA .)
@@ -3549,6 +3554,7 @@ state 203
     KW_INPUT        reduce using rule 35 (ejec_funcion -> ID OP_PARENTESIS_IZQ ejec_funcion_medio OP_PARENTESIS_DER OP_PUNTO_COMA .)
     KW_OUTPUT       reduce using rule 35 (ejec_funcion -> ID OP_PARENTESIS_IZQ ejec_funcion_medio OP_PARENTESIS_DER OP_PUNTO_COMA .)
     KW_SALTA_A      reduce using rule 35 (ejec_funcion -> ID OP_PARENTESIS_IZQ ejec_funcion_medio OP_PARENTESIS_DER OP_PUNTO_COMA .)
+    OP_LLAVE_DER    reduce using rule 35 (ejec_funcion -> ID OP_PARENTESIS_IZQ ejec_funcion_medio OP_PARENTESIS_DER OP_PUNTO_COMA .)
 
 
 state 204
@@ -3709,7 +3715,6 @@ state 214
 
     (68) mira -> KW_MIRA OP_PARENTESIS_IZQ expresion OP_PARENTESIS_DER OP_PUNTO_COMA .
 
-    OP_LLAVE_DER    reduce using rule 68 (mira -> KW_MIRA OP_PARENTESIS_IZQ expresion OP_PARENTESIS_DER OP_PUNTO_COMA .)
     ID              reduce using rule 68 (mira -> KW_MIRA OP_PARENTESIS_IZQ expresion OP_PARENTESIS_DER OP_PUNTO_COMA .)
     KW_SI           reduce using rule 68 (mira -> KW_MIRA OP_PARENTESIS_IZQ expresion OP_PARENTESIS_DER OP_PUNTO_COMA .)
     KW_MIENTRAS     reduce using rule 68 (mira -> KW_MIRA OP_PARENTESIS_IZQ expresion OP_PARENTESIS_DER OP_PUNTO_COMA .)
@@ -3721,6 +3726,7 @@ state 214
     KW_INPUT        reduce using rule 68 (mira -> KW_MIRA OP_PARENTESIS_IZQ expresion OP_PARENTESIS_DER OP_PUNTO_COMA .)
     KW_OUTPUT       reduce using rule 68 (mira -> KW_MIRA OP_PARENTESIS_IZQ expresion OP_PARENTESIS_DER OP_PUNTO_COMA .)
     KW_SALTA_A      reduce using rule 68 (mira -> KW_MIRA OP_PARENTESIS_IZQ expresion OP_PARENTESIS_DER OP_PUNTO_COMA .)
+    OP_LLAVE_DER    reduce using rule 68 (mira -> KW_MIRA OP_PARENTESIS_IZQ expresion OP_PARENTESIS_DER OP_PUNTO_COMA .)
 
 
 state 215
@@ -3751,7 +3757,7 @@ state 216
 state 217
 
     (77) si_no -> KW_SI_NO . bloque_est
-    (79) bloque_est -> . OP_LLAVE_IZQ estatuto OP_LLAVE_DER
+    (79) bloque_est -> . OP_LLAVE_IZQ estatuto_rec OP_LLAVE_DER
 
     OP_LLAVE_IZQ    shift and go to state 196
 
@@ -3777,7 +3783,7 @@ state 218
 
 state 219
 
-    (79) bloque_est -> OP_LLAVE_IZQ estatuto . OP_LLAVE_DER
+    (79) bloque_est -> OP_LLAVE_IZQ estatuto_rec . OP_LLAVE_DER
 
     OP_LLAVE_DER    shift and go to state 231
 
@@ -3786,7 +3792,6 @@ state 220
 
     (108) input -> KW_INPUT OP_PARENTESIS_IZQ ID input2 OP_PARENTESIS_DER OP_PUNTO_COMA .
 
-    OP_LLAVE_DER    reduce using rule 108 (input -> KW_INPUT OP_PARENTESIS_IZQ ID input2 OP_PARENTESIS_DER OP_PUNTO_COMA .)
     ID              reduce using rule 108 (input -> KW_INPUT OP_PARENTESIS_IZQ ID input2 OP_PARENTESIS_DER OP_PUNTO_COMA .)
     KW_SI           reduce using rule 108 (input -> KW_INPUT OP_PARENTESIS_IZQ ID input2 OP_PARENTESIS_DER OP_PUNTO_COMA .)
     KW_MIENTRAS     reduce using rule 108 (input -> KW_INPUT OP_PARENTESIS_IZQ ID input2 OP_PARENTESIS_DER OP_PUNTO_COMA .)
@@ -3798,6 +3803,7 @@ state 220
     KW_INPUT        reduce using rule 108 (input -> KW_INPUT OP_PARENTESIS_IZQ ID input2 OP_PARENTESIS_DER OP_PUNTO_COMA .)
     KW_OUTPUT       reduce using rule 108 (input -> KW_INPUT OP_PARENTESIS_IZQ ID input2 OP_PARENTESIS_DER OP_PUNTO_COMA .)
     KW_SALTA_A      reduce using rule 108 (input -> KW_INPUT OP_PARENTESIS_IZQ ID input2 OP_PARENTESIS_DER OP_PUNTO_COMA .)
+    OP_LLAVE_DER    reduce using rule 108 (input -> KW_INPUT OP_PARENTESIS_IZQ ID input2 OP_PARENTESIS_DER OP_PUNTO_COMA .)
 
 
 state 221
@@ -3932,21 +3938,21 @@ state 230
 
 state 231
 
-    (79) bloque_est -> OP_LLAVE_IZQ estatuto OP_LLAVE_DER .
+    (79) bloque_est -> OP_LLAVE_IZQ estatuto_rec OP_LLAVE_DER .
 
-    ID              reduce using rule 79 (bloque_est -> OP_LLAVE_IZQ estatuto OP_LLAVE_DER .)
-    KW_SI           reduce using rule 79 (bloque_est -> OP_LLAVE_IZQ estatuto OP_LLAVE_DER .)
-    KW_MIENTRAS     reduce using rule 79 (bloque_est -> OP_LLAVE_IZQ estatuto OP_LLAVE_DER .)
-    KW_RETORNA      reduce using rule 79 (bloque_est -> OP_LLAVE_IZQ estatuto OP_LLAVE_DER .)
-    KW_CAMINA       reduce using rule 79 (bloque_est -> OP_LLAVE_IZQ estatuto OP_LLAVE_DER .)
-    KW_GIRA         reduce using rule 79 (bloque_est -> OP_LLAVE_IZQ estatuto OP_LLAVE_DER .)
-    KW_MIRA         reduce using rule 79 (bloque_est -> OP_LLAVE_IZQ estatuto OP_LLAVE_DER .)
-    KW_REINICIAR    reduce using rule 79 (bloque_est -> OP_LLAVE_IZQ estatuto OP_LLAVE_DER .)
-    KW_INPUT        reduce using rule 79 (bloque_est -> OP_LLAVE_IZQ estatuto OP_LLAVE_DER .)
-    KW_OUTPUT       reduce using rule 79 (bloque_est -> OP_LLAVE_IZQ estatuto OP_LLAVE_DER .)
-    KW_SALTA_A      reduce using rule 79 (bloque_est -> OP_LLAVE_IZQ estatuto OP_LLAVE_DER .)
-    OP_LLAVE_DER    reduce using rule 79 (bloque_est -> OP_LLAVE_IZQ estatuto OP_LLAVE_DER .)
-    KW_SI_NO        reduce using rule 79 (bloque_est -> OP_LLAVE_IZQ estatuto OP_LLAVE_DER .)
+    ID              reduce using rule 79 (bloque_est -> OP_LLAVE_IZQ estatuto_rec OP_LLAVE_DER .)
+    KW_SI           reduce using rule 79 (bloque_est -> OP_LLAVE_IZQ estatuto_rec OP_LLAVE_DER .)
+    KW_MIENTRAS     reduce using rule 79 (bloque_est -> OP_LLAVE_IZQ estatuto_rec OP_LLAVE_DER .)
+    KW_RETORNA      reduce using rule 79 (bloque_est -> OP_LLAVE_IZQ estatuto_rec OP_LLAVE_DER .)
+    KW_CAMINA       reduce using rule 79 (bloque_est -> OP_LLAVE_IZQ estatuto_rec OP_LLAVE_DER .)
+    KW_GIRA         reduce using rule 79 (bloque_est -> OP_LLAVE_IZQ estatuto_rec OP_LLAVE_DER .)
+    KW_MIRA         reduce using rule 79 (bloque_est -> OP_LLAVE_IZQ estatuto_rec OP_LLAVE_DER .)
+    KW_REINICIAR    reduce using rule 79 (bloque_est -> OP_LLAVE_IZQ estatuto_rec OP_LLAVE_DER .)
+    KW_INPUT        reduce using rule 79 (bloque_est -> OP_LLAVE_IZQ estatuto_rec OP_LLAVE_DER .)
+    KW_OUTPUT       reduce using rule 79 (bloque_est -> OP_LLAVE_IZQ estatuto_rec OP_LLAVE_DER .)
+    KW_SALTA_A      reduce using rule 79 (bloque_est -> OP_LLAVE_IZQ estatuto_rec OP_LLAVE_DER .)
+    OP_LLAVE_DER    reduce using rule 79 (bloque_est -> OP_LLAVE_IZQ estatuto_rec OP_LLAVE_DER .)
+    KW_SI_NO        reduce using rule 79 (bloque_est -> OP_LLAVE_IZQ estatuto_rec OP_LLAVE_DER .)
 
 
 state 232

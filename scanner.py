@@ -601,7 +601,7 @@ funcion flotante cualquiera(){
     
 }
 inicio funcion entero ai(){
-    output();
+    output("");
     prueba();
 }'''
 
