@@ -3,6 +3,8 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+parsetab.py
+
 # C extensions
 *.so
 
@@ -138,3 +140,4 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 .idea/workspace.xml
+parser.out

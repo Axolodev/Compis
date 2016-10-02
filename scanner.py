@@ -1,4 +1,8 @@
 from __future__ import print_function
+
+import logging
+logging.basicConfig()
+
 tokens = (
     'KW_INICIO', 'KW_FUNCION', 'KW_NORTE', 'KW_SUR',
     'KW_ESTE', 'KW_OESTE', 'KW_MIENTRAS', 'KW_SI',
@@ -50,70 +54,22 @@ reserved = {
 
 
 # Tokens
-def t_OP_TERMINO(t):
-    r'\+|\-'
-    print(t.value, end="")
-    return t
+t_OP_TERMINO = r'\+|\-'
+t_OP_FACTOR = r'\*|\/|\%'
+t_OP_COMPARADOR = r'[<]|[>]|[>][=]|[<][=]|[=][=]|![=]'
+t_OP_AND = r'[&][&]'
+t_OP_OR = r'[|][|]'
+t_OP_ASIGNACION = r'[=]'
+t_OP_PARENTESIS_IZQ = r'\('
+t_OP_PARENTESIS_DER = r'\)'
+t_OP_LLAVE_IZQ = r'\{'
+t_OP_LLAVE_DER = r'\}'
+t_OP_CORCHETE_IZQ = r'\['
+t_OP_CORCHETE_DER = r'\]'
 
-def t_OP_FACTOR(t):
-    r'\*|\/|\%'
-    print(t.value, end="")
-    return t
-
-def t_OP_COMPARADOR(t):
-    r'[<]|[>]|[>][=]|[<][=]|[=][=]|![=]'
-    print(t.value, end="")
-    return t
-
-def t_OP_AND(t):
-    r'[&][&]'
-    print(t.value, end="")
-    return t
-
-def t_OP_OR(t):
-    r'[|][|]'
-    print(t.value, end="")
-    return t
-
-def t_OP_ASIGNACION(t):
-    r'[=]'
-    print(t.value, end="")
-    return t
-
-def t_OP_PARENTESIS_IZQ(t):
-    r'\('
-    print(t.value, end="")
-    return t
-
-def t_OP_PARENTESIS_DER(t):
-    r'\)'
-    print(t.value, end="")
-    return t
-
-def t_OP_LLAVE_IZQ(t):
-    r'\{'
-    print(t.value)
-    return t
-
-def t_OP_LLAVE_DER(t):
-    r'\}'
-    print(t.value)
-    return t
-
-def t_OP_CORCHETE_IZQ(t):
-    r'\['
-    print(t.value, end="")
-    return t
-
-def t_OP_CORCHETE_DER(t):
-    r'\]'
-    print(t.value, end="")
-    return t
-
-def t_OP_PUNTO(t):
-    r'[\.]'
-    print(t.value, end="")
-    return t
+t_OP_PUNTO_COMA = r'\;'
+t_OP_PUNTO = r'[\.]'
+t_OP_COMA = r'[\,]'
 
 
 def t_CTE_F(t):
@@ -131,23 +87,15 @@ def t_CTE_E(t):
 
 def t_ID(t):
     r'[a-zA-Z_][a-zA-Z0-9_]*'
-    print(t.value + " ", end="")
     if t.value in reserved:
         t.type = reserved[t.value]
+    print("id: " + t.value + ", " + t.type + " ")
     return t
 
-def t_OP_PUNTO_COMA(t):
-    r'\;'
-    print(";")
-
-def t_OP_COMA(t):
-    r'[\,]'
-    print(", ", end="")
 
 
 
-
-t_CTE_S = r'\"[A-Za-z0-9_\(\)\{\}\[\]\<\>\!]*\"'
+t_CTE_S = r'\"[A-Za-z0-9_\(\)\{\}\[\]\<\>\! \t]*\"'
 
 
 # Ignored characters
@@ -194,7 +142,7 @@ def p_funcion(p):
 
 def p_print_id(p):
     'print_id : ID'
-    print (p[1], end="")
+    pass
 
 def p_tipo_funcion(p):
     '''
@@ -209,7 +157,8 @@ def p_tipo(p):
         | KW_FLOTANTE
         | KW_STRING
     '''
-    print(p[1] + " ", end="")
+    # print(p[1] + " ", end="")
+    pass
 
 def p_parametos(p):
     '''
@@ -235,7 +184,8 @@ def p_print_coma(p):
     '''
     print_coma : OP_COMA
     '''
-    print(", ", end="")
+    # print(", ", end="")
+    pass
 
 def p_bloque_func(p):
     '''
@@ -254,7 +204,8 @@ def p_op_punto_coma(p):
     '''
     op_punto_coma : OP_PUNTO_COMA
     '''
-    print(";")
+    # print(";")
+    pass
 
 
 def p_def_var(p):
@@ -542,9 +493,10 @@ def p_salta_a(p):
     salta_a : KW_SALTA_A OP_PARENTESIS_IZQ CTE_E OP_COMA CTE_E OP_PARENTESIS_DER OP_PUNTO_COMA
     '''
 
-def p_error(p):
 
-    print("\nSyntax error with token of type " + p.type + " with value " + p.value + " in line " + str(p.lineno))
+def p_error(p):
+    # print("\nSyntax error with token of type " + p.type + " with value " + p.value + " in line " + str(p.lineno))
+    pass
 
 
 import ply.yacc as yacc
@@ -553,9 +505,9 @@ parser = yacc.yacc()
 
 
 data = '''
-entero global;
+flotante global;
 flotante globalDos[2];
-string una_var[2][3], otra_var;
+string una_var[2][3], otra_var, another;
 funcion prueba(){
 
 }
@@ -567,4 +519,11 @@ inicio funcion entero ai(){
     prueba();
 }'''
 
+simpleProgram = '''
+inicio funcion entero ai(){
+    output("equis");
+}
+'''
+
+log = logging.getLogger("parserlog.log")
 parser.parse(data)
