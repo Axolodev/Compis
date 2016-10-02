@@ -141,3 +141,4 @@ $RECYCLE.BIN/
 *.lnk
 .idea/workspace.xml
 parser.out
+parsetab.py

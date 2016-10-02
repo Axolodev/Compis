@@ -136,13 +136,14 @@ def p_crear_funciones(p):
 
 def p_funcion(p):
     '''
-    funcion : KW_FUNCION tipo_funcion print_id OP_PARENTESIS_IZQ parametros OP_PARENTESIS_DER bloque_func
+    funcion : KW_FUNCION tipo_funcion ID OP_PARENTESIS_IZQ parametros OP_PARENTESIS_DER bloque_func
     '''
     pass
 
 def p_print_id(p):
     'print_id : ID'
     pass
+
 
 def p_tipo_funcion(p):
     '''
@@ -157,6 +158,7 @@ def p_tipo(p):
         | KW_FLOTANTE
         | KW_STRING
     '''
+
     # print(p[1] + " ", end="")
     pass
 
@@ -175,7 +177,7 @@ def p_toma_parametro(p):
 
 def p_otro_parametro(p):
     '''
-    otro_parametro : print_coma toma_parametro
+    otro_parametro : OP_COMA toma_parametro
                     | empty
     '''
     pass
@@ -186,6 +188,7 @@ def p_print_coma(p):
     '''
     # print(", ", end="")
     pass
+
 
 def p_bloque_func(p):
     '''
@@ -208,9 +211,10 @@ def p_op_punto_coma(p):
     pass
 
 
+
 def p_def_var(p):
     '''
-    def_var : print_id arr_not arr_not
+    def_var : ID arr_not arr_not
     '''
     pass
 
@@ -223,7 +227,7 @@ def p_arr_not(p):
 
 def p_otra_var(p):
     '''
-    otra_var : print_coma def_var otra_var
+    otra_var : OP_COMA def_var otra_var
             | empty
     '''
     pass
