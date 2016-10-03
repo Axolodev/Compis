@@ -1,7 +1,7 @@
 import Variable
 
-
 class TablaVariables:
+
     class __TablaVariables:
         def __init__(self):
             self.__scopeActual = 0
@@ -11,12 +11,11 @@ class TablaVariables:
             self.__scopeActual += 1
 
         def nuevaVariable(self, tipo, nombre):
-            if self.__listaVariables.has_key(str(self.__scopeActual) + "_" + str(nombre)):
-                # Tirar error, nombre de variable repetido
-                pass
+            if (str(self.__scopeActual) + "_" + str(nombre)) in self.__listaVariables:
+                raise ValueError("Ya existe una variable con este nombre")
             else:
-                var = Variable.Variable(tipo, nombre)
-                self.__listaVariables[str(self.__scopeActual) + "_" + str(nombre)] = var
+                var = Variable.Variable(tipo, nombre, self.__scopeActual)
+                self.__listaVariables.update({str(self.__scopeActual) + "_" + str(nombre): var})
 
         def getVariable(self, nombre, scope):
             if not (str(scope) + "_" + str(nombre)) in self.__listaVariables:
@@ -50,6 +49,3 @@ class TablaVariables:
 
     def setValorAVariable(self, nombre, scope, valor):
         self.instancia.setValorAVariable(nombre, scope, valor)
-
-
-
