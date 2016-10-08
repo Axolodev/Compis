@@ -1,7 +1,7 @@
 import Variable
 
-class TablaVariables:
 
+class TablaVariables:
     class __TablaVariables:
         def __init__(self):
             self.__scopeActual = 0
@@ -11,25 +11,33 @@ class TablaVariables:
             self.__scopeActual += 1
 
         def nuevaVariable(self, tipo, nombre):
-            if (str(self.__scopeActual) + "_" + str(nombre)) in self.__listaVariables:
+            if (str(TablaFunciones.getScopeActual()) + "_" + str(nombre)) in self.__listaVariables or \
+                            ("0_" + str(nombre)) in self.__listaVariables:
                 raise ValueError("Ya existe una variable con este nombre")
             else:
                 var = Variable.Variable(tipo, nombre, self.__scopeActual)
-                self.__listaVariables.update({str(self.__scopeActual) + "_" + str(nombre): var})
+                self.__listaVariables.update({str(TablaFunciones.getScopeActual()) + "_" + str(nombre): var})
 
-        def getVariable(self, nombre, scope):
-            if not (str(scope) + "_" + str(nombre)) in self.__listaVariables:
-                raise ValueError("La variable no existe")
-            else:
-                return self.__listaVariables[str(scope) + "_" + str(nombre)]
+        def getValorVariable(self, nombre):
+            if (str(TablaFunciones.getScopeActual()) + "_" + str(nombre)) in self.__listaVariables:
+                return self.__listaVariables[str(TablaFunciones.getScopeActual()) + "_" + str(nombre)]
+            elif ("0_" + str(nombre)) in self.__listaVariables:
+                return self.__listaVariables["0_" + str(nombre)]
+            raise ValueError("La variable no existe")
 
-        def setValorAVariable(self, nombre, scope, valor):
-            if not (str(scope) + "_" + str(nombre)) in self.__listaVariables:
-                raise ValueError("La variable no existe")
-            else:
-                var = self.__listaVariables.get(str(self.__scopeActual) + "_" + str(nombre))
+        def setValorAVariable(self, nombre, valor):
+            if (str(TablaFunciones.getScopeActual()) + "_" + str(nombre)) in self.__listaVariables:
+                var = self.__listaVariables.get(str(TablaFunciones.getScopeActual()) + "_" + str(nombre))
                 var.setValor(valor)
-                self.__listaVariables.update({str(self.__scopeActual) + "_" + str(nombre): var})
+                self.__listaVariables.update({str(TablaFunciones.getScopeActual()) + "_" + str(nombre): var})
+            else:
+                if ("0_" + str(nombre)) in self.__listaVariables:
+                    var = self.__listaVariables.get("0_" + str(nombre))
+                    var.setValor(valor)
+                    self.__listaVariables.update({"0_" + str(nombre): var})
+                else:
+                    raise ValueError("La variable no existe")
+
 
     instancia = None
 
@@ -41,11 +49,17 @@ class TablaVariables:
     def nuevoScope(self):
         self.instancia.nuevoScope()
 
-    def creaVar(self, tipo, nombre):
+    def creaVar(self, tipo, nombre, es_arreglo, es_matriz):
         self.instancia.nuevaVariable(tipo, nombre)
 
-    def getVariable(self, nombre, scope):
-        return self.instancia.getVariable(nombre, scope)
+    def getVariable(self, nombre):
+        return self.instancia.getValorVariable(nombre)
 
-    def setValorAVariable(self, nombre, scope, valor):
-        self.instancia.setValorAVariable(nombre, scope, valor)
+    def setValorAVariable(self, nombre, valor):
+        self.instancia.setValorAVariable(nombre, valor)
+
+    def __str__(self):
+        for x in self.instancia.__listaVariables:
+            print (x)
+            for y in self.instancia.__listaVariables[x]:
+                print (y, ':', self.instancia.__listaVariables[x][y])

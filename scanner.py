@@ -3,6 +3,12 @@ from __future__ import print_function
 import logging
 import ply.lex as lex
 import ply.yacc as yacc
+import Tipo
+import TablaVariables
+import TablaFunciones
+
+var_table = TablaVariables.TablaVariables()
+func_table = TablaFunciones.TablaFunciones()
 
 logging.basicConfig()
 
@@ -73,6 +79,10 @@ t_OP_PUNTO_COMA = r';'
 t_OP_PUNTO = r'[\.]'
 t_OP_COMA = r'[\,]'
 
+
+tipo_actual = None
+variable_actual_es_arreglo = False
+variable_actual_es_matriz = False
 
 def t_CTE_F(t):
     r'[0-9]+\.[0-9]+'
@@ -158,8 +168,14 @@ def p_tipo(p):
         | KW_FLOTANTE
         | KW_STRING
     """
-    # print(p[1] + " ", end="")
-    pass
+    tipo = p[1]
+    global tipo_actual
+    if tipo == 'entero':
+        tipo_actual = Tipo.Tipo.Entero
+    elif tipo == 'flotante':
+        tipo_actual = Tipo.Tipo.Flotante
+    else:
+        tipo_actual = Tipo.Tipo.String
 
 
 def p_parametos(p):
@@ -212,7 +228,10 @@ def p_def_var(p):
     """
     def_var : ID arr_not arr_not
     """
-    pass
+    global variable_actual_es_arreglo, variable_actual_es_matriz
+    var_table.creaVar(tipo_actual, p[1], variable_actual_es_arreglo, variable_actual_es_matriz)
+    variable_actual_es_arreglo = False
+    variable_actual_es_matriz = False
 
 
 def p_arr_not(p):
@@ -220,7 +239,11 @@ def p_arr_not(p):
     arr_not : OP_CORCHETE_IZQ CTE_E OP_CORCHETE_DER
             | empty
     """
-    pass
+    global variable_actual_es_matriz, variable_actual_es_arreglo
+    if variable_actual_es_arreglo:
+        variable_actual_es_matriz = True
+    else:
+        variable_actual_es_arreglo = True
 
 
 def p_otra_var(p):
@@ -475,7 +498,7 @@ def p_retorna(p):
 
 def p_var_cte(p):
     """
-    var_cte : ID var_cte2
+    var_cte : var_consume_id_var_cte var_cte2
             | CTE_E
             | CTE_F
             | concat_string
@@ -492,6 +515,13 @@ def p_var_cte(p):
             | a_flotante
     """
     pass
+
+
+def p_var_consume_id_var_cte(p):
+    """
+    var_consume_id_var_cte : ID
+    """
+    var_table.getVariable(p[1], func_table.getScopeActual())
 
 
 def p_var_cte2(p):
@@ -601,7 +631,7 @@ data = '''
 flotante global;
 flotante globalDos[2];
 string una_var[2][3], otra_var, another;
-funcion prueba(){
+funcion prueba(int x, float y){
 
 }
 funcion flotante cualquiera(){
@@ -619,4 +649,4 @@ inicio funcion entero ai(){
 '''
 
 log = logging.getLogger("parserlog.log")
-parser.parse(data, debug=1)
+parser.parse(data, debug=0)

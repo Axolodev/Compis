@@ -29,10 +29,6 @@ class TablaFunciones:
                         raise ValueError('Tipo de parametro no coincide')
                 return True
 
-
-
-
-
     instancia = None
 
     def __new__(cls):
@@ -43,12 +39,11 @@ class TablaFunciones:
     def nuevoScope(self):
         self.instancia.nuevoScope()
 
-    def creaFuncion(self, tipo, nombre):
-        self.instancia.nuevaFuncion(tipo, nombre)
+    def creaFuncion(self, tipo, nombre, lista_params):
+        self.instancia.nuevaFuncion(tipo, nombre, lista_params)
 
     def verificaParam(self, nombre, params):
         return self.instancia.checaParam(nombre, params)
 
-
-
-
+    def getScopeActual(self):
+        return self.instancia.__scopeActual
