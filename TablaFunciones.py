@@ -1,6 +1,7 @@
 import Funcion
 import Variable
 
+
 class TablaFunciones:
 
     class __TablaFunciones:
@@ -12,11 +13,11 @@ class TablaFunciones:
             self.__scopeActual += 1
 
         def nuevaFuncion(self, tipo, nombre, params):
-            if self.__listaFunciones.has_key(str(self.__scopeActual) + "_" + str(nombre)):
-                raise ValueError('Otra funcion existe con el mismo nombre')
+            if str(nombre) in self.__listaFunciones:
+                raise ValueError("Ya existe una funcion con este nombre")
             else:
-                var = Funcion.Funcion(tipo, nombre, params)
-                self.__listaFunciones.update({str(self.__scopeActual) + "_" + str(nombre): var})
+                funcion = Funcion.Funcion(tipo, nombre,params, self.__scopeActual)
+                self.__listaFunciones.update({str(nombre): funcion})
 
         def getScopeActual(self):
             return self.__scopeActual
@@ -31,6 +32,11 @@ class TablaFunciones:
                     if listaParams[i].tipo != params.tipo:
                         raise ValueError('Tipo de parametro no coincide')
                 return True
+
+        def __str__(self):
+            for k in self.__listaFunciones:
+                print str(k)
+            return ""
 
     instancia = None
 

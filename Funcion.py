@@ -4,7 +4,7 @@ class Funcion:
         self.__nombre = nombre
         self.__tipo = tipo
         self.__scope = scope
-        self.__params.append(params)
+        self.__params = params
 
     def getNombre(self):
         return self.__nombre
@@ -28,4 +28,4 @@ class Funcion:
         return self.__params
 
     def setParams(self, params):
-        self.__params.append(params)
+        self.__params = params
