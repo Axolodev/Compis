@@ -9,7 +9,7 @@ class Tipo(Enum):
 
     @staticmethod
     def getDefault(tipo):
-        if tipo == Tipo.Enteri:
+        if tipo == Tipo.Entero:
             return 0
         elif tipo == Tipo.Flotante:
             return 0.0
