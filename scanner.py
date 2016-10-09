@@ -8,7 +8,7 @@ import TablaVariables
 import TablaFunciones
 
 var_table = TablaVariables.TablaVariables.getInstance()
-# func_table = TablaFunciones.TablaFunciones()
+func_table = TablaFunciones.TablaFunciones.getInstance()
 
 logging.basicConfig()
 
@@ -136,7 +136,7 @@ def p_empty(p):
 
 def p_inicio(p):
     """inicio : crear_var crear_funciones KW_INICIO funcion"""
-    pass
+    print (var_table)
 
 
 def p_crear_funciones(p):
@@ -205,7 +205,7 @@ def p_bloque_func(p):
     """
     bloque_func : OP_LLAVE_IZQ crear_var estatuto_rec OP_LLAVE_DER
     """
-    pass
+    func_table.nuevoScope()
 
 
 def p_crear_var(p):
@@ -631,11 +631,11 @@ data = '''
 flotante global;
 flotante globalDos[2];
 string una_var[2][3], otra_var, another;
-funcion prueba(int x, float y){
+funcion prueba(entero x, flotante y){
 
 }
 funcion flotante cualquiera(){
-    
+    entero globaltres;
 }
 inicio funcion entero ai(){
     output("");

@@ -41,6 +41,10 @@ class TablaVariables:
                 else:
                     raise ValueError("La variable no existe")
 
+        def __str__(self):
+            for k in self.__listaVariables:
+                print str(k)
+            return ""
 
     instancia = None
 
@@ -50,8 +54,4 @@ class TablaVariables:
             TablaVariables.instancia = TablaVariables.__TablaVariables()
         return TablaVariables.instancia
 
-    def __str__(self):
-        for x in self.instancia.__listaVariables:
-            print (x)
-            for y in self.instancia.__listaVariables[x]:
-                print (y, ':', self.instancia.__listaVariables[x][y])
+

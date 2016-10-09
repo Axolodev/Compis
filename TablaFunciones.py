@@ -34,7 +34,6 @@ class TablaFunciones:
 
     instancia = None
 
-
     @staticmethod
     def getInstance():
         if not TablaFunciones.instancia:
