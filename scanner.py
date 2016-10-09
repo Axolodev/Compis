@@ -190,7 +190,7 @@ def p_toma_parametro(p):
     """
     toma_parametro : tipo ID otro_parametro
     """
-    pass
+    var_table.nuevaVariable(p[1], p[2])
 
 
 def p_otro_parametro(p):
