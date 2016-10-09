@@ -7,8 +7,8 @@ import Tipo
 import TablaVariables
 import TablaFunciones
 
-var_table = TablaVariables.TablaVariables()
-func_table = TablaFunciones.TablaFunciones()
+var_table = TablaVariables.TablaVariables.getInstance()
+# func_table = TablaFunciones.TablaFunciones()
 
 logging.basicConfig()
 
@@ -86,14 +86,14 @@ variable_actual_es_matriz = False
 
 def t_CTE_F(t):
     r'[0-9]+\.[0-9]+'
-    print(t.value, end="")
+    #print(t.value, end="")
     t.value = float(t.value)
     return t
 
 
 def t_CTE_E(t):
     r'\d+'
-    print(t.value, end="")
+    #print(t.value, end="")
     t.value = int(t.value)
     return t
 
@@ -102,7 +102,7 @@ def t_ID(t):
     r'[a-zA-Z_][a-zA-Z0-9_]*'
     if t.value in reserved:
         t.type = reserved[t.value]
-    print("id: " + t.value + ", " + t.type + " ")
+    #print("id: " + t.value + ", " + t.type + " ")
     return t
 
 
@@ -229,7 +229,7 @@ def p_def_var(p):
     def_var : ID arr_not arr_not
     """
     global variable_actual_es_arreglo, variable_actual_es_matriz
-    var_table.creaVar(tipo_actual, p[1], variable_actual_es_arreglo, variable_actual_es_matriz)
+    var_table.nuevaVariable(tipo_actual, p[1], variable_actual_es_arreglo, variable_actual_es_matriz)
     variable_actual_es_arreglo = False
     variable_actual_es_matriz = False
 

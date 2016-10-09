@@ -18,6 +18,9 @@ class TablaFunciones:
                 var = Funcion.Funcion(tipo, nombre, params)
                 self.__listaFunciones.update({str(self.__scopeActual) + "_" + str(nombre): var})
 
+        def getScopeActual(self):
+            return self.__scopeActual
+
         def checaParam(self, nombre, params):
             funcion = self.__listaFunciones.getValue(str(self.__scopeActual) + "_" + str(nombre), default=None)
             if len(funcion.getParams()) != len(params):
@@ -31,19 +34,9 @@ class TablaFunciones:
 
     instancia = None
 
-    def __new__(cls):
+
+    @staticmethod
+    def getInstance():
         if not TablaFunciones.instancia:
             TablaFunciones.instancia = TablaFunciones.__TablaFunciones()
         return TablaFunciones.instancia
-
-    def nuevoScope(self):
-        self.instancia.nuevoScope()
-
-    def creaFuncion(self, tipo, nombre, lista_params):
-        self.instancia.nuevaFuncion(tipo, nombre, lista_params)
-
-    def verificaParam(self, nombre, params):
-        return self.instancia.checaParam(nombre, params)
-
-    def getScopeActual(self):
-        return self.instancia.__scopeActual
