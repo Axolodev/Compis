@@ -20,8 +20,9 @@ class TablaVariables:
             else:
                 var = Variable.Variable(tipo, nombre, self.__scopeActual)
                 self.__listaVariables.update({str(self.tablaFunciones.getScopeActual()) + "_" + str(nombre): var})
+                return var
 
-        def getValorVariable(self, nombre):
+        def getVariable(self, nombre):
             if (str(self.tablaFunciones.getScopeActual()) + "_" + str(nombre)) in self.__listaVariables:
                 return self.__listaVariables[str(self.tablaFunciones.getScopeActual()) + "_" + str(nombre)]
             elif ("0_" + str(nombre)) in self.__listaVariables:

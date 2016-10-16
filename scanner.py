@@ -80,21 +80,29 @@ t_OP_PUNTO_COMA = r';'
 t_OP_PUNTO = r'[\.]'
 t_OP_COMA = r'[\,]'
 
-
 tipo_actual = None
 variable_actual_es_arreglo = False
 variable_actual_es_matriz = False
 
+
+# Pilas auxiliares
+pila_tipos = []
+pila_operador = []
+pila_operando = []
+
+# Lista de cuadruplos
+lista_cuadruplos = []
+
+
 def t_CTE_F(t):
     r'[0-9]+\.[0-9]+'
-    #print(t.value, end="")
     t.value = float(t.value)
     return t
 
 
 def t_CTE_E(t):
     r'\d+'
-    #print(t.value, end="")
+    # print(t.value, end="")
     t.value = int(t.value)
     return t
 
@@ -103,7 +111,6 @@ def t_ID(t):
     r'[a-zA-Z_][a-zA-Z0-9_]*'
     if t.value in reserved:
         t.type = reserved[t.value]
-    #print("id: " + t.value + ", " + t.type + " ")
     return t
 
 
@@ -137,8 +144,8 @@ def p_empty(p):
 
 def p_inicio(p):
     """inicio : crear_var crear_funciones KW_INICIO funcion"""
-    print (var_table)
-    print (func_table)
+    print(var_table)
+    print(func_table)
 
 
 def p_crear_funciones(p):
@@ -154,7 +161,7 @@ def p_funcion(p):
     funcion : KW_FUNCION tipo_funcion ID OP_PARENTESIS_IZQ parametros OP_PARENTESIS_DER bloque_func
     """
     global listaParam
-    func_table.nuevaFuncion(tipo_actual,p[3],listaParam)
+    func_table.nuevaFuncion(tipo_actual, p[3], listaParam)
     listaParam = []
 
 
@@ -163,7 +170,7 @@ def p_tipo_funcion(p):
     tipo_funcion : tipo
                     | empty
     """
-    pass
+    func_table.nuevoScope()
 
 
 def p_tipo(p):
@@ -194,7 +201,7 @@ def p_toma_parametro(p):
     """
     toma_parametro : tipo ID otro_parametro
     """
-    var_table.nuevaVariable(p[1], p[2])
+    var_table.nuevaVariable(p[1], p[2], None, None)
     listaParam.append(p[1])
 
 
@@ -210,8 +217,7 @@ def p_bloque_func(p):
     """
     bloque_func : OP_LLAVE_IZQ crear_var estatuto_rec OP_LLAVE_DER
     """
-    func_table.nuevoScope()
-
+    pass
 
 
 def p_crear_var(p):
@@ -284,7 +290,7 @@ def p_asignacion(p):
     """
     asignacion : ID arr_not arr_not OP_ASIGNACION expresion
     """
-    pass
+    var_table.setValorVariable(p[1], 0)
 
 
 def p_ciclo(p):
@@ -505,10 +511,19 @@ def p_retorna(p):
 def p_var_cte(p):
     """
     var_cte : var_consume_id_var_cte var_cte2
-            | CTE_E
-            | CTE_F
             | concat_string
-            | KW_VERDADERO
+            | a_string
+            | a_entero
+            | a_flotante
+            | p_cte_e_f
+            | maneja_var_cte_defaults
+    """
+    pass
+
+
+def p_maneja_var_cte_defaults(p):
+    """
+    maneja_var_cte_defaults : KW_VERDADERO
             | KW_FALSO
             | KW_NORTE
             | KW_SUR
@@ -516,17 +531,42 @@ def p_var_cte(p):
             | KW_OESTE
             | KW_ANCHO
             | KW_ALTO
-            | a_string
-            | a_entero
-            | a_flotante
     """
-    pass
+    '''
+    if p.type == 'KW_VERDADERO':
+        p.value = 1
+    elif p.type == 'KW_FALSO':
+        p.value = 0
+    elif p.type == 'KW_NORTE':
+        p.value = 90
+    elif p.type == 'KW_SUR':
+        p.value = 270
+    elif p.type == 'KW_ESTE':
+        p.value = 0
+    elif p.type == 'KW_OESTE':
+        p.value = 180
+    elif p.type == 'KW_ANCHO':
+        p.value = 800
+    elif p.type == 'KW_ALTO':
+        p.value = 600
+    p.type = 'CTE_E'
+    construye_cuadruplo(p)
+    '''
+
+
+def p_cte_e_f(p):
+    """
+    p_cte_e_f : CTE_E
+            | CTE_F
+    """
+    construye_cuadruplo(p[1])
 
 
 def p_var_consume_id_var_cte(p):
     """
     var_consume_id_var_cte : ID
     """
+    construye_cuadruplo(p[1])
     var_table.getVariable(p[1], func_table.getScopeActual())
 
 
@@ -631,6 +671,23 @@ def p_error(p):
     pass
 
 
+def construye_cuadruplo(p):
+    global pila_operando
+    var = None
+    tipo = None
+    if p.type == 'ID':
+        tipo = var_table.getVariable(p.value).getTipo()
+        var = p.value
+    elif p.type == 'CTE_F':
+        tipo = Tipo.Tipo.Flotante
+        var = p.value
+    elif p.type == 'CTE_E':
+        tipo = Tipo.Tipo.Entero
+        var = p.value
+    pila_tipos.append(tipo)
+    pila_operando.append(var)
+
+
 parser = yacc.yacc()
 
 data = '''
@@ -640,23 +697,17 @@ string una_var[2][3], otra_var, another;
 funcion prueba(entero x, flotante y){
 
 }
-funcion flotante cualquiera(){
-    entero globaltres;
-}
-
-funcion entero cualquiera(){
-
+funcion flotante cualquiera(entero dos){
+    entero variable_meh;
 }
 inicio funcion entero ai(){
+    string falla;
+    entero x;
     output("");
-    prueba();
+    prueba1();
+    gira(norte);
+
 }'''
-
-simpleProgram = '''
-inicio funcion entero ai(){
-    output("equis");
-}
-'''
-
+# checar que las funciones esten definidas
 log = logging.getLogger("parserlog.log")
 parser.parse(data, debug=0)

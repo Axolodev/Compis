@@ -3,7 +3,6 @@ import Variable
 
 
 class TablaFunciones:
-
     class __TablaFunciones:
         def __init__(self):
             self.__scopeActual = 0
@@ -16,7 +15,7 @@ class TablaFunciones:
             if str(nombre) in self.__listaFunciones:
                 raise ValueError("Ya existe una funcion con este nombre")
             else:
-                funcion = Funcion.Funcion(tipo, nombre,params, self.__scopeActual)
+                funcion = Funcion.Funcion(tipo, nombre, params, self.__scopeActual)
                 self.__listaFunciones.update({str(nombre): funcion})
 
         def getScopeActual(self):

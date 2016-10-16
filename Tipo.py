@@ -2,10 +2,11 @@ from enum import Enum
 
 
 class Tipo(Enum):
-    Vacio = 0
-    Entero = 1
-    Flotante = 2
-    String = 3
+    Entero = 0
+    Flotante = 1
+    String = 2
+    Vacio = 3
+    Error = -1
 
     @staticmethod
     def getDefault(tipo):
@@ -16,3 +17,31 @@ class Tipo(Enum):
         elif tipo == Tipo.String:
             return ""
         return None
+
+
+class Operador(Enum):
+    __operadores = {
+        '+': 0,
+        '-': 1,
+        '*': 2,
+        '/': 3,
+        '%': 4,
+        '<': 5,
+        '>': 6,
+        '<=': 7,
+        '>=': 8,
+        '!=': 9,
+        '==': 10,
+        '&&': 11,
+        '||': 12,
+        'a_entero': 13,
+        'a_flotante': 14,
+        'a_string': 15,
+
+    }
+
+    @staticmethod
+    def getId(op):
+        if op in Operador.__operadores:
+            return Operador.__operadores[op]
+        return -1
