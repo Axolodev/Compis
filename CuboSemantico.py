@@ -164,3 +164,10 @@ class CuboSemantico:
             ]
         ],
     ]
+
+    @staticmethod
+    def getTipo(operador, tipo_operando1, tipo_operando2):
+        retorno = CuboSemantico.__cubo[tipo_operando1][tipo_operando2][operador]
+        if retorno is CuboSemantico.ERROR:
+            raise ValueError("La variable no existe")
+        return retorno
