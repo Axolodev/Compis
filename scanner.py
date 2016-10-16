@@ -94,6 +94,10 @@ pila_operando = []
 lista_cuadruplos = []
 
 
+# cuadruplo inicial
+cuadruplo_inicial =[None] * 4
+
+
 def t_CTE_F(t):
     r'[0-9]+\.[0-9]+'
     t.value = float(t.value)
@@ -335,6 +339,27 @@ def p_funcion_predef(p):
     """
     pass
 
+def genera_cuadruplo(lista_op):
+    global cuadruplo_inicial
+    operador = pila_operador.pop()
+    if operador in lista_op:
+        tipo_2 = pila_tipos.pop()
+        tipo_1 = pila_tipos.pop()
+        operando2 = pila_operando.pop()
+        operando1 = pila_operando.pop()
+        tipo_resultado = CuboSemantico.CuboSemantico.getTipo(operador, tipo_1, tipo_2)
+        pila_tipos.append(tipo_resultado)
+
+        cuadruplo_inicial[0] = operador
+        cuadruplo_inicial[1] = operando1
+        cuadruplo_inicial[2] = operando2
+        cuadruplo_inicial[3] = -cuadruplo_inicial[1] # todo: Cambiar a resultado
+        lista_cuadruplos.append(cuadruplo_inicial)
+        pila_operando.append(cuadruplo_inicial[3])
+
+    else:
+        pila_operando.append(operador)
+
 
 def p_expresion(p):
     """
@@ -345,10 +370,17 @@ def p_expresion(p):
 
 def p_otra_expresion_or(p):
     """
-    otra_expresion_or : OP_OR comp_or
+    otra_expresion_or : consume_op_or expresion
                     | empty
     """
     pass
+
+
+def p_consume_op_or(p):
+    """
+    consume_op_or : OP_OR
+    """
+    pila_operando.append(p[1])
 
 
 def p_comp_or(p):
@@ -360,10 +392,18 @@ def p_comp_or(p):
 
 def p_otra_expresion_and(p):
     """
-    otra_expresion_and : OP_AND comp_and
+    otra_expresion_and : consume_op_and expresion
                     | empty
     """
     pass
+
+
+def p_consume_op_and(p):
+    """
+    consume_op_and : OP_AND
+    """
+
+    pila_operando.append(p[1])
 
 
 def p_comp_and(p):
@@ -375,7 +415,7 @@ def p_comp_and(p):
 
 def p_comp_and_end(p):
     """
-    comp_and_end : op_comparador exp
+    comp_and_end : op_comparador comp_and
                 | empty
     """
     pass
@@ -385,7 +425,7 @@ def p_op_comparador(p):
     """
     op_comparador : OP_COMPARADOR
     """
-    pass
+    pila_operando.append(p[1].value)
 
 
 def p_exp(p):
@@ -397,10 +437,18 @@ def p_exp(p):
 
 def p_exp2(p):
     """
-    exp2 : OP_TERMINO exp
+    exp2 : consume_op_termino exp
         | empty
     """
     pass
+
+
+def p_consume_op_termino(p):
+    """
+    consume_op_termino : OP_TERMINO
+    """
+
+    pila_operando.append(p[1])
 
 
 def p_termino(p):
@@ -412,10 +460,17 @@ def p_termino(p):
 
 def p_termino2(p):
     """
-    termino2 : OP_FACTOR termino
+    termino2 : consume_op_factor termino
             | empty
     """
     pass
+
+
+def p_consume_op_factor(p):
+    """
+    consume_op_factor : OP_FACTOR
+    """
+    pila_operando.append(p[1])
 
 
 def p_factor(p):
@@ -424,7 +479,19 @@ def p_factor(p):
             | OP_TERMINO var_cte
             | var_cte
     """
-    pass
+    if len(p) == 3:
+        tipo = pila_tipos.pop()
+        if tipo != Tipo.Tipo.String:
+            pass  # todo: checar que no sea string
+            if p[1].value == '-':
+                global cuadruplo_inicial
+                cuadruplo_inicial[0] = '-'
+                cuadruplo_inicial[1] = pila_operando.pop()
+                cuadruplo_inicial[2] = None
+                cuadruplo_inicial[3] = -cuadruplo_inicial[1]
+                lista_cuadruplos.append(cuadruplo_inicial)
+                pila_operando.append(cuadruplo_inicial[3])
+                pila_tipos.append(tipo)
 
 
 def p_camina(p):
@@ -511,7 +578,6 @@ def p_retorna(p):
 def p_var_cte(p):
     """
     var_cte : var_consume_id_var_cte var_cte2
-            | concat_string
             | a_string
             | a_entero
             | a_flotante
