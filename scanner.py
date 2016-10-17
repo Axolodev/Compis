@@ -3,9 +3,10 @@ from __future__ import print_function
 import logging
 import ply.lex as lex
 import ply.yacc as yacc
-import Tipo
+import Utils
 import TablaVariables
 import TablaFunciones
+import CuboSemantico
 
 var_table = TablaVariables.TablaVariables.getInstance()
 func_table = TablaFunciones.TablaFunciones.getInstance()
@@ -95,7 +96,7 @@ lista_cuadruplos = []
 
 
 # cuadruplo inicial
-cuadruplo_inicial =[None] * 4
+cuadruplo_inicial = [None] * 4
 
 
 def t_CTE_F(t):
@@ -150,6 +151,10 @@ def p_inicio(p):
     """inicio : crear_var crear_funciones KW_INICIO funcion"""
     print(var_table)
     print(func_table)
+    print(lista_cuadruplos)
+    print(pila_operador)
+    print(pila_operando)
+    print(pila_tipos)
 
 
 def p_crear_funciones(p):
@@ -186,11 +191,11 @@ def p_tipo(p):
     tipo = p[1]
     global tipo_actual
     if tipo == 'entero':
-        tipo_actual = Tipo.Tipo.Entero
+        tipo_actual = Utils.Tipo.Entero
     elif tipo == 'flotante':
-        tipo_actual = Tipo.Tipo.Flotante
+        tipo_actual = Utils.Tipo.Flotante
     else:
-        tipo_actual = Tipo.Tipo.String
+        tipo_actual = Utils.Tipo.String
 
 
 def p_parametos(p):
@@ -294,7 +299,6 @@ def p_asignacion(p):
     """
     asignacion : ID arr_not arr_not OP_ASIGNACION expresion
     """
-    var_table.setValorVariable(p[1], 0)
 
 
 def p_ciclo(p):
@@ -339,33 +343,42 @@ def p_funcion_predef(p):
     """
     pass
 
+
 def genera_cuadruplo(lista_op):
     global cuadruplo_inicial
-    operador = pila_operador.pop()
-    if operador in lista_op:
-        tipo_2 = pila_tipos.pop()
-        tipo_1 = pila_tipos.pop()
-        operando2 = pila_operando.pop()
-        operando1 = pila_operando.pop()
-        tipo_resultado = CuboSemantico.CuboSemantico.getTipo(operador, tipo_1, tipo_2)
-        pila_tipos.append(tipo_resultado)
+    if len(pila_operador) > 0:
 
-        cuadruplo_inicial[0] = operador
-        cuadruplo_inicial[1] = operando1
-        cuadruplo_inicial[2] = operando2
-        cuadruplo_inicial[3] = -cuadruplo_inicial[1] # todo: Cambiar a resultado
-        lista_cuadruplos.append(cuadruplo_inicial)
-        pila_operando.append(cuadruplo_inicial[3])
+        operador = pila_operador.pop()
+        if operador in lista_op:
+            tipo_2 = pila_tipos.pop()
+            tipo_1 = pila_tipos.pop()
+            operando2 = pila_operando.pop()
+            operando1 = pila_operando.pop()
+            tipo_resultado = CuboSemantico.CuboSemantico.getTipo(operador, tipo_1, tipo_2)
+            pila_tipos.append(tipo_resultado)
 
-    else:
-        pila_operando.append(operador)
+            cuadruplo_inicial[0] = operador
+            cuadruplo_inicial[1] = operando1
+            cuadruplo_inicial[2] = operando2
+            cuadruplo_inicial[3] = -cuadruplo_inicial[1] # todo: Cambiar a resultado
+            lista_cuadruplos.append(cuadruplo_inicial)
+            pila_operando.append(cuadruplo_inicial[3])
+        else:
+            pila_operador.append(operador)
 
 
 def p_expresion(p):
     """
-    expresion : comp_or otra_expresion_or
+    expresion : comp_or genera_cuadruplo_or otra_expresion_or
     """
     pass
+
+
+def p_genera_cuadruplo_or(p):
+    """
+    genera_cuadruplo_or :
+    """
+    genera_cuadruplo(["||"])
 
 
 def p_otra_expresion_or(p):
@@ -380,14 +393,21 @@ def p_consume_op_or(p):
     """
     consume_op_or : OP_OR
     """
-    pila_operando.append(p[1])
+    pila_operador.append(p[1])
 
 
 def p_comp_or(p):
     """
-    comp_or : comp_and otra_expresion_and
+    comp_or : comp_and genera_cuadruplo_and otra_expresion_and
     """
     pass
+
+
+def p_genera_cuadruplo_and(p):
+    """
+    genera_cuadruplo_and :
+    """
+    genera_cuadruplo(["&&"])
 
 
 def p_otra_expresion_and(p):
@@ -403,14 +423,21 @@ def p_consume_op_and(p):
     consume_op_and : OP_AND
     """
 
-    pila_operando.append(p[1])
+    pila_operador.append(p[1])
 
 
 def p_comp_and(p):
     """
-    comp_and : exp comp_and_end
+    comp_and : exp genera_cuadruplo_comparador comp_and_end
     """
     pass
+
+
+def p_genera_cuadruplo_comparador(p):
+    """
+    genera_cuadruplo_comparador :
+    """
+    genera_cuadruplo(["<", ">", "<=", ">=", "!=", "=="])
 
 
 def p_comp_and_end(p):
@@ -425,14 +452,20 @@ def p_op_comparador(p):
     """
     op_comparador : OP_COMPARADOR
     """
-    pila_operando.append(p[1].value)
+    pila_operador.append(p[1].value)
 
 
 def p_exp(p):
     """
-    exp : termino exp2
+    exp : termino genera_cuadruplo_termino exp2
     """
     pass
+
+def p_genera_cuadruplo(p):
+    """
+    genera_cuadruplo_termino :
+    """
+    genera_cuadruplo(["+", "-"])
 
 
 def p_exp2(p):
@@ -447,16 +480,21 @@ def p_consume_op_termino(p):
     """
     consume_op_termino : OP_TERMINO
     """
-
-    pila_operando.append(p[1])
+    pila_operador.append(p[1])
 
 
 def p_termino(p):
     """
-    termino : factor termino2
+    termino : factor genera_cuadruplo_factor termino2
     """
     pass
 
+
+def p_genera_cuadruplo_factor(p):
+    """
+    genera_cuadruplo_factor :
+    """
+    genera_cuadruplo(["*", "/", "%"])
 
 def p_termino2(p):
     """
@@ -481,7 +519,7 @@ def p_factor(p):
     """
     if len(p) == 3:
         tipo = pila_tipos.pop()
-        if tipo != Tipo.Tipo.String:
+        if tipo != Utils.Tipo.String:
             pass  # todo: checar que no sea string
             if p[1].value == '-':
                 global cuadruplo_inicial
@@ -622,18 +660,33 @@ def p_maneja_var_cte_defaults(p):
 
 def p_cte_e_f(p):
     """
-    p_cte_e_f : CTE_E
-            | CTE_F
+    p_cte_e_f : consume_cte_entero
+            | consume_cte_flotante
     """
-    construye_cuadruplo(p[1])
+    print(p[1])
+
+
+def p_consume_flotante(p):
+    """
+    consume_cte_flotante : CTE_F
+    """
+    genera_operando({"valor": p[1], "tipo": Utils.Tipo.Flotante})
+
+
+def p_consume_entero(p):
+    """
+    consume_cte_entero : CTE_E
+    """
+    genera_operando({"valor": p[1], "tipo": Utils.Tipo.Entero})
 
 
 def p_var_consume_id_var_cte(p):
     """
     var_consume_id_var_cte : ID
     """
-    construye_cuadruplo(p[1])
-    var_table.getVariable(p[1], func_table.getScopeActual())
+    print(p[1])
+    genera_operando(p[1])
+    var_table.getVariable(p[1])
 
 
 def p_var_cte2(p):
@@ -657,13 +710,6 @@ def p_var_cte4(p):
             | empty
     """
     pass
-
-
-def p_valores_string(p):
-    """
-    valores_string : CTE_S
-            | ID
-    """
 
 
 def p_concat_string(p):
@@ -737,21 +783,12 @@ def p_error(p):
     pass
 
 
-def construye_cuadruplo(p):
+def genera_operando(operando_a_generar):
     global pila_operando
-    var = None
-    tipo = None
-    if p.type == 'ID':
-        tipo = var_table.getVariable(p.value).getTipo()
-        var = p.value
-    elif p.type == 'CTE_F':
-        tipo = Tipo.Tipo.Flotante
-        var = p.value
-    elif p.type == 'CTE_E':
-        tipo = Tipo.Tipo.Entero
-        var = p.value
-    pila_tipos.append(tipo)
-    pila_operando.append(var)
+    global pila_tipos
+
+    pila_tipos.append(operando_a_generar["tipo"])
+    pila_operando.append(operando_a_generar["valor"])
 
 
 parser = yacc.yacc()
@@ -761,7 +798,9 @@ flotante global;
 flotante globalDos[2];
 string una_var[2][3], otra_var, another;
 funcion prueba(entero x, flotante y){
-
+    entero a;
+    flotante b;
+    a = 2 + 2;
 }
 funcion flotante cualquiera(entero dos){
     entero variable_meh;

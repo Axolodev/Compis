@@ -19,7 +19,7 @@ class Tipo(Enum):
         return None
 
 
-class Operador(Enum):
+class Operador:
     __operadores = {
         '+': 0,
         '-': 1,
@@ -42,6 +42,4 @@ class Operador(Enum):
 
     @staticmethod
     def getId(op):
-        if op in Operador.__operadores:
-            return Operador.__operadores[op]
-        return -1
+        return Operador.__operadores[op]

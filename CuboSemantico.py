@@ -1,11 +1,11 @@
-import Tipo
+import Utils
 
 
 class CuboSemantico:
-    ENTERO = Tipo.Tipo.Entero
-    FLOTANTE = Tipo.Tipo.Flotante
-    STRING = Tipo.Tipo.String
-    ERROR = Tipo.Tipo.Error
+    ENTERO = Utils.Tipo.Entero
+    FLOTANTE = Utils.Tipo.Flotante
+    STRING = Utils.Tipo.String
+    ERROR = Utils.Tipo.Error
 
     __cubo = [
         # Entero
@@ -167,7 +167,8 @@ class CuboSemantico:
 
     @staticmethod
     def getTipo(operador, tipo_operando1, tipo_operando2):
-        retorno = CuboSemantico.__cubo[tipo_operando1][tipo_operando2][operador]
+        operador_value = Utils.Operador.getId(operador)
+        retorno = CuboSemantico.__cubo[tipo_operando1.value][tipo_operando2.value][operador_value]
         if retorno is CuboSemantico.ERROR:
             raise ValueError("La variable no existe")
         return retorno
