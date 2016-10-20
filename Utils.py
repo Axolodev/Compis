@@ -37,7 +37,8 @@ class Operador:
         'a_entero': 13,
         'a_flotante': 14,
         'a_string': 15,
-        'negativo': 16
+        'negativo': 16,
+        '=': 17
     }
 
     @staticmethod

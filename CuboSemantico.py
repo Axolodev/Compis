@@ -24,7 +24,8 @@ class CuboSemantico:
                 ENTERO,  # !=
                 ENTERO,  # ==
                 ENTERO,  # &&
-                ENTERO  # ||
+                ENTERO,  # ||
+                ENTERO,  # =
             ],
             # Entero x Flotante
             [
@@ -40,7 +41,8 @@ class CuboSemantico:
                 ENTERO,  # !=
                 ENTERO,  # ==
                 ENTERO,  # &&
-                ENTERO  # ||
+                ENTERO,  # ||
+                ENTERO,  # =
             ],
             # Entero x String
             [
@@ -56,7 +58,8 @@ class CuboSemantico:
                 ERROR,  # !=
                 ERROR,  # ==
                 ERROR,  # &&
-                ERROR  # ||
+                ERROR,  # ||
+                ERROR,  # =
             ]
         ],
 
@@ -76,7 +79,8 @@ class CuboSemantico:
                 ENTERO,  # !=
                 ENTERO,  # ==
                 ENTERO,  # &&
-                ENTERO  # ||
+                ENTERO,  # ||
+                FLOTANTE,  # =
             ],
             # Flotante x Flotante
             [
@@ -92,7 +96,8 @@ class CuboSemantico:
                 ENTERO,  # !=
                 ENTERO,  # ==
                 ENTERO,  # &&
-                ENTERO  # ||
+                ENTERO,  # ||
+                FLOTANTE,  # =
             ],
             # Flotante x String
             [
@@ -108,7 +113,8 @@ class CuboSemantico:
                 ERROR,  # !=
                 ERROR,  # ==
                 ERROR,  # &&
-                ERROR  # ||
+                ERROR,  # ||
+                ERROR,  # =
             ]
         ],
 
@@ -128,7 +134,8 @@ class CuboSemantico:
                 ERROR,  # !=
                 ERROR,  # ==
                 ERROR,  # &&
-                ERROR  # ||
+                ERROR,  # ||
+                ERROR,  # =
             ],
             # String x Flotante
             [
@@ -144,7 +151,8 @@ class CuboSemantico:
                 ERROR,  # !=
                 ERROR,  # ==
                 ERROR,  # &&
-                ERROR  # ||
+                ERROR,  # ||
+                ERROR,  # =
             ],
             # String x String
             [
@@ -160,7 +168,8 @@ class CuboSemantico:
                 ENTERO,  # !=
                 ENTERO,  # ==
                 ERROR,  # &&
-                ERROR  # ||
+                ERROR,  # ||
+                STRING,  # =
             ]
         ],
     ]

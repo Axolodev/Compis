@@ -1,5 +1,6 @@
 import Variable
 import TablaFunciones
+import Utils
 
 
 class TablaVariables:
@@ -19,6 +20,7 @@ class TablaVariables:
                 raise ValueError("Ya existe una variable con este nombre")
             else:
                 var = Variable.Variable(tipo, nombre, self.__scopeActual)
+                var.setValor(Utils.Tipo.getDefault(var.getTipo()))
                 self.__listaVariables.update({str(self.tablaFunciones.getScopeActual()) + "_" + str(nombre): var})
                 return var
 

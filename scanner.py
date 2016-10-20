@@ -1,5 +1,6 @@
 from __future__ import print_function
 
+import random
 import logging
 import ply.lex as lex
 import ply.yacc as yacc
@@ -297,8 +298,15 @@ def p_estatuto_rec(p):
 
 def p_asignacion(p):
     """
-    asignacion : ID arr_not arr_not OP_ASIGNACION expresion
+    asignacion : var_consume_id_var_cte arr_not arr_not OP_ASIGNACION expresion
     """
+    global cuadruplo_inicial
+    cuadruplo_inicial[0] = '='
+    cuadruplo_inicial[1] = pila_operando.pop()
+    cuadruplo_inicial[3] = pila_operando.pop()
+    lista_cuadruplos.append(cuadruplo_inicial)
+    pila_tipos.pop()
+    cuadruplo_inicial = [None] * 4
 
 
 def p_ciclo(p):
@@ -347,7 +355,7 @@ def p_funcion_predef(p):
 def genera_cuadruplo(lista_op):
     global cuadruplo_inicial
     if len(pila_operador) > 0:
-
+        print(pila_operador)
         operador = pila_operador.pop()
         if operador in lista_op:
             tipo_2 = pila_tipos.pop()
@@ -360,9 +368,10 @@ def genera_cuadruplo(lista_op):
             cuadruplo_inicial[0] = operador
             cuadruplo_inicial[1] = operando1
             cuadruplo_inicial[2] = operando2
-            cuadruplo_inicial[3] = -cuadruplo_inicial[1] # todo: Cambiar a resultado
+            cuadruplo_inicial[3] = random.randint(1, 10)  # todo: Cambiar a resultado
             lista_cuadruplos.append(cuadruplo_inicial)
             pila_operando.append(cuadruplo_inicial[3])
+            cuadruplo_inicial = [None] * 4
         else:
             pila_operador.append(operador)
 
@@ -496,6 +505,7 @@ def p_genera_cuadruplo_factor(p):
     """
     genera_cuadruplo(["*", "/", "%"])
 
+
 def p_termino2(p):
     """
     termino2 : consume_op_factor termino
@@ -508,28 +518,42 @@ def p_consume_op_factor(p):
     """
     consume_op_factor : OP_FACTOR
     """
-    pila_operando.append(p[1])
+    pila_operador.append(p[1])
 
 
 def p_factor(p):
     """
-    factor : OP_PARENTESIS_IZQ expresion OP_PARENTESIS_DER
+    factor : consume_par_izq expresion OP_PARENTESIS_DER
             | OP_TERMINO var_cte
             | var_cte
     """
-    if len(p) == 3:
+
+    if len(p) == 4:
+        if len(pila_operador) > 0:
+            top = pila_operador.pop()
+            if top != "(":
+                pila_operador.append(top)
+    elif len(p) == 3:
         tipo = pila_tipos.pop()
-        if tipo != Utils.Tipo.String:
-            pass  # todo: checar que no sea string
-            if p[1].value == '-':
-                global cuadruplo_inicial
-                cuadruplo_inicial[0] = '-'
-                cuadruplo_inicial[1] = pila_operando.pop()
-                cuadruplo_inicial[2] = None
-                cuadruplo_inicial[3] = -cuadruplo_inicial[1]
-                lista_cuadruplos.append(cuadruplo_inicial)
-                pila_operando.append(cuadruplo_inicial[3])
-                pila_tipos.append(tipo)
+        if tipo == Utils.Tipo.String:
+            raise AritmeticError('Tipo string no puede ser negativo')
+        elif p[1] == '-':
+            global cuadruplo_inicial
+            cuadruplo_inicial[0] = '-'
+            cuadruplo_inicial[1] = pila_operando.pop()
+            cuadruplo_inicial[2] = None
+            cuadruplo_inicial[3] = -cuadruplo_inicial[1]
+            lista_cuadruplos.append(cuadruplo_inicial)
+            pila_operando.append(cuadruplo_inicial[3])
+            cuadruplo_inicial = [None] * 4
+            pila_tipos.append(tipo)
+
+
+def p_consume_par_izq(p):
+    """
+    consume_par_izq : OP_PARENTESIS_IZQ
+    """
+    pila_operador.append("(")
 
 
 def p_camina(p):
@@ -684,9 +708,9 @@ def p_var_consume_id_var_cte(p):
     """
     var_consume_id_var_cte : ID
     """
-    print(p[1])
-    genera_operando(p[1])
-    var_table.getVariable(p[1])
+    var = var_table.getVariable(p[1])
+    print(var.getValor())
+    genera_operando({"tipo": var.getTipo(), "valor": var.getValor()})
 
 
 def p_var_cte2(p):
@@ -800,7 +824,7 @@ string una_var[2][3], otra_var, another;
 funcion prueba(entero x, flotante y){
     entero a;
     flotante b;
-    a = 2 + 2;
+    a = 2 + 2 * - 3 / (0.5 - 5) || 0 + 5;
 }
 funcion flotante cualquiera(entero dos){
     entero variable_meh;
@@ -811,8 +835,8 @@ inicio funcion entero ai(){
     output("");
     prueba1();
     gira(norte);
-
-}'''
+}
+'''
 # checar que las funciones esten definidas
 log = logging.getLogger("parserlog.log")
 parser.parse(data, debug=0)
