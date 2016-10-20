@@ -38,7 +38,10 @@ class Operador:
         'a_flotante': 14,
         'a_string': 15,
         'negativo': 16,
-        '=': 17
+        '=': 17,
+        'goto': 18,
+        'gotoF': 19,
+        'gotoT': 20
     }
 
     @staticmethod

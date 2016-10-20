@@ -86,15 +86,14 @@ tipo_actual = None
 variable_actual_es_arreglo = False
 variable_actual_es_matriz = False
 
-
 # Pilas auxiliares
 pila_tipos = []
 pila_operador = []
 pila_operando = []
+pila_saltos = []
 
 # Lista de cuadruplos
 lista_cuadruplos = []
-
 
 # cuadruplo inicial
 cuadruplo_inicial = [None] * 4
@@ -150,6 +149,8 @@ def p_empty(p):
 
 def p_inicio(p):
     """inicio : crear_var crear_funciones KW_INICIO funcion"""
+    cuadruplo_inicial[0] = 'end'
+    lista_cuadruplos.append(cuadruplo_inicial)
     print(var_table)
     print(func_table)
     print(lista_cuadruplos)
@@ -461,7 +462,7 @@ def p_op_comparador(p):
     """
     op_comparador : OP_COMPARADOR
     """
-    pila_operador.append(p[1].value)
+    pila_operador.append(p[1])
 
 
 def p_exp(p):
@@ -469,6 +470,7 @@ def p_exp(p):
     exp : termino genera_cuadruplo_termino exp2
     """
     pass
+
 
 def p_genera_cuadruplo(p):
     """
@@ -536,7 +538,7 @@ def p_factor(p):
     elif len(p) == 3:
         tipo = pila_tipos.pop()
         if tipo == Utils.Tipo.String:
-            raise AritmeticError('Tipo string no puede ser negativo')
+            raise ArithmeticError('Tipo string no puede ser negativo')
         elif p[1] == '-':
             global cuadruplo_inicial
             cuadruplo_inicial[0] = '-'
@@ -610,17 +612,53 @@ def p_a_entero2(p):
 
 def p_condicion(p):
     """
-    condicion : KW_SI OP_PARENTESIS_IZQ expresion OP_PARENTESIS_DER bloque_est si_no
+    condicion : KW_SI OP_PARENTESIS_IZQ expresion consume_par_der bloque_est si_no
     """
     pass
+
+
+def p_consume_par_der(p):
+    """
+    consume_par_der : OP_PARENTESIS_DER
+    """
+    tipo = pila_tipos.pop()
+    if tipo == Utils.Tipo.String:
+        raise TypeError('Tipo string no puede ser usado como condicion')
+    resultado = pila_operando.pop()
+    global cuadruplo_inicial
+    cuadruplo_inicial[0] = 'gotoF'
+    cuadruplo_inicial[1] = resultado
+    lista_cuadruplos.append(cuadruplo_inicial)
+    pila_saltos.append(len(lista_cuadruplos) - 1)
+    cuadruplo_inicial = [None] * 4
 
 
 def p_si_no(p):
     """
-    si_no : KW_SI_NO bloque_est
+    si_no : consume_si_no bloque_est
             | empty
     """
-    pass
+    posicion_falso = pila_saltos.pop()
+    cuadruplo_goto_f = lista_cuadruplos[posicion_falso]
+    cuadruplo_goto_f[3] = len(lista_cuadruplos) + 1
+    lista_cuadruplos[posicion_falso] = cuadruplo_goto_f
+
+
+def p_consume_si_no(p):
+    """
+    consume_si_no : KW_SI_NO
+    """
+    global cuadruplo_inicial
+    posicion_falso = pila_saltos.pop()
+    cuadruplo_inicial[0] = 'goto'
+    lista_cuadruplos.append(cuadruplo_inicial)
+    pila_saltos.append(len(lista_cuadruplos) - 1)
+    cuadruplo_inicial = [None] * 4
+    cuadruplo_goto_f = lista_cuadruplos[posicion_falso]
+    cuadruplo_goto_f[3] = len(lista_cuadruplos) + 1
+    lista_cuadruplos[posicion_falso] = cuadruplo_goto_f
+
+
 
 
 def p_bloque_est(p):
@@ -822,19 +860,26 @@ flotante global;
 flotante globalDos[2];
 string una_var[2][3], otra_var, another;
 funcion prueba(entero x, flotante y){
-    entero a;
-    flotante b;
-    a = 2 + 2 * - 3 / (0.5 - 5) || 0 + 5;
+
 }
 funcion flotante cualquiera(entero dos){
     entero variable_meh;
 }
 inicio funcion entero ai(){
-    string falla;
-    entero x;
-    output("");
-    prueba1();
-    gira(norte);
+    entero a, b;
+
+    si(a < b){
+        a = a + b;
+    }
+    si_no{
+        a = a * b;
+    };
+
+    si(a>b){
+        a = 1;
+    };
+
+
 }
 '''
 # checar que las funciones esten definidas
