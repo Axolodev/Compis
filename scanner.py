@@ -833,24 +833,52 @@ def p_reiniciar(p):
 
 def p_input(p):
     """
-    input : KW_INPUT OP_PARENTESIS_IZQ ID input2 OP_PARENTESIS_DER
+    input : KW_INPUT OP_PARENTESIS_IZQ consume_id_input input2 OP_PARENTESIS_DER
     """
     pass
 
 
 def p_input2(p):
     """
-    input2 : OP_COMA ID input2
+    input2 : OP_COMA consume_id_input input2
             | empty
     """
     pass
 
 
+def p_consume_id_input(p):
+    """
+    consume_id_input : ID
+    """
+    var = var_table.getVariable(p[1])
+    global cuadruplo_inicial
+    cuadruplo_inicial[0] = 'input'
+    cuadruplo_inicial[3] = var.getValor()
+    lista_cuadruplos.append(cuadruplo_inicial)
+    cuadruplo_inicial = [None] * 4
+
+
 def p_output(p):
     """
-    output : KW_OUTPUT OP_PARENTESIS_IZQ concat_string OP_PARENTESIS_DER
+    output : KW_OUTPUT OP_PARENTESIS_IZQ valores_a_imprimir OP_PARENTESIS_DER
     """
     pass
+
+
+def p_valores_a_imprimir(p):
+    """
+    valores_a_imprimir : expresion
+                     | concat_string
+
+    """
+    pila_tipos.pop()
+    resultado = pila_operando.pop()
+    global cuadruplo_inicial
+    cuadruplo_inicial[0] = 'output'
+    cuadruplo_inicial[3] = resultado
+    lista_cuadruplos.append(cuadruplo_inicial)
+    cuadruplo_inicial = [None] * 4
+
 
 
 def p_salta_a(p):
@@ -888,9 +916,9 @@ funcion flotante cualquiera(entero dos){
 inicio funcion entero ai(){
     entero a, b;
 
-    mientras(a < b){
-        a = a + 1;
-    };
+    a = a + 1;
+    input(a);
+    output(1+2);
 }
 '''
 # checar que las funciones esten definidas
