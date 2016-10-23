@@ -34,14 +34,15 @@ class Operador:
         '==': 10,
         '&&': 11,
         '||': 12,
-        'a_entero': 13,
-        'a_flotante': 14,
-        'a_string': 15,
-        'negativo': 16,
-        '=': 17,
-        'goto': 18,
-        'gotoF': 19,
-        'gotoT': 20
+        '=': 13,
+
+        'negativo': 99,
+        'a_flotante': 100,
+        'a_string': 101,
+        'a_entero': 102,
+        'goto': 200,
+        'gotoF': 201,
+        'gotoT': 202
     }
 
     @staticmethod

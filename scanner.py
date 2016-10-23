@@ -302,19 +302,39 @@ def p_asignacion(p):
     asignacion : var_consume_id_var_cte arr_not arr_not OP_ASIGNACION expresion
     """
     global cuadruplo_inicial
+    tipo_operando = pila_tipos.pop()
+    tipo_resultado = pila_tipos.pop()
+    CuboSemantico.CuboSemantico.getTipo("=", tipo_operando, tipo_resultado)
     cuadruplo_inicial[0] = '='
     cuadruplo_inicial[1] = pila_operando.pop()
     cuadruplo_inicial[3] = pila_operando.pop()
     lista_cuadruplos.append(cuadruplo_inicial)
-    pila_tipos.pop()
     cuadruplo_inicial = [None] * 4
 
 
 def p_ciclo(p):
     """
-    ciclo : KW_MIENTRAS OP_PARENTESIS_IZQ expresion OP_PARENTESIS_DER bloque_est
+    ciclo : KW_MIENTRAS consume_par_izq_ciclo expresion consume_par_der bloque_est
     """
-    pass
+    print(lista_cuadruplos)
+    print(pila_saltos)
+    falso = pila_saltos.pop()
+    retorno = pila_saltos.pop()
+    global cuadruplo_inicial
+    cuadruplo_inicial[0] = 'goto'
+    cuadruplo_inicial[3] = retorno
+    lista_cuadruplos.append(cuadruplo_inicial)
+    cuadruplo_inicial = [None] * 4
+    cuadruplo_inicial = lista_cuadruplos[falso]
+    cuadruplo_inicial[3] = len(lista_cuadruplos)
+    cuadruplo_inicial = [None] * 4
+
+
+def p_consume_par_izq_ciclo(p):
+    """
+    consume_par_izq_ciclo : OP_PARENTESIS_IZQ
+    """
+    pila_saltos.append(len(lista_cuadruplos))
 
 
 def p_ejec_funcion(p):
@@ -629,6 +649,7 @@ def p_consume_par_der(p):
     cuadruplo_inicial[0] = 'gotoF'
     cuadruplo_inicial[1] = resultado
     lista_cuadruplos.append(cuadruplo_inicial)
+    print("Append here:")
     pila_saltos.append(len(lista_cuadruplos) - 1)
     cuadruplo_inicial = [None] * 4
 
@@ -640,7 +661,7 @@ def p_si_no(p):
     """
     posicion_falso = pila_saltos.pop()
     cuadruplo_goto_f = lista_cuadruplos[posicion_falso]
-    cuadruplo_goto_f[3] = len(lista_cuadruplos) + 1
+    cuadruplo_goto_f[3] = len(lista_cuadruplos)
     lista_cuadruplos[posicion_falso] = cuadruplo_goto_f
 
 
@@ -655,7 +676,7 @@ def p_consume_si_no(p):
     pila_saltos.append(len(lista_cuadruplos) - 1)
     cuadruplo_inicial = [None] * 4
     cuadruplo_goto_f = lista_cuadruplos[posicion_falso]
-    cuadruplo_goto_f[3] = len(lista_cuadruplos) + 1
+    cuadruplo_goto_f[3] = len(lista_cuadruplos)
     lista_cuadruplos[posicion_falso] = cuadruplo_goto_f
 
 
@@ -698,26 +719,25 @@ def p_maneja_var_cte_defaults(p):
             | KW_ANCHO
             | KW_ALTO
     """
-    '''
-    if p.type == 'KW_VERDADERO':
-        p.value = 1
-    elif p.type == 'KW_FALSO':
-        p.value = 0
-    elif p.type == 'KW_NORTE':
-        p.value = 90
-    elif p.type == 'KW_SUR':
-        p.value = 270
-    elif p.type == 'KW_ESTE':
-        p.value = 0
-    elif p.type == 'KW_OESTE':
-        p.value = 180
-    elif p.type == 'KW_ANCHO':
-        p.value = 800
-    elif p.type == 'KW_ALTO':
-        p.value = 600
-    p.type = 'CTE_E'
-    construye_cuadruplo(p)
-    '''
+    valor = None
+    if p[1] == 'verdadero':
+        valor = 1
+    elif p[1] == 'falso':
+        valor = 0
+    elif p[1] == 'norte':
+        valor = 90
+    elif p[1] == 'sur':
+        valor = 270
+    elif p[1] == 'este':
+        valor = 0
+    elif p[1] == 'oeste':
+        valor = 180
+    elif p[1] == 'ancho':
+        valor = 800
+    elif p[1] == 'alto':
+        valor = 600
+    tipo = Utils.Tipo.Entero
+    genera_operando({"tipo": tipo, "valor":valor})
 
 
 def p_cte_e_f(p):
@@ -868,18 +888,9 @@ funcion flotante cualquiera(entero dos){
 inicio funcion entero ai(){
     entero a, b;
 
-    si(a < b){
-        a = a + b;
-    }
-    si_no{
-        a = a * b;
+    mientras(a < b){
+        a = a + 1;
     };
-
-    si(a>b){
-        a = 1;
-    };
-
-
 }
 '''
 # checar que las funciones esten definidas
