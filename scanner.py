@@ -174,6 +174,10 @@ def p_funcion(p):
     global listaParam
     func_table.nuevaFuncion(tipo_actual, p[3], listaParam)
     listaParam = []
+    while len(pila_tipos) > 0:
+        tipo_retorno = pila_tipos.pop()
+        if tipo_retorno != tipo_actual:
+            raise TypeError('Funcion de ' + tipo_actual + ' no puede retornar ' + tipo_retorno)
 
 
 def p_tipo_funcion(p):
@@ -582,21 +586,45 @@ def p_camina(p):
     """
     camina : KW_CAMINA OP_PARENTESIS_IZQ expresion OP_PARENTESIS_DER
     """
-    pass
+    metros = pila_operando.poo()
+    tipo = pila_tipos.pop()
+    if tipo == Utils.Tipo.Entero:
+        raise TypeError('Solo puedes caminar unidades enteras')
+    global cuadruplo_inicial
+    cuadruplo_inicial[0] = 'camina'
+    cuadruplo_inicial[3] = metros
+    lista_cuadruplos.append(cuadruplo_inicial)
+    cuadruplo_inicial = [None] * 4
 
 
 def p_gira(p):
     """
     gira : KW_GIRA OP_PARENTESIS_IZQ expresion OP_PARENTESIS_DER
     """
-    pass
+    metros = pila_operando.poo()
+    tipo = pila_tipos.pop()
+    if tipo == Utils.Tipo.String:
+        raise TypeError('No puedes girar con palabras')
+    global cuadruplo_inicial
+    cuadruplo_inicial[0] = 'gira'
+    cuadruplo_inicial[3] = metros
+    lista_cuadruplos.append(cuadruplo_inicial)
+    cuadruplo_inicial = [None] * 4
 
 
 def p_mira(p):
     """
     mira : KW_MIRA OP_PARENTESIS_IZQ expresion OP_PARENTESIS_DER
     """
-    pass
+    metros = pila_operando.poo()
+    tipo = pila_tipos.pop()
+    if tipo == Utils.Tipo.String:
+        raise TypeError('No puedes mirar en dirar en direccion a palabras')
+    global cuadruplo_inicial
+    cuadruplo_inicial[0] = 'mira'
+    cuadruplo_inicial[3] = metros
+    lista_cuadruplos.append(cuadruplo_inicial)
+    cuadruplo_inicial = [None] * 4
 
 
 def p_a_string(p):
@@ -612,7 +640,12 @@ def p_a_string2(p):
             | CTE_F
             | ID arr_not arr_not
     """
-    pass
+    if len(p) == 2:
+        global cuadruplo_inicial
+        cuadruplo_inicial[0] = "a_string"
+        cuadruplo_inicial[3] = p[1]
+        lista_cuadruplos.append(cuadruplo_inicial)
+        cuadruplo_inicial = [None] * 4
 
 
 def p_a_entero(p):
@@ -626,8 +659,14 @@ def p_a_entero2(p):
     """
     a_entero2 : CTE_F
             | concat_string
+            | ID arr_not arr_not
     """
-    pass
+    if len(p) == 2:
+        global cuadruplo_inicial
+        cuadruplo_inicial[0] = "a_entero"
+        cuadruplo_inicial[3] = p[1]
+        lista_cuadruplos.append(cuadruplo_inicial)
+        cuadruplo_inicial = [None] * 4
 
 
 def p_condicion(p):
@@ -680,8 +719,6 @@ def p_consume_si_no(p):
     lista_cuadruplos[posicion_falso] = cuadruplo_goto_f
 
 
-
-
 def p_bloque_est(p):
     """
     bloque_est : OP_LLAVE_IZQ estatuto_rec OP_LLAVE_DER
@@ -693,7 +730,11 @@ def p_retorna(p):
     """
     retorna : KW_RETORNA expresion
     """
-    pass
+    global cuadruplo_inicial
+    cuadruplo_inicial[0] = 'return'
+    cuadruplo_inicial[3] = pila_operando.pop()
+    lista_cuadruplos.append(cuadruplo_inicial)
+    cuadruplo_inicial = [None] * 4
 
 
 def p_var_cte(p):
@@ -705,7 +746,12 @@ def p_var_cte(p):
             | p_cte_e_f
             | maneja_var_cte_defaults
     """
-    pass
+    if len(p) == 2:
+        global cuadruplo_inicial
+        cuadruplo_inicial[0] = "a_string"
+        cuadruplo_inicial[3] = p[1]
+        lista_cuadruplos.append(cuadruplo_inicial)
+        cuadruplo_inicial = [None] * 4
 
 
 def p_maneja_var_cte_defaults(p):
@@ -828,7 +874,10 @@ def p_reiniciar(p):
     """
     reiniciar : KW_REINICIAR OP_PARENTESIS_IZQ OP_PARENTESIS_DER
     """
-    pass
+    global cuadruplo_inicial
+    cuadruplo_inicial[0] = "reiniciar"
+    lista_cuadruplos.append(cuadruplo_inicial)
+    cuadruplo_inicial = [None] * 4
 
 
 def p_input(p):
@@ -855,9 +904,19 @@ def p_output(p):
 
 def p_salta_a(p):
     """
-    salta_a : KW_SALTA_A OP_PARENTESIS_IZQ CTE_E OP_COMA CTE_E OP_PARENTESIS_DER
+    salta_a : KW_SALTA_A OP_PARENTESIS_IZQ expresion OP_COMA expresion OP_PARENTESIS_DER
     """
-    pass
+    tipo2 = pila_tipos.pop()
+    tipo1 = pila_tipos.pop()
+    if tipo1 == Utils.Tipo.String or tipo2 == Utils.Tipo.String:
+        raise TypeError('Solo puedes caminar unidades enteras')
+    operando2 = pila_operando.pop()
+    operando1 = pila_operando.pop()
+    global cuadruplo_inicial
+    cuadruplo_inicial[0] = 'salta_a'
+    cuadruplo_inicial[1] = operando1
+    cuadruplo_inicial[2] = operando2
+    cuadruplo_inicial = [None] * 4
 
 
 def p_error(p):
@@ -880,7 +939,7 @@ flotante global;
 flotante globalDos[2];
 string una_var[2][3], otra_var, another;
 funcion prueba(entero x, flotante y){
-
+    retorna 1.0;
 }
 funcion flotante cualquiera(entero dos){
     entero variable_meh;

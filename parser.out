@@ -89,142 +89,143 @@ Rule 83    a_string2 -> ID arr_not arr_not
 Rule 84    a_entero -> KW_A_ENTERO OP_PARENTESIS_IZQ a_entero2 OP_PARENTESIS_DER
 Rule 85    a_entero2 -> CTE_F
 Rule 86    a_entero2 -> concat_string
-Rule 87    condicion -> KW_SI OP_PARENTESIS_IZQ expresion consume_par_der bloque_est si_no
-Rule 88    consume_par_der -> OP_PARENTESIS_DER
-Rule 89    si_no -> consume_si_no bloque_est
-Rule 90    si_no -> empty
-Rule 91    consume_si_no -> KW_SI_NO
-Rule 92    bloque_est -> OP_LLAVE_IZQ estatuto_rec OP_LLAVE_DER
-Rule 93    retorna -> KW_RETORNA expresion
-Rule 94    var_cte -> var_consume_id_var_cte var_cte2
-Rule 95    var_cte -> a_string
-Rule 96    var_cte -> a_entero
-Rule 97    var_cte -> a_flotante
-Rule 98    var_cte -> p_cte_e_f
-Rule 99    var_cte -> maneja_var_cte_defaults
-Rule 100   maneja_var_cte_defaults -> KW_VERDADERO
-Rule 101   maneja_var_cte_defaults -> KW_FALSO
-Rule 102   maneja_var_cte_defaults -> KW_NORTE
-Rule 103   maneja_var_cte_defaults -> KW_SUR
-Rule 104   maneja_var_cte_defaults -> KW_ESTE
-Rule 105   maneja_var_cte_defaults -> KW_OESTE
-Rule 106   maneja_var_cte_defaults -> KW_ANCHO
-Rule 107   maneja_var_cte_defaults -> KW_ALTO
-Rule 108   p_cte_e_f -> consume_cte_entero
-Rule 109   p_cte_e_f -> consume_cte_flotante
-Rule 110   consume_cte_flotante -> CTE_F
-Rule 111   consume_cte_entero -> CTE_E
-Rule 112   var_consume_id_var_cte -> ID
-Rule 113   var_cte2 -> arr_not arr_not
-Rule 114   var_cte2 -> OP_PARENTESIS_IZQ var_cte3 OP_PARENTESIS_DER
-Rule 115   var_cte3 -> expresion var_cte4
-Rule 116   var_cte4 -> OP_COMA expresion var_cte4
-Rule 117   var_cte4 -> empty
-Rule 118   concat_string -> CTE_S concat_string2
-Rule 119   concat_string2 -> OP_PUNTO CTE_S
-Rule 120   concat_string2 -> empty
-Rule 121   a_flotante -> KW_A_FLOTANTE OP_PARENTESIS_IZQ a_flotante2 OP_PARENTESIS_DER
-Rule 122   a_flotante2 -> concat_string
-Rule 123   a_flotante2 -> CTE_F
-Rule 124   reiniciar -> KW_REINICIAR OP_PARENTESIS_IZQ OP_PARENTESIS_DER
-Rule 125   input -> KW_INPUT OP_PARENTESIS_IZQ ID input2 OP_PARENTESIS_DER
-Rule 126   input2 -> OP_COMA ID input2
-Rule 127   input2 -> empty
-Rule 128   output -> KW_OUTPUT OP_PARENTESIS_IZQ concat_string OP_PARENTESIS_DER
-Rule 129   salta_a -> KW_SALTA_A OP_PARENTESIS_IZQ CTE_E OP_COMA CTE_E OP_PARENTESIS_DER
+Rule 87    a_entero2 -> ID arr_not arr_not
+Rule 88    condicion -> KW_SI OP_PARENTESIS_IZQ expresion consume_par_der bloque_est si_no
+Rule 89    consume_par_der -> OP_PARENTESIS_DER
+Rule 90    si_no -> consume_si_no bloque_est
+Rule 91    si_no -> empty
+Rule 92    consume_si_no -> KW_SI_NO
+Rule 93    bloque_est -> OP_LLAVE_IZQ estatuto_rec OP_LLAVE_DER
+Rule 94    retorna -> KW_RETORNA expresion
+Rule 95    var_cte -> var_consume_id_var_cte var_cte2
+Rule 96    var_cte -> a_string
+Rule 97    var_cte -> a_entero
+Rule 98    var_cte -> a_flotante
+Rule 99    var_cte -> p_cte_e_f
+Rule 100   var_cte -> maneja_var_cte_defaults
+Rule 101   maneja_var_cte_defaults -> KW_VERDADERO
+Rule 102   maneja_var_cte_defaults -> KW_FALSO
+Rule 103   maneja_var_cte_defaults -> KW_NORTE
+Rule 104   maneja_var_cte_defaults -> KW_SUR
+Rule 105   maneja_var_cte_defaults -> KW_ESTE
+Rule 106   maneja_var_cte_defaults -> KW_OESTE
+Rule 107   maneja_var_cte_defaults -> KW_ANCHO
+Rule 108   maneja_var_cte_defaults -> KW_ALTO
+Rule 109   p_cte_e_f -> consume_cte_entero
+Rule 110   p_cte_e_f -> consume_cte_flotante
+Rule 111   consume_cte_flotante -> CTE_F
+Rule 112   consume_cte_entero -> CTE_E
+Rule 113   var_consume_id_var_cte -> ID
+Rule 114   var_cte2 -> arr_not arr_not
+Rule 115   var_cte2 -> OP_PARENTESIS_IZQ var_cte3 OP_PARENTESIS_DER
+Rule 116   var_cte3 -> expresion var_cte4
+Rule 117   var_cte4 -> OP_COMA expresion var_cte4
+Rule 118   var_cte4 -> empty
+Rule 119   concat_string -> CTE_S concat_string2
+Rule 120   concat_string2 -> OP_PUNTO CTE_S
+Rule 121   concat_string2 -> empty
+Rule 122   a_flotante -> KW_A_FLOTANTE OP_PARENTESIS_IZQ a_flotante2 OP_PARENTESIS_DER
+Rule 123   a_flotante2 -> concat_string
+Rule 124   a_flotante2 -> CTE_F
+Rule 125   reiniciar -> KW_REINICIAR OP_PARENTESIS_IZQ OP_PARENTESIS_DER
+Rule 126   input -> KW_INPUT OP_PARENTESIS_IZQ ID input2 OP_PARENTESIS_DER
+Rule 127   input2 -> OP_COMA ID input2
+Rule 128   input2 -> empty
+Rule 129   output -> KW_OUTPUT OP_PARENTESIS_IZQ concat_string OP_PARENTESIS_DER
+Rule 130   salta_a -> KW_SALTA_A OP_PARENTESIS_IZQ expresion OP_COMA expresion OP_PARENTESIS_DER
 
 Terminals, with rules where they appear
 
-CTE_E                : 21 81 111 129 129
-CTE_F                : 82 85 110 123
-CTE_S                : 118 119
-ID                   : 5 13 20 36 83 112 125 126
-KW_ALTO              : 107
-KW_ANCHO             : 106
+CTE_E                : 21 81 112
+CTE_F                : 82 85 111 124
+CTE_S                : 119 120
+ID                   : 5 13 20 36 83 87 113 126 127
+KW_ALTO              : 108
+KW_ANCHO             : 107
 KW_A_ENTERO          : 84
-KW_A_FLOTANTE        : 121
+KW_A_FLOTANTE        : 122
 KW_A_STRING          : 80
 KW_CAMINA            : 77
 KW_ENTERO            : 8
-KW_ESTE              : 104
-KW_FALSO             : 101
+KW_ESTE              : 105
+KW_FALSO             : 102
 KW_FLOTANTE          : 9
 KW_FUNCION           : 5
 KW_GIRA              : 78
 KW_INICIO            : 2
-KW_INPUT             : 125
+KW_INPUT             : 126
 KW_MIENTRAS          : 34
 KW_MIRA              : 79
-KW_NORTE             : 102
-KW_OESTE             : 105
-KW_OUTPUT            : 128
-KW_REINICIAR         : 124
-KW_RETORNA           : 93
-KW_SALTA_A           : 129
-KW_SI                : 87
-KW_SI_NO             : 91
+KW_NORTE             : 103
+KW_OESTE             : 106
+KW_OUTPUT            : 129
+KW_REINICIAR         : 125
+KW_RETORNA           : 94
+KW_SALTA_A           : 130
+KW_SI                : 88
+KW_SI_NO             : 92
 KW_STRING            : 10
-KW_SUR               : 103
-KW_VERDADERO         : 100
+KW_SUR               : 104
+KW_VERDADERO         : 101
 OP_AND               : 57
 OP_ASIGNACION        : 33
-OP_COMA              : 14 23 39 116 126 129
+OP_COMA              : 14 23 39 117 127 130
 OP_COMPARADOR        : 62
 OP_CORCHETE_DER      : 21
 OP_CORCHETE_IZQ      : 21
 OP_FACTOR            : 72
-OP_LLAVE_DER         : 16 92
-OP_LLAVE_IZQ         : 16 92
+OP_LLAVE_DER         : 16 93
+OP_LLAVE_IZQ         : 16 93
 OP_OR                : 52
-OP_PARENTESIS_DER    : 5 36 73 77 78 79 80 84 88 114 121 124 125 128 129
-OP_PARENTESIS_IZQ    : 5 35 36 76 77 78 79 80 84 87 114 121 124 125 128 129
-OP_PUNTO             : 119
+OP_PARENTESIS_DER    : 5 36 73 77 78 79 80 84 89 115 122 125 126 129 130
+OP_PARENTESIS_IZQ    : 5 35 36 76 77 78 79 80 84 88 115 122 125 126 129 130
+OP_PUNTO             : 120
 OP_PUNTO_COMA        : 19 31
 OP_TERMINO           : 67 74
 error                : 
 
 Nonterminals, with rules where they appear
 
-a_entero             : 96
+a_entero             : 97
 a_entero2            : 84
-a_flotante           : 97
-a_flotante2          : 121
-a_string             : 95
+a_flotante           : 98
+a_flotante2          : 122
+a_string             : 96
 a_string2            : 80
-arr_not              : 20 20 33 33 83 83 113 113
+arr_not              : 20 20 33 33 83 83 87 87 114 114
 asignacion           : 25
-bloque_est           : 34 87 89
+bloque_est           : 34 88 90
 bloque_func          : 5
 camina               : 41
 ciclo                : 27
 comp_and             : 53 60
 comp_and_end         : 58
 comp_or              : 48
-concat_string        : 86 122 128
-concat_string2       : 118
+concat_string        : 86 123 129
+concat_string2       : 119
 condicion            : 26
-consume_cte_entero   : 108
-consume_cte_flotante : 109
+consume_cte_entero   : 109
+consume_cte_flotante : 110
 consume_op_and       : 55
 consume_op_factor    : 70
 consume_op_or        : 50
 consume_op_termino   : 65
-consume_par_der      : 34 87
+consume_par_der      : 34 88
 consume_par_izq      : 73
 consume_par_izq_ciclo : 34
-consume_si_no        : 89
+consume_si_no        : 90
 crear_funciones      : 2 3
 crear_var            : 2 16 17
 def_var              : 17 23
 ejec_funcion         : 28
 ejec_funcion_cont    : 37 39
 ejec_funcion_medio   : 36
-empty                : 4 7 12 15 18 22 24 32 38 40 51 56 61 66 71 90 117 120 127
+empty                : 4 7 12 15 18 22 24 32 38 40 51 56 61 66 71 91 118 121 128
 estatuto             : 31
-estatuto_rec         : 16 31 92
+estatuto_rec         : 16 31 93
 exp                  : 58 65
 exp2                 : 63
-expresion            : 33 34 37 39 50 55 73 77 78 79 87 93 115 116
+expresion            : 33 34 37 39 50 55 73 77 78 79 88 94 116 117 130 130
 factor               : 68
 funcion              : 2 3
 funcion_predef       : 29
@@ -236,8 +237,8 @@ genera_cuadruplo_termino : 63
 gira                 : 42
 inicio               : 0
 input                : 45
-input2               : 125 126
-maneja_var_cte_defaults : 99
+input2               : 126 127
+maneja_var_cte_defaults : 100
 mira                 : 43
 op_comparador        : 60
 op_punto_coma        : 17
@@ -246,22 +247,22 @@ otra_expresion_or    : 48
 otra_var             : 17 23
 otro_parametro       : 13
 output               : 46
-p_cte_e_f            : 98
+p_cte_e_f            : 99
 parametros           : 5
 reiniciar            : 44
 retorna              : 30
 salta_a              : 47
-si_no                : 87
+si_no                : 88
 termino              : 63 70
 termino2             : 68
 tipo                 : 6 13 17
 tipo_funcion         : 5
 toma_parametro       : 11 14
-var_consume_id_var_cte : 33 94
+var_consume_id_var_cte : 33 95
 var_cte              : 74 75
-var_cte2             : 94
-var_cte3             : 114
-var_cte4             : 115 116
+var_cte2             : 95
+var_cte3             : 115
+var_cte4             : 116 117
 
 Parsing method: LALR
 
@@ -834,7 +835,7 @@ state 48
     (30) estatuto -> . retorna
     (1) empty -> .
     (33) asignacion -> . var_consume_id_var_cte arr_not arr_not OP_ASIGNACION expresion
-    (87) condicion -> . KW_SI OP_PARENTESIS_IZQ expresion consume_par_der bloque_est si_no
+    (88) condicion -> . KW_SI OP_PARENTESIS_IZQ expresion consume_par_der bloque_est si_no
     (34) ciclo -> . KW_MIENTRAS consume_par_izq_ciclo expresion consume_par_der bloque_est
     (36) ejec_funcion -> . ID OP_PARENTESIS_IZQ ejec_funcion_medio OP_PARENTESIS_DER
     (41) funcion_predef -> . camina
@@ -844,15 +845,15 @@ state 48
     (45) funcion_predef -> . input
     (46) funcion_predef -> . output
     (47) funcion_predef -> . salta_a
-    (93) retorna -> . KW_RETORNA expresion
-    (112) var_consume_id_var_cte -> . ID
+    (94) retorna -> . KW_RETORNA expresion
+    (113) var_consume_id_var_cte -> . ID
     (77) camina -> . KW_CAMINA OP_PARENTESIS_IZQ expresion OP_PARENTESIS_DER
     (78) gira -> . KW_GIRA OP_PARENTESIS_IZQ expresion OP_PARENTESIS_DER
     (79) mira -> . KW_MIRA OP_PARENTESIS_IZQ expresion OP_PARENTESIS_DER
-    (124) reiniciar -> . KW_REINICIAR OP_PARENTESIS_IZQ OP_PARENTESIS_DER
-    (125) input -> . KW_INPUT OP_PARENTESIS_IZQ ID input2 OP_PARENTESIS_DER
-    (128) output -> . KW_OUTPUT OP_PARENTESIS_IZQ concat_string OP_PARENTESIS_DER
-    (129) salta_a -> . KW_SALTA_A OP_PARENTESIS_IZQ CTE_E OP_COMA CTE_E OP_PARENTESIS_DER
+    (125) reiniciar -> . KW_REINICIAR OP_PARENTESIS_IZQ OP_PARENTESIS_DER
+    (126) input -> . KW_INPUT OP_PARENTESIS_IZQ ID input2 OP_PARENTESIS_DER
+    (129) output -> . KW_OUTPUT OP_PARENTESIS_IZQ concat_string OP_PARENTESIS_DER
+    (130) salta_a -> . KW_SALTA_A OP_PARENTESIS_IZQ expresion OP_COMA expresion OP_PARENTESIS_DER
 
     OP_LLAVE_DER    reduce using rule 1 (empty -> .)
     KW_SI           shift and go to state 55
@@ -894,7 +895,7 @@ state 49
 
 state 50
 
-    (129) salta_a -> KW_SALTA_A . OP_PARENTESIS_IZQ CTE_E OP_COMA CTE_E OP_PARENTESIS_DER
+    (130) salta_a -> KW_SALTA_A . OP_PARENTESIS_IZQ expresion OP_COMA expresion OP_PARENTESIS_DER
 
     OP_PARENTESIS_IZQ shift and go to state 78
 
@@ -929,7 +930,7 @@ state 54
 
 state 55
 
-    (87) condicion -> KW_SI . OP_PARENTESIS_IZQ expresion consume_par_der bloque_est si_no
+    (88) condicion -> KW_SI . OP_PARENTESIS_IZQ expresion consume_par_der bloque_est si_no
 
     OP_PARENTESIS_IZQ shift and go to state 79
 
@@ -950,7 +951,7 @@ state 57
 
 state 58
 
-    (124) reiniciar -> KW_REINICIAR . OP_PARENTESIS_IZQ OP_PARENTESIS_DER
+    (125) reiniciar -> KW_REINICIAR . OP_PARENTESIS_IZQ OP_PARENTESIS_DER
 
     OP_PARENTESIS_IZQ shift and go to state 80
 
@@ -1038,7 +1039,7 @@ state 68
 
 state 69
 
-    (125) input -> KW_INPUT . OP_PARENTESIS_IZQ ID input2 OP_PARENTESIS_DER
+    (126) input -> KW_INPUT . OP_PARENTESIS_IZQ ID input2 OP_PARENTESIS_DER
 
     OP_PARENTESIS_IZQ shift and go to state 87
 
@@ -1046,11 +1047,11 @@ state 69
 state 70
 
     (36) ejec_funcion -> ID . OP_PARENTESIS_IZQ ejec_funcion_medio OP_PARENTESIS_DER
-    (112) var_consume_id_var_cte -> ID .
+    (113) var_consume_id_var_cte -> ID .
 
     OP_PARENTESIS_IZQ shift and go to state 88
-    OP_CORCHETE_IZQ reduce using rule 112 (var_consume_id_var_cte -> ID .)
-    OP_ASIGNACION   reduce using rule 112 (var_consume_id_var_cte -> ID .)
+    OP_CORCHETE_IZQ reduce using rule 113 (var_consume_id_var_cte -> ID .)
+    OP_ASIGNACION   reduce using rule 113 (var_consume_id_var_cte -> ID .)
 
 
 state 71
@@ -1062,7 +1063,7 @@ state 71
 
 state 72
 
-    (128) output -> KW_OUTPUT . OP_PARENTESIS_IZQ concat_string OP_PARENTESIS_DER
+    (129) output -> KW_OUTPUT . OP_PARENTESIS_IZQ concat_string OP_PARENTESIS_DER
 
     OP_PARENTESIS_IZQ shift and go to state 89
 
@@ -1076,7 +1077,7 @@ state 73
 
 state 74
 
-    (93) retorna -> KW_RETORNA . expresion
+    (94) retorna -> KW_RETORNA . expresion
     (48) expresion -> . comp_or genera_cuadruplo_or otra_expresion_or
     (53) comp_or -> . comp_and genera_cuadruplo_and otra_expresion_and
     (58) comp_and -> . exp genera_cuadruplo_comparador comp_and_end
@@ -1086,28 +1087,28 @@ state 74
     (74) factor -> . OP_TERMINO var_cte
     (75) factor -> . var_cte
     (76) consume_par_izq -> . OP_PARENTESIS_IZQ
-    (94) var_cte -> . var_consume_id_var_cte var_cte2
-    (95) var_cte -> . a_string
-    (96) var_cte -> . a_entero
-    (97) var_cte -> . a_flotante
-    (98) var_cte -> . p_cte_e_f
-    (99) var_cte -> . maneja_var_cte_defaults
-    (112) var_consume_id_var_cte -> . ID
+    (95) var_cte -> . var_consume_id_var_cte var_cte2
+    (96) var_cte -> . a_string
+    (97) var_cte -> . a_entero
+    (98) var_cte -> . a_flotante
+    (99) var_cte -> . p_cte_e_f
+    (100) var_cte -> . maneja_var_cte_defaults
+    (113) var_consume_id_var_cte -> . ID
     (80) a_string -> . KW_A_STRING OP_PARENTESIS_IZQ a_string2 OP_PARENTESIS_DER
     (84) a_entero -> . KW_A_ENTERO OP_PARENTESIS_IZQ a_entero2 OP_PARENTESIS_DER
-    (121) a_flotante -> . KW_A_FLOTANTE OP_PARENTESIS_IZQ a_flotante2 OP_PARENTESIS_DER
-    (108) p_cte_e_f -> . consume_cte_entero
-    (109) p_cte_e_f -> . consume_cte_flotante
-    (100) maneja_var_cte_defaults -> . KW_VERDADERO
-    (101) maneja_var_cte_defaults -> . KW_FALSO
-    (102) maneja_var_cte_defaults -> . KW_NORTE
-    (103) maneja_var_cte_defaults -> . KW_SUR
-    (104) maneja_var_cte_defaults -> . KW_ESTE
-    (105) maneja_var_cte_defaults -> . KW_OESTE
-    (106) maneja_var_cte_defaults -> . KW_ANCHO
-    (107) maneja_var_cte_defaults -> . KW_ALTO
-    (111) consume_cte_entero -> . CTE_E
-    (110) consume_cte_flotante -> . CTE_F
+    (122) a_flotante -> . KW_A_FLOTANTE OP_PARENTESIS_IZQ a_flotante2 OP_PARENTESIS_DER
+    (109) p_cte_e_f -> . consume_cte_entero
+    (110) p_cte_e_f -> . consume_cte_flotante
+    (101) maneja_var_cte_defaults -> . KW_VERDADERO
+    (102) maneja_var_cte_defaults -> . KW_FALSO
+    (103) maneja_var_cte_defaults -> . KW_NORTE
+    (104) maneja_var_cte_defaults -> . KW_SUR
+    (105) maneja_var_cte_defaults -> . KW_ESTE
+    (106) maneja_var_cte_defaults -> . KW_OESTE
+    (107) maneja_var_cte_defaults -> . KW_ANCHO
+    (108) maneja_var_cte_defaults -> . KW_ALTO
+    (112) consume_cte_entero -> . CTE_E
+    (111) consume_cte_flotante -> . CTE_F
 
     OP_TERMINO      shift and go to state 90
     OP_PARENTESIS_IZQ shift and go to state 121
@@ -1169,28 +1170,28 @@ state 77
     (74) factor -> . OP_TERMINO var_cte
     (75) factor -> . var_cte
     (76) consume_par_izq -> . OP_PARENTESIS_IZQ
-    (94) var_cte -> . var_consume_id_var_cte var_cte2
-    (95) var_cte -> . a_string
-    (96) var_cte -> . a_entero
-    (97) var_cte -> . a_flotante
-    (98) var_cte -> . p_cte_e_f
-    (99) var_cte -> . maneja_var_cte_defaults
-    (112) var_consume_id_var_cte -> . ID
+    (95) var_cte -> . var_consume_id_var_cte var_cte2
+    (96) var_cte -> . a_string
+    (97) var_cte -> . a_entero
+    (98) var_cte -> . a_flotante
+    (99) var_cte -> . p_cte_e_f
+    (100) var_cte -> . maneja_var_cte_defaults
+    (113) var_consume_id_var_cte -> . ID
     (80) a_string -> . KW_A_STRING OP_PARENTESIS_IZQ a_string2 OP_PARENTESIS_DER
     (84) a_entero -> . KW_A_ENTERO OP_PARENTESIS_IZQ a_entero2 OP_PARENTESIS_DER
-    (121) a_flotante -> . KW_A_FLOTANTE OP_PARENTESIS_IZQ a_flotante2 OP_PARENTESIS_DER
-    (108) p_cte_e_f -> . consume_cte_entero
-    (109) p_cte_e_f -> . consume_cte_flotante
-    (100) maneja_var_cte_defaults -> . KW_VERDADERO
-    (101) maneja_var_cte_defaults -> . KW_FALSO
-    (102) maneja_var_cte_defaults -> . KW_NORTE
-    (103) maneja_var_cte_defaults -> . KW_SUR
-    (104) maneja_var_cte_defaults -> . KW_ESTE
-    (105) maneja_var_cte_defaults -> . KW_OESTE
-    (106) maneja_var_cte_defaults -> . KW_ANCHO
-    (107) maneja_var_cte_defaults -> . KW_ALTO
-    (111) consume_cte_entero -> . CTE_E
-    (110) consume_cte_flotante -> . CTE_F
+    (122) a_flotante -> . KW_A_FLOTANTE OP_PARENTESIS_IZQ a_flotante2 OP_PARENTESIS_DER
+    (109) p_cte_e_f -> . consume_cte_entero
+    (110) p_cte_e_f -> . consume_cte_flotante
+    (101) maneja_var_cte_defaults -> . KW_VERDADERO
+    (102) maneja_var_cte_defaults -> . KW_FALSO
+    (103) maneja_var_cte_defaults -> . KW_NORTE
+    (104) maneja_var_cte_defaults -> . KW_SUR
+    (105) maneja_var_cte_defaults -> . KW_ESTE
+    (106) maneja_var_cte_defaults -> . KW_OESTE
+    (107) maneja_var_cte_defaults -> . KW_ANCHO
+    (108) maneja_var_cte_defaults -> . KW_ALTO
+    (112) consume_cte_entero -> . CTE_E
+    (111) consume_cte_flotante -> . CTE_F
 
     OP_TERMINO      shift and go to state 90
     OP_PARENTESIS_IZQ shift and go to state 121
@@ -1228,14 +1229,7 @@ state 77
 
 state 78
 
-    (129) salta_a -> KW_SALTA_A OP_PARENTESIS_IZQ . CTE_E OP_COMA CTE_E OP_PARENTESIS_DER
-
-    CTE_E           shift and go to state 124
-
-
-state 79
-
-    (87) condicion -> KW_SI OP_PARENTESIS_IZQ . expresion consume_par_der bloque_est si_no
+    (130) salta_a -> KW_SALTA_A OP_PARENTESIS_IZQ . expresion OP_COMA expresion OP_PARENTESIS_DER
     (48) expresion -> . comp_or genera_cuadruplo_or otra_expresion_or
     (53) comp_or -> . comp_and genera_cuadruplo_and otra_expresion_and
     (58) comp_and -> . exp genera_cuadruplo_comparador comp_and_end
@@ -1245,28 +1239,97 @@ state 79
     (74) factor -> . OP_TERMINO var_cte
     (75) factor -> . var_cte
     (76) consume_par_izq -> . OP_PARENTESIS_IZQ
-    (94) var_cte -> . var_consume_id_var_cte var_cte2
-    (95) var_cte -> . a_string
-    (96) var_cte -> . a_entero
-    (97) var_cte -> . a_flotante
-    (98) var_cte -> . p_cte_e_f
-    (99) var_cte -> . maneja_var_cte_defaults
-    (112) var_consume_id_var_cte -> . ID
+    (95) var_cte -> . var_consume_id_var_cte var_cte2
+    (96) var_cte -> . a_string
+    (97) var_cte -> . a_entero
+    (98) var_cte -> . a_flotante
+    (99) var_cte -> . p_cte_e_f
+    (100) var_cte -> . maneja_var_cte_defaults
+    (113) var_consume_id_var_cte -> . ID
     (80) a_string -> . KW_A_STRING OP_PARENTESIS_IZQ a_string2 OP_PARENTESIS_DER
     (84) a_entero -> . KW_A_ENTERO OP_PARENTESIS_IZQ a_entero2 OP_PARENTESIS_DER
-    (121) a_flotante -> . KW_A_FLOTANTE OP_PARENTESIS_IZQ a_flotante2 OP_PARENTESIS_DER
-    (108) p_cte_e_f -> . consume_cte_entero
-    (109) p_cte_e_f -> . consume_cte_flotante
-    (100) maneja_var_cte_defaults -> . KW_VERDADERO
-    (101) maneja_var_cte_defaults -> . KW_FALSO
-    (102) maneja_var_cte_defaults -> . KW_NORTE
-    (103) maneja_var_cte_defaults -> . KW_SUR
-    (104) maneja_var_cte_defaults -> . KW_ESTE
-    (105) maneja_var_cte_defaults -> . KW_OESTE
-    (106) maneja_var_cte_defaults -> . KW_ANCHO
-    (107) maneja_var_cte_defaults -> . KW_ALTO
-    (111) consume_cte_entero -> . CTE_E
-    (110) consume_cte_flotante -> . CTE_F
+    (122) a_flotante -> . KW_A_FLOTANTE OP_PARENTESIS_IZQ a_flotante2 OP_PARENTESIS_DER
+    (109) p_cte_e_f -> . consume_cte_entero
+    (110) p_cte_e_f -> . consume_cte_flotante
+    (101) maneja_var_cte_defaults -> . KW_VERDADERO
+    (102) maneja_var_cte_defaults -> . KW_FALSO
+    (103) maneja_var_cte_defaults -> . KW_NORTE
+    (104) maneja_var_cte_defaults -> . KW_SUR
+    (105) maneja_var_cte_defaults -> . KW_ESTE
+    (106) maneja_var_cte_defaults -> . KW_OESTE
+    (107) maneja_var_cte_defaults -> . KW_ANCHO
+    (108) maneja_var_cte_defaults -> . KW_ALTO
+    (112) consume_cte_entero -> . CTE_E
+    (111) consume_cte_flotante -> . CTE_F
+
+    OP_TERMINO      shift and go to state 90
+    OP_PARENTESIS_IZQ shift and go to state 121
+    ID              shift and go to state 114
+    KW_A_STRING     shift and go to state 107
+    KW_A_ENTERO     shift and go to state 118
+    KW_A_FLOTANTE   shift and go to state 120
+    KW_VERDADERO    shift and go to state 116
+    KW_FALSO        shift and go to state 100
+    KW_NORTE        shift and go to state 98
+    KW_SUR          shift and go to state 108
+    KW_ESTE         shift and go to state 93
+    KW_OESTE        shift and go to state 102
+    KW_ANCHO        shift and go to state 111
+    KW_ALTO         shift and go to state 92
+    CTE_E           shift and go to state 117
+    CTE_F           shift and go to state 104
+
+    var_cte                        shift and go to state 91
+    termino                        shift and go to state 94
+    maneja_var_cte_defaults        shift and go to state 95
+    comp_or                        shift and go to state 96
+    a_entero                       shift and go to state 97
+    comp_and                       shift and go to state 101
+    factor                         shift and go to state 103
+    a_flotante                     shift and go to state 105
+    consume_cte_entero             shift and go to state 106
+    consume_cte_flotante           shift and go to state 110
+    var_consume_id_var_cte         shift and go to state 112
+    a_string                       shift and go to state 113
+    expresion                      shift and go to state 124
+    consume_par_izq                shift and go to state 119
+    p_cte_e_f                      shift and go to state 99
+    exp                            shift and go to state 109
+
+state 79
+
+    (88) condicion -> KW_SI OP_PARENTESIS_IZQ . expresion consume_par_der bloque_est si_no
+    (48) expresion -> . comp_or genera_cuadruplo_or otra_expresion_or
+    (53) comp_or -> . comp_and genera_cuadruplo_and otra_expresion_and
+    (58) comp_and -> . exp genera_cuadruplo_comparador comp_and_end
+    (63) exp -> . termino genera_cuadruplo_termino exp2
+    (68) termino -> . factor genera_cuadruplo_factor termino2
+    (73) factor -> . consume_par_izq expresion OP_PARENTESIS_DER
+    (74) factor -> . OP_TERMINO var_cte
+    (75) factor -> . var_cte
+    (76) consume_par_izq -> . OP_PARENTESIS_IZQ
+    (95) var_cte -> . var_consume_id_var_cte var_cte2
+    (96) var_cte -> . a_string
+    (97) var_cte -> . a_entero
+    (98) var_cte -> . a_flotante
+    (99) var_cte -> . p_cte_e_f
+    (100) var_cte -> . maneja_var_cte_defaults
+    (113) var_consume_id_var_cte -> . ID
+    (80) a_string -> . KW_A_STRING OP_PARENTESIS_IZQ a_string2 OP_PARENTESIS_DER
+    (84) a_entero -> . KW_A_ENTERO OP_PARENTESIS_IZQ a_entero2 OP_PARENTESIS_DER
+    (122) a_flotante -> . KW_A_FLOTANTE OP_PARENTESIS_IZQ a_flotante2 OP_PARENTESIS_DER
+    (109) p_cte_e_f -> . consume_cte_entero
+    (110) p_cte_e_f -> . consume_cte_flotante
+    (101) maneja_var_cte_defaults -> . KW_VERDADERO
+    (102) maneja_var_cte_defaults -> . KW_FALSO
+    (103) maneja_var_cte_defaults -> . KW_NORTE
+    (104) maneja_var_cte_defaults -> . KW_SUR
+    (105) maneja_var_cte_defaults -> . KW_ESTE
+    (106) maneja_var_cte_defaults -> . KW_OESTE
+    (107) maneja_var_cte_defaults -> . KW_ANCHO
+    (108) maneja_var_cte_defaults -> . KW_ALTO
+    (112) consume_cte_entero -> . CTE_E
+    (111) consume_cte_flotante -> . CTE_F
 
     OP_TERMINO      shift and go to state 90
     OP_PARENTESIS_IZQ shift and go to state 121
@@ -1304,7 +1367,7 @@ state 79
 
 state 80
 
-    (124) reiniciar -> KW_REINICIAR OP_PARENTESIS_IZQ . OP_PARENTESIS_DER
+    (125) reiniciar -> KW_REINICIAR OP_PARENTESIS_IZQ . OP_PARENTESIS_DER
 
     OP_PARENTESIS_DER shift and go to state 126
 
@@ -1322,7 +1385,7 @@ state 81
     (30) estatuto -> . retorna
     (1) empty -> .
     (33) asignacion -> . var_consume_id_var_cte arr_not arr_not OP_ASIGNACION expresion
-    (87) condicion -> . KW_SI OP_PARENTESIS_IZQ expresion consume_par_der bloque_est si_no
+    (88) condicion -> . KW_SI OP_PARENTESIS_IZQ expresion consume_par_der bloque_est si_no
     (34) ciclo -> . KW_MIENTRAS consume_par_izq_ciclo expresion consume_par_der bloque_est
     (36) ejec_funcion -> . ID OP_PARENTESIS_IZQ ejec_funcion_medio OP_PARENTESIS_DER
     (41) funcion_predef -> . camina
@@ -1332,15 +1395,15 @@ state 81
     (45) funcion_predef -> . input
     (46) funcion_predef -> . output
     (47) funcion_predef -> . salta_a
-    (93) retorna -> . KW_RETORNA expresion
-    (112) var_consume_id_var_cte -> . ID
+    (94) retorna -> . KW_RETORNA expresion
+    (113) var_consume_id_var_cte -> . ID
     (77) camina -> . KW_CAMINA OP_PARENTESIS_IZQ expresion OP_PARENTESIS_DER
     (78) gira -> . KW_GIRA OP_PARENTESIS_IZQ expresion OP_PARENTESIS_DER
     (79) mira -> . KW_MIRA OP_PARENTESIS_IZQ expresion OP_PARENTESIS_DER
-    (124) reiniciar -> . KW_REINICIAR OP_PARENTESIS_IZQ OP_PARENTESIS_DER
-    (125) input -> . KW_INPUT OP_PARENTESIS_IZQ ID input2 OP_PARENTESIS_DER
-    (128) output -> . KW_OUTPUT OP_PARENTESIS_IZQ concat_string OP_PARENTESIS_DER
-    (129) salta_a -> . KW_SALTA_A OP_PARENTESIS_IZQ CTE_E OP_COMA CTE_E OP_PARENTESIS_DER
+    (125) reiniciar -> . KW_REINICIAR OP_PARENTESIS_IZQ OP_PARENTESIS_DER
+    (126) input -> . KW_INPUT OP_PARENTESIS_IZQ ID input2 OP_PARENTESIS_DER
+    (129) output -> . KW_OUTPUT OP_PARENTESIS_IZQ concat_string OP_PARENTESIS_DER
+    (130) salta_a -> . KW_SALTA_A OP_PARENTESIS_IZQ expresion OP_COMA expresion OP_PARENTESIS_DER
 
     OP_LLAVE_DER    reduce using rule 1 (empty -> .)
     KW_SI           shift and go to state 55
@@ -1385,28 +1448,28 @@ state 82
     (74) factor -> . OP_TERMINO var_cte
     (75) factor -> . var_cte
     (76) consume_par_izq -> . OP_PARENTESIS_IZQ
-    (94) var_cte -> . var_consume_id_var_cte var_cte2
-    (95) var_cte -> . a_string
-    (96) var_cte -> . a_entero
-    (97) var_cte -> . a_flotante
-    (98) var_cte -> . p_cte_e_f
-    (99) var_cte -> . maneja_var_cte_defaults
-    (112) var_consume_id_var_cte -> . ID
+    (95) var_cte -> . var_consume_id_var_cte var_cte2
+    (96) var_cte -> . a_string
+    (97) var_cte -> . a_entero
+    (98) var_cte -> . a_flotante
+    (99) var_cte -> . p_cte_e_f
+    (100) var_cte -> . maneja_var_cte_defaults
+    (113) var_consume_id_var_cte -> . ID
     (80) a_string -> . KW_A_STRING OP_PARENTESIS_IZQ a_string2 OP_PARENTESIS_DER
     (84) a_entero -> . KW_A_ENTERO OP_PARENTESIS_IZQ a_entero2 OP_PARENTESIS_DER
-    (121) a_flotante -> . KW_A_FLOTANTE OP_PARENTESIS_IZQ a_flotante2 OP_PARENTESIS_DER
-    (108) p_cte_e_f -> . consume_cte_entero
-    (109) p_cte_e_f -> . consume_cte_flotante
-    (100) maneja_var_cte_defaults -> . KW_VERDADERO
-    (101) maneja_var_cte_defaults -> . KW_FALSO
-    (102) maneja_var_cte_defaults -> . KW_NORTE
-    (103) maneja_var_cte_defaults -> . KW_SUR
-    (104) maneja_var_cte_defaults -> . KW_ESTE
-    (105) maneja_var_cte_defaults -> . KW_OESTE
-    (106) maneja_var_cte_defaults -> . KW_ANCHO
-    (107) maneja_var_cte_defaults -> . KW_ALTO
-    (111) consume_cte_entero -> . CTE_E
-    (110) consume_cte_flotante -> . CTE_F
+    (122) a_flotante -> . KW_A_FLOTANTE OP_PARENTESIS_IZQ a_flotante2 OP_PARENTESIS_DER
+    (109) p_cte_e_f -> . consume_cte_entero
+    (110) p_cte_e_f -> . consume_cte_flotante
+    (101) maneja_var_cte_defaults -> . KW_VERDADERO
+    (102) maneja_var_cte_defaults -> . KW_FALSO
+    (103) maneja_var_cte_defaults -> . KW_NORTE
+    (104) maneja_var_cte_defaults -> . KW_SUR
+    (105) maneja_var_cte_defaults -> . KW_ESTE
+    (106) maneja_var_cte_defaults -> . KW_OESTE
+    (107) maneja_var_cte_defaults -> . KW_ANCHO
+    (108) maneja_var_cte_defaults -> . KW_ALTO
+    (112) consume_cte_entero -> . CTE_E
+    (111) consume_cte_flotante -> . CTE_F
 
     OP_TERMINO      shift and go to state 90
     OP_PARENTESIS_IZQ shift and go to state 121
@@ -1476,28 +1539,28 @@ state 85
     (74) factor -> . OP_TERMINO var_cte
     (75) factor -> . var_cte
     (76) consume_par_izq -> . OP_PARENTESIS_IZQ
-    (94) var_cte -> . var_consume_id_var_cte var_cte2
-    (95) var_cte -> . a_string
-    (96) var_cte -> . a_entero
-    (97) var_cte -> . a_flotante
-    (98) var_cte -> . p_cte_e_f
-    (99) var_cte -> . maneja_var_cte_defaults
-    (112) var_consume_id_var_cte -> . ID
+    (95) var_cte -> . var_consume_id_var_cte var_cte2
+    (96) var_cte -> . a_string
+    (97) var_cte -> . a_entero
+    (98) var_cte -> . a_flotante
+    (99) var_cte -> . p_cte_e_f
+    (100) var_cte -> . maneja_var_cte_defaults
+    (113) var_consume_id_var_cte -> . ID
     (80) a_string -> . KW_A_STRING OP_PARENTESIS_IZQ a_string2 OP_PARENTESIS_DER
     (84) a_entero -> . KW_A_ENTERO OP_PARENTESIS_IZQ a_entero2 OP_PARENTESIS_DER
-    (121) a_flotante -> . KW_A_FLOTANTE OP_PARENTESIS_IZQ a_flotante2 OP_PARENTESIS_DER
-    (108) p_cte_e_f -> . consume_cte_entero
-    (109) p_cte_e_f -> . consume_cte_flotante
-    (100) maneja_var_cte_defaults -> . KW_VERDADERO
-    (101) maneja_var_cte_defaults -> . KW_FALSO
-    (102) maneja_var_cte_defaults -> . KW_NORTE
-    (103) maneja_var_cte_defaults -> . KW_SUR
-    (104) maneja_var_cte_defaults -> . KW_ESTE
-    (105) maneja_var_cte_defaults -> . KW_OESTE
-    (106) maneja_var_cte_defaults -> . KW_ANCHO
-    (107) maneja_var_cte_defaults -> . KW_ALTO
-    (111) consume_cte_entero -> . CTE_E
-    (110) consume_cte_flotante -> . CTE_F
+    (122) a_flotante -> . KW_A_FLOTANTE OP_PARENTESIS_IZQ a_flotante2 OP_PARENTESIS_DER
+    (109) p_cte_e_f -> . consume_cte_entero
+    (110) p_cte_e_f -> . consume_cte_flotante
+    (101) maneja_var_cte_defaults -> . KW_VERDADERO
+    (102) maneja_var_cte_defaults -> . KW_FALSO
+    (103) maneja_var_cte_defaults -> . KW_NORTE
+    (104) maneja_var_cte_defaults -> . KW_SUR
+    (105) maneja_var_cte_defaults -> . KW_ESTE
+    (106) maneja_var_cte_defaults -> . KW_OESTE
+    (107) maneja_var_cte_defaults -> . KW_ANCHO
+    (108) maneja_var_cte_defaults -> . KW_ALTO
+    (112) consume_cte_entero -> . CTE_E
+    (111) consume_cte_flotante -> . CTE_F
 
     OP_TERMINO      shift and go to state 90
     OP_PARENTESIS_IZQ shift and go to state 121
@@ -1557,7 +1620,7 @@ state 86
 
 state 87
 
-    (125) input -> KW_INPUT OP_PARENTESIS_IZQ . ID input2 OP_PARENTESIS_DER
+    (126) input -> KW_INPUT OP_PARENTESIS_IZQ . ID input2 OP_PARENTESIS_DER
 
     ID              shift and go to state 131
 
@@ -1577,28 +1640,28 @@ state 88
     (74) factor -> . OP_TERMINO var_cte
     (75) factor -> . var_cte
     (76) consume_par_izq -> . OP_PARENTESIS_IZQ
-    (94) var_cte -> . var_consume_id_var_cte var_cte2
-    (95) var_cte -> . a_string
-    (96) var_cte -> . a_entero
-    (97) var_cte -> . a_flotante
-    (98) var_cte -> . p_cte_e_f
-    (99) var_cte -> . maneja_var_cte_defaults
-    (112) var_consume_id_var_cte -> . ID
+    (95) var_cte -> . var_consume_id_var_cte var_cte2
+    (96) var_cte -> . a_string
+    (97) var_cte -> . a_entero
+    (98) var_cte -> . a_flotante
+    (99) var_cte -> . p_cte_e_f
+    (100) var_cte -> . maneja_var_cte_defaults
+    (113) var_consume_id_var_cte -> . ID
     (80) a_string -> . KW_A_STRING OP_PARENTESIS_IZQ a_string2 OP_PARENTESIS_DER
     (84) a_entero -> . KW_A_ENTERO OP_PARENTESIS_IZQ a_entero2 OP_PARENTESIS_DER
-    (121) a_flotante -> . KW_A_FLOTANTE OP_PARENTESIS_IZQ a_flotante2 OP_PARENTESIS_DER
-    (108) p_cte_e_f -> . consume_cte_entero
-    (109) p_cte_e_f -> . consume_cte_flotante
-    (100) maneja_var_cte_defaults -> . KW_VERDADERO
-    (101) maneja_var_cte_defaults -> . KW_FALSO
-    (102) maneja_var_cte_defaults -> . KW_NORTE
-    (103) maneja_var_cte_defaults -> . KW_SUR
-    (104) maneja_var_cte_defaults -> . KW_ESTE
-    (105) maneja_var_cte_defaults -> . KW_OESTE
-    (106) maneja_var_cte_defaults -> . KW_ANCHO
-    (107) maneja_var_cte_defaults -> . KW_ALTO
-    (111) consume_cte_entero -> . CTE_E
-    (110) consume_cte_flotante -> . CTE_F
+    (122) a_flotante -> . KW_A_FLOTANTE OP_PARENTESIS_IZQ a_flotante2 OP_PARENTESIS_DER
+    (109) p_cte_e_f -> . consume_cte_entero
+    (110) p_cte_e_f -> . consume_cte_flotante
+    (101) maneja_var_cte_defaults -> . KW_VERDADERO
+    (102) maneja_var_cte_defaults -> . KW_FALSO
+    (103) maneja_var_cte_defaults -> . KW_NORTE
+    (104) maneja_var_cte_defaults -> . KW_SUR
+    (105) maneja_var_cte_defaults -> . KW_ESTE
+    (106) maneja_var_cte_defaults -> . KW_OESTE
+    (107) maneja_var_cte_defaults -> . KW_ANCHO
+    (108) maneja_var_cte_defaults -> . KW_ALTO
+    (112) consume_cte_entero -> . CTE_E
+    (111) consume_cte_flotante -> . CTE_F
 
     OP_PARENTESIS_DER reduce using rule 1 (empty -> .)
     OP_TERMINO      shift and go to state 90
@@ -1639,8 +1702,8 @@ state 88
 
 state 89
 
-    (128) output -> KW_OUTPUT OP_PARENTESIS_IZQ . concat_string OP_PARENTESIS_DER
-    (118) concat_string -> . CTE_S concat_string2
+    (129) output -> KW_OUTPUT OP_PARENTESIS_IZQ . concat_string OP_PARENTESIS_DER
+    (119) concat_string -> . CTE_S concat_string2
 
     CTE_S           shift and go to state 136
 
@@ -1649,28 +1712,28 @@ state 89
 state 90
 
     (74) factor -> OP_TERMINO . var_cte
-    (94) var_cte -> . var_consume_id_var_cte var_cte2
-    (95) var_cte -> . a_string
-    (96) var_cte -> . a_entero
-    (97) var_cte -> . a_flotante
-    (98) var_cte -> . p_cte_e_f
-    (99) var_cte -> . maneja_var_cte_defaults
-    (112) var_consume_id_var_cte -> . ID
+    (95) var_cte -> . var_consume_id_var_cte var_cte2
+    (96) var_cte -> . a_string
+    (97) var_cte -> . a_entero
+    (98) var_cte -> . a_flotante
+    (99) var_cte -> . p_cte_e_f
+    (100) var_cte -> . maneja_var_cte_defaults
+    (113) var_consume_id_var_cte -> . ID
     (80) a_string -> . KW_A_STRING OP_PARENTESIS_IZQ a_string2 OP_PARENTESIS_DER
     (84) a_entero -> . KW_A_ENTERO OP_PARENTESIS_IZQ a_entero2 OP_PARENTESIS_DER
-    (121) a_flotante -> . KW_A_FLOTANTE OP_PARENTESIS_IZQ a_flotante2 OP_PARENTESIS_DER
-    (108) p_cte_e_f -> . consume_cte_entero
-    (109) p_cte_e_f -> . consume_cte_flotante
-    (100) maneja_var_cte_defaults -> . KW_VERDADERO
-    (101) maneja_var_cte_defaults -> . KW_FALSO
-    (102) maneja_var_cte_defaults -> . KW_NORTE
-    (103) maneja_var_cte_defaults -> . KW_SUR
-    (104) maneja_var_cte_defaults -> . KW_ESTE
-    (105) maneja_var_cte_defaults -> . KW_OESTE
-    (106) maneja_var_cte_defaults -> . KW_ANCHO
-    (107) maneja_var_cte_defaults -> . KW_ALTO
-    (111) consume_cte_entero -> . CTE_E
-    (110) consume_cte_flotante -> . CTE_F
+    (122) a_flotante -> . KW_A_FLOTANTE OP_PARENTESIS_IZQ a_flotante2 OP_PARENTESIS_DER
+    (109) p_cte_e_f -> . consume_cte_entero
+    (110) p_cte_e_f -> . consume_cte_flotante
+    (101) maneja_var_cte_defaults -> . KW_VERDADERO
+    (102) maneja_var_cte_defaults -> . KW_FALSO
+    (103) maneja_var_cte_defaults -> . KW_NORTE
+    (104) maneja_var_cte_defaults -> . KW_SUR
+    (105) maneja_var_cte_defaults -> . KW_ESTE
+    (106) maneja_var_cte_defaults -> . KW_OESTE
+    (107) maneja_var_cte_defaults -> . KW_ANCHO
+    (108) maneja_var_cte_defaults -> . KW_ALTO
+    (112) consume_cte_entero -> . CTE_E
+    (111) consume_cte_flotante -> . CTE_F
 
     ID              shift and go to state 114
     KW_A_STRING     shift and go to state 107
@@ -1713,30 +1776,30 @@ state 91
 
 state 92
 
-    (107) maneja_var_cte_defaults -> KW_ALTO .
+    (108) maneja_var_cte_defaults -> KW_ALTO .
 
-    OP_FACTOR       reduce using rule 107 (maneja_var_cte_defaults -> KW_ALTO .)
-    OP_TERMINO      reduce using rule 107 (maneja_var_cte_defaults -> KW_ALTO .)
-    OP_COMPARADOR   reduce using rule 107 (maneja_var_cte_defaults -> KW_ALTO .)
-    OP_AND          reduce using rule 107 (maneja_var_cte_defaults -> KW_ALTO .)
-    OP_OR           reduce using rule 107 (maneja_var_cte_defaults -> KW_ALTO .)
-    OP_PARENTESIS_DER reduce using rule 107 (maneja_var_cte_defaults -> KW_ALTO .)
-    OP_PUNTO_COMA   reduce using rule 107 (maneja_var_cte_defaults -> KW_ALTO .)
-    OP_COMA         reduce using rule 107 (maneja_var_cte_defaults -> KW_ALTO .)
+    OP_FACTOR       reduce using rule 108 (maneja_var_cte_defaults -> KW_ALTO .)
+    OP_TERMINO      reduce using rule 108 (maneja_var_cte_defaults -> KW_ALTO .)
+    OP_COMPARADOR   reduce using rule 108 (maneja_var_cte_defaults -> KW_ALTO .)
+    OP_AND          reduce using rule 108 (maneja_var_cte_defaults -> KW_ALTO .)
+    OP_OR           reduce using rule 108 (maneja_var_cte_defaults -> KW_ALTO .)
+    OP_PARENTESIS_DER reduce using rule 108 (maneja_var_cte_defaults -> KW_ALTO .)
+    OP_PUNTO_COMA   reduce using rule 108 (maneja_var_cte_defaults -> KW_ALTO .)
+    OP_COMA         reduce using rule 108 (maneja_var_cte_defaults -> KW_ALTO .)
 
 
 state 93
 
-    (104) maneja_var_cte_defaults -> KW_ESTE .
+    (105) maneja_var_cte_defaults -> KW_ESTE .
 
-    OP_FACTOR       reduce using rule 104 (maneja_var_cte_defaults -> KW_ESTE .)
-    OP_TERMINO      reduce using rule 104 (maneja_var_cte_defaults -> KW_ESTE .)
-    OP_COMPARADOR   reduce using rule 104 (maneja_var_cte_defaults -> KW_ESTE .)
-    OP_AND          reduce using rule 104 (maneja_var_cte_defaults -> KW_ESTE .)
-    OP_OR           reduce using rule 104 (maneja_var_cte_defaults -> KW_ESTE .)
-    OP_PARENTESIS_DER reduce using rule 104 (maneja_var_cte_defaults -> KW_ESTE .)
-    OP_PUNTO_COMA   reduce using rule 104 (maneja_var_cte_defaults -> KW_ESTE .)
-    OP_COMA         reduce using rule 104 (maneja_var_cte_defaults -> KW_ESTE .)
+    OP_FACTOR       reduce using rule 105 (maneja_var_cte_defaults -> KW_ESTE .)
+    OP_TERMINO      reduce using rule 105 (maneja_var_cte_defaults -> KW_ESTE .)
+    OP_COMPARADOR   reduce using rule 105 (maneja_var_cte_defaults -> KW_ESTE .)
+    OP_AND          reduce using rule 105 (maneja_var_cte_defaults -> KW_ESTE .)
+    OP_OR           reduce using rule 105 (maneja_var_cte_defaults -> KW_ESTE .)
+    OP_PARENTESIS_DER reduce using rule 105 (maneja_var_cte_defaults -> KW_ESTE .)
+    OP_PUNTO_COMA   reduce using rule 105 (maneja_var_cte_defaults -> KW_ESTE .)
+    OP_COMA         reduce using rule 105 (maneja_var_cte_defaults -> KW_ESTE .)
 
 
 state 94
@@ -1756,16 +1819,16 @@ state 94
 
 state 95
 
-    (99) var_cte -> maneja_var_cte_defaults .
+    (100) var_cte -> maneja_var_cte_defaults .
 
-    OP_FACTOR       reduce using rule 99 (var_cte -> maneja_var_cte_defaults .)
-    OP_TERMINO      reduce using rule 99 (var_cte -> maneja_var_cte_defaults .)
-    OP_COMPARADOR   reduce using rule 99 (var_cte -> maneja_var_cte_defaults .)
-    OP_AND          reduce using rule 99 (var_cte -> maneja_var_cte_defaults .)
-    OP_OR           reduce using rule 99 (var_cte -> maneja_var_cte_defaults .)
-    OP_PUNTO_COMA   reduce using rule 99 (var_cte -> maneja_var_cte_defaults .)
-    OP_PARENTESIS_DER reduce using rule 99 (var_cte -> maneja_var_cte_defaults .)
-    OP_COMA         reduce using rule 99 (var_cte -> maneja_var_cte_defaults .)
+    OP_FACTOR       reduce using rule 100 (var_cte -> maneja_var_cte_defaults .)
+    OP_TERMINO      reduce using rule 100 (var_cte -> maneja_var_cte_defaults .)
+    OP_COMPARADOR   reduce using rule 100 (var_cte -> maneja_var_cte_defaults .)
+    OP_AND          reduce using rule 100 (var_cte -> maneja_var_cte_defaults .)
+    OP_OR           reduce using rule 100 (var_cte -> maneja_var_cte_defaults .)
+    OP_PUNTO_COMA   reduce using rule 100 (var_cte -> maneja_var_cte_defaults .)
+    OP_PARENTESIS_DER reduce using rule 100 (var_cte -> maneja_var_cte_defaults .)
+    OP_COMA         reduce using rule 100 (var_cte -> maneja_var_cte_defaults .)
 
 
 state 96
@@ -1782,58 +1845,58 @@ state 96
 
 state 97
 
-    (96) var_cte -> a_entero .
+    (97) var_cte -> a_entero .
 
-    OP_FACTOR       reduce using rule 96 (var_cte -> a_entero .)
-    OP_TERMINO      reduce using rule 96 (var_cte -> a_entero .)
-    OP_COMPARADOR   reduce using rule 96 (var_cte -> a_entero .)
-    OP_AND          reduce using rule 96 (var_cte -> a_entero .)
-    OP_OR           reduce using rule 96 (var_cte -> a_entero .)
-    OP_PUNTO_COMA   reduce using rule 96 (var_cte -> a_entero .)
-    OP_PARENTESIS_DER reduce using rule 96 (var_cte -> a_entero .)
-    OP_COMA         reduce using rule 96 (var_cte -> a_entero .)
+    OP_FACTOR       reduce using rule 97 (var_cte -> a_entero .)
+    OP_TERMINO      reduce using rule 97 (var_cte -> a_entero .)
+    OP_COMPARADOR   reduce using rule 97 (var_cte -> a_entero .)
+    OP_AND          reduce using rule 97 (var_cte -> a_entero .)
+    OP_OR           reduce using rule 97 (var_cte -> a_entero .)
+    OP_PUNTO_COMA   reduce using rule 97 (var_cte -> a_entero .)
+    OP_PARENTESIS_DER reduce using rule 97 (var_cte -> a_entero .)
+    OP_COMA         reduce using rule 97 (var_cte -> a_entero .)
 
 
 state 98
 
-    (102) maneja_var_cte_defaults -> KW_NORTE .
+    (103) maneja_var_cte_defaults -> KW_NORTE .
 
-    OP_FACTOR       reduce using rule 102 (maneja_var_cte_defaults -> KW_NORTE .)
-    OP_TERMINO      reduce using rule 102 (maneja_var_cte_defaults -> KW_NORTE .)
-    OP_COMPARADOR   reduce using rule 102 (maneja_var_cte_defaults -> KW_NORTE .)
-    OP_AND          reduce using rule 102 (maneja_var_cte_defaults -> KW_NORTE .)
-    OP_OR           reduce using rule 102 (maneja_var_cte_defaults -> KW_NORTE .)
-    OP_PARENTESIS_DER reduce using rule 102 (maneja_var_cte_defaults -> KW_NORTE .)
-    OP_PUNTO_COMA   reduce using rule 102 (maneja_var_cte_defaults -> KW_NORTE .)
-    OP_COMA         reduce using rule 102 (maneja_var_cte_defaults -> KW_NORTE .)
+    OP_FACTOR       reduce using rule 103 (maneja_var_cte_defaults -> KW_NORTE .)
+    OP_TERMINO      reduce using rule 103 (maneja_var_cte_defaults -> KW_NORTE .)
+    OP_COMPARADOR   reduce using rule 103 (maneja_var_cte_defaults -> KW_NORTE .)
+    OP_AND          reduce using rule 103 (maneja_var_cte_defaults -> KW_NORTE .)
+    OP_OR           reduce using rule 103 (maneja_var_cte_defaults -> KW_NORTE .)
+    OP_PARENTESIS_DER reduce using rule 103 (maneja_var_cte_defaults -> KW_NORTE .)
+    OP_PUNTO_COMA   reduce using rule 103 (maneja_var_cte_defaults -> KW_NORTE .)
+    OP_COMA         reduce using rule 103 (maneja_var_cte_defaults -> KW_NORTE .)
 
 
 state 99
 
-    (98) var_cte -> p_cte_e_f .
+    (99) var_cte -> p_cte_e_f .
 
-    OP_FACTOR       reduce using rule 98 (var_cte -> p_cte_e_f .)
-    OP_TERMINO      reduce using rule 98 (var_cte -> p_cte_e_f .)
-    OP_COMPARADOR   reduce using rule 98 (var_cte -> p_cte_e_f .)
-    OP_AND          reduce using rule 98 (var_cte -> p_cte_e_f .)
-    OP_OR           reduce using rule 98 (var_cte -> p_cte_e_f .)
-    OP_PUNTO_COMA   reduce using rule 98 (var_cte -> p_cte_e_f .)
-    OP_PARENTESIS_DER reduce using rule 98 (var_cte -> p_cte_e_f .)
-    OP_COMA         reduce using rule 98 (var_cte -> p_cte_e_f .)
+    OP_FACTOR       reduce using rule 99 (var_cte -> p_cte_e_f .)
+    OP_TERMINO      reduce using rule 99 (var_cte -> p_cte_e_f .)
+    OP_COMPARADOR   reduce using rule 99 (var_cte -> p_cte_e_f .)
+    OP_AND          reduce using rule 99 (var_cte -> p_cte_e_f .)
+    OP_OR           reduce using rule 99 (var_cte -> p_cte_e_f .)
+    OP_PUNTO_COMA   reduce using rule 99 (var_cte -> p_cte_e_f .)
+    OP_PARENTESIS_DER reduce using rule 99 (var_cte -> p_cte_e_f .)
+    OP_COMA         reduce using rule 99 (var_cte -> p_cte_e_f .)
 
 
 state 100
 
-    (101) maneja_var_cte_defaults -> KW_FALSO .
+    (102) maneja_var_cte_defaults -> KW_FALSO .
 
-    OP_FACTOR       reduce using rule 101 (maneja_var_cte_defaults -> KW_FALSO .)
-    OP_TERMINO      reduce using rule 101 (maneja_var_cte_defaults -> KW_FALSO .)
-    OP_COMPARADOR   reduce using rule 101 (maneja_var_cte_defaults -> KW_FALSO .)
-    OP_AND          reduce using rule 101 (maneja_var_cte_defaults -> KW_FALSO .)
-    OP_OR           reduce using rule 101 (maneja_var_cte_defaults -> KW_FALSO .)
-    OP_PARENTESIS_DER reduce using rule 101 (maneja_var_cte_defaults -> KW_FALSO .)
-    OP_PUNTO_COMA   reduce using rule 101 (maneja_var_cte_defaults -> KW_FALSO .)
-    OP_COMA         reduce using rule 101 (maneja_var_cte_defaults -> KW_FALSO .)
+    OP_FACTOR       reduce using rule 102 (maneja_var_cte_defaults -> KW_FALSO .)
+    OP_TERMINO      reduce using rule 102 (maneja_var_cte_defaults -> KW_FALSO .)
+    OP_COMPARADOR   reduce using rule 102 (maneja_var_cte_defaults -> KW_FALSO .)
+    OP_AND          reduce using rule 102 (maneja_var_cte_defaults -> KW_FALSO .)
+    OP_OR           reduce using rule 102 (maneja_var_cte_defaults -> KW_FALSO .)
+    OP_PARENTESIS_DER reduce using rule 102 (maneja_var_cte_defaults -> KW_FALSO .)
+    OP_PUNTO_COMA   reduce using rule 102 (maneja_var_cte_defaults -> KW_FALSO .)
+    OP_COMA         reduce using rule 102 (maneja_var_cte_defaults -> KW_FALSO .)
 
 
 state 101
@@ -1851,16 +1914,16 @@ state 101
 
 state 102
 
-    (105) maneja_var_cte_defaults -> KW_OESTE .
+    (106) maneja_var_cte_defaults -> KW_OESTE .
 
-    OP_FACTOR       reduce using rule 105 (maneja_var_cte_defaults -> KW_OESTE .)
-    OP_TERMINO      reduce using rule 105 (maneja_var_cte_defaults -> KW_OESTE .)
-    OP_COMPARADOR   reduce using rule 105 (maneja_var_cte_defaults -> KW_OESTE .)
-    OP_AND          reduce using rule 105 (maneja_var_cte_defaults -> KW_OESTE .)
-    OP_OR           reduce using rule 105 (maneja_var_cte_defaults -> KW_OESTE .)
-    OP_PARENTESIS_DER reduce using rule 105 (maneja_var_cte_defaults -> KW_OESTE .)
-    OP_PUNTO_COMA   reduce using rule 105 (maneja_var_cte_defaults -> KW_OESTE .)
-    OP_COMA         reduce using rule 105 (maneja_var_cte_defaults -> KW_OESTE .)
+    OP_FACTOR       reduce using rule 106 (maneja_var_cte_defaults -> KW_OESTE .)
+    OP_TERMINO      reduce using rule 106 (maneja_var_cte_defaults -> KW_OESTE .)
+    OP_COMPARADOR   reduce using rule 106 (maneja_var_cte_defaults -> KW_OESTE .)
+    OP_AND          reduce using rule 106 (maneja_var_cte_defaults -> KW_OESTE .)
+    OP_OR           reduce using rule 106 (maneja_var_cte_defaults -> KW_OESTE .)
+    OP_PARENTESIS_DER reduce using rule 106 (maneja_var_cte_defaults -> KW_OESTE .)
+    OP_PUNTO_COMA   reduce using rule 106 (maneja_var_cte_defaults -> KW_OESTE .)
+    OP_COMA         reduce using rule 106 (maneja_var_cte_defaults -> KW_OESTE .)
 
 
 state 103
@@ -1881,44 +1944,44 @@ state 103
 
 state 104
 
-    (110) consume_cte_flotante -> CTE_F .
+    (111) consume_cte_flotante -> CTE_F .
 
-    OP_FACTOR       reduce using rule 110 (consume_cte_flotante -> CTE_F .)
-    OP_TERMINO      reduce using rule 110 (consume_cte_flotante -> CTE_F .)
-    OP_COMPARADOR   reduce using rule 110 (consume_cte_flotante -> CTE_F .)
-    OP_AND          reduce using rule 110 (consume_cte_flotante -> CTE_F .)
-    OP_OR           reduce using rule 110 (consume_cte_flotante -> CTE_F .)
-    OP_PUNTO_COMA   reduce using rule 110 (consume_cte_flotante -> CTE_F .)
-    OP_COMA         reduce using rule 110 (consume_cte_flotante -> CTE_F .)
-    OP_PARENTESIS_DER reduce using rule 110 (consume_cte_flotante -> CTE_F .)
+    OP_FACTOR       reduce using rule 111 (consume_cte_flotante -> CTE_F .)
+    OP_TERMINO      reduce using rule 111 (consume_cte_flotante -> CTE_F .)
+    OP_COMPARADOR   reduce using rule 111 (consume_cte_flotante -> CTE_F .)
+    OP_AND          reduce using rule 111 (consume_cte_flotante -> CTE_F .)
+    OP_OR           reduce using rule 111 (consume_cte_flotante -> CTE_F .)
+    OP_PUNTO_COMA   reduce using rule 111 (consume_cte_flotante -> CTE_F .)
+    OP_COMA         reduce using rule 111 (consume_cte_flotante -> CTE_F .)
+    OP_PARENTESIS_DER reduce using rule 111 (consume_cte_flotante -> CTE_F .)
 
 
 state 105
 
-    (97) var_cte -> a_flotante .
+    (98) var_cte -> a_flotante .
 
-    OP_FACTOR       reduce using rule 97 (var_cte -> a_flotante .)
-    OP_TERMINO      reduce using rule 97 (var_cte -> a_flotante .)
-    OP_COMPARADOR   reduce using rule 97 (var_cte -> a_flotante .)
-    OP_AND          reduce using rule 97 (var_cte -> a_flotante .)
-    OP_OR           reduce using rule 97 (var_cte -> a_flotante .)
-    OP_PUNTO_COMA   reduce using rule 97 (var_cte -> a_flotante .)
-    OP_PARENTESIS_DER reduce using rule 97 (var_cte -> a_flotante .)
-    OP_COMA         reduce using rule 97 (var_cte -> a_flotante .)
+    OP_FACTOR       reduce using rule 98 (var_cte -> a_flotante .)
+    OP_TERMINO      reduce using rule 98 (var_cte -> a_flotante .)
+    OP_COMPARADOR   reduce using rule 98 (var_cte -> a_flotante .)
+    OP_AND          reduce using rule 98 (var_cte -> a_flotante .)
+    OP_OR           reduce using rule 98 (var_cte -> a_flotante .)
+    OP_PUNTO_COMA   reduce using rule 98 (var_cte -> a_flotante .)
+    OP_PARENTESIS_DER reduce using rule 98 (var_cte -> a_flotante .)
+    OP_COMA         reduce using rule 98 (var_cte -> a_flotante .)
 
 
 state 106
 
-    (108) p_cte_e_f -> consume_cte_entero .
+    (109) p_cte_e_f -> consume_cte_entero .
 
-    OP_FACTOR       reduce using rule 108 (p_cte_e_f -> consume_cte_entero .)
-    OP_TERMINO      reduce using rule 108 (p_cte_e_f -> consume_cte_entero .)
-    OP_COMPARADOR   reduce using rule 108 (p_cte_e_f -> consume_cte_entero .)
-    OP_AND          reduce using rule 108 (p_cte_e_f -> consume_cte_entero .)
-    OP_OR           reduce using rule 108 (p_cte_e_f -> consume_cte_entero .)
-    OP_PARENTESIS_DER reduce using rule 108 (p_cte_e_f -> consume_cte_entero .)
-    OP_PUNTO_COMA   reduce using rule 108 (p_cte_e_f -> consume_cte_entero .)
-    OP_COMA         reduce using rule 108 (p_cte_e_f -> consume_cte_entero .)
+    OP_FACTOR       reduce using rule 109 (p_cte_e_f -> consume_cte_entero .)
+    OP_TERMINO      reduce using rule 109 (p_cte_e_f -> consume_cte_entero .)
+    OP_COMPARADOR   reduce using rule 109 (p_cte_e_f -> consume_cte_entero .)
+    OP_AND          reduce using rule 109 (p_cte_e_f -> consume_cte_entero .)
+    OP_OR           reduce using rule 109 (p_cte_e_f -> consume_cte_entero .)
+    OP_PARENTESIS_DER reduce using rule 109 (p_cte_e_f -> consume_cte_entero .)
+    OP_PUNTO_COMA   reduce using rule 109 (p_cte_e_f -> consume_cte_entero .)
+    OP_COMA         reduce using rule 109 (p_cte_e_f -> consume_cte_entero .)
 
 
 state 107
@@ -1930,16 +1993,16 @@ state 107
 
 state 108
 
-    (103) maneja_var_cte_defaults -> KW_SUR .
+    (104) maneja_var_cte_defaults -> KW_SUR .
 
-    OP_FACTOR       reduce using rule 103 (maneja_var_cte_defaults -> KW_SUR .)
-    OP_TERMINO      reduce using rule 103 (maneja_var_cte_defaults -> KW_SUR .)
-    OP_COMPARADOR   reduce using rule 103 (maneja_var_cte_defaults -> KW_SUR .)
-    OP_AND          reduce using rule 103 (maneja_var_cte_defaults -> KW_SUR .)
-    OP_OR           reduce using rule 103 (maneja_var_cte_defaults -> KW_SUR .)
-    OP_PARENTESIS_DER reduce using rule 103 (maneja_var_cte_defaults -> KW_SUR .)
-    OP_PUNTO_COMA   reduce using rule 103 (maneja_var_cte_defaults -> KW_SUR .)
-    OP_COMA         reduce using rule 103 (maneja_var_cte_defaults -> KW_SUR .)
+    OP_FACTOR       reduce using rule 104 (maneja_var_cte_defaults -> KW_SUR .)
+    OP_TERMINO      reduce using rule 104 (maneja_var_cte_defaults -> KW_SUR .)
+    OP_COMPARADOR   reduce using rule 104 (maneja_var_cte_defaults -> KW_SUR .)
+    OP_AND          reduce using rule 104 (maneja_var_cte_defaults -> KW_SUR .)
+    OP_OR           reduce using rule 104 (maneja_var_cte_defaults -> KW_SUR .)
+    OP_PARENTESIS_DER reduce using rule 104 (maneja_var_cte_defaults -> KW_SUR .)
+    OP_PUNTO_COMA   reduce using rule 104 (maneja_var_cte_defaults -> KW_SUR .)
+    OP_COMA         reduce using rule 104 (maneja_var_cte_defaults -> KW_SUR .)
 
 
 state 109
@@ -1958,37 +2021,37 @@ state 109
 
 state 110
 
-    (109) p_cte_e_f -> consume_cte_flotante .
+    (110) p_cte_e_f -> consume_cte_flotante .
 
-    OP_FACTOR       reduce using rule 109 (p_cte_e_f -> consume_cte_flotante .)
-    OP_TERMINO      reduce using rule 109 (p_cte_e_f -> consume_cte_flotante .)
-    OP_COMPARADOR   reduce using rule 109 (p_cte_e_f -> consume_cte_flotante .)
-    OP_AND          reduce using rule 109 (p_cte_e_f -> consume_cte_flotante .)
-    OP_OR           reduce using rule 109 (p_cte_e_f -> consume_cte_flotante .)
-    OP_PARENTESIS_DER reduce using rule 109 (p_cte_e_f -> consume_cte_flotante .)
-    OP_PUNTO_COMA   reduce using rule 109 (p_cte_e_f -> consume_cte_flotante .)
-    OP_COMA         reduce using rule 109 (p_cte_e_f -> consume_cte_flotante .)
+    OP_FACTOR       reduce using rule 110 (p_cte_e_f -> consume_cte_flotante .)
+    OP_TERMINO      reduce using rule 110 (p_cte_e_f -> consume_cte_flotante .)
+    OP_COMPARADOR   reduce using rule 110 (p_cte_e_f -> consume_cte_flotante .)
+    OP_AND          reduce using rule 110 (p_cte_e_f -> consume_cte_flotante .)
+    OP_OR           reduce using rule 110 (p_cte_e_f -> consume_cte_flotante .)
+    OP_PARENTESIS_DER reduce using rule 110 (p_cte_e_f -> consume_cte_flotante .)
+    OP_PUNTO_COMA   reduce using rule 110 (p_cte_e_f -> consume_cte_flotante .)
+    OP_COMA         reduce using rule 110 (p_cte_e_f -> consume_cte_flotante .)
 
 
 state 111
 
-    (106) maneja_var_cte_defaults -> KW_ANCHO .
+    (107) maneja_var_cte_defaults -> KW_ANCHO .
 
-    OP_FACTOR       reduce using rule 106 (maneja_var_cte_defaults -> KW_ANCHO .)
-    OP_TERMINO      reduce using rule 106 (maneja_var_cte_defaults -> KW_ANCHO .)
-    OP_COMPARADOR   reduce using rule 106 (maneja_var_cte_defaults -> KW_ANCHO .)
-    OP_AND          reduce using rule 106 (maneja_var_cte_defaults -> KW_ANCHO .)
-    OP_OR           reduce using rule 106 (maneja_var_cte_defaults -> KW_ANCHO .)
-    OP_PARENTESIS_DER reduce using rule 106 (maneja_var_cte_defaults -> KW_ANCHO .)
-    OP_PUNTO_COMA   reduce using rule 106 (maneja_var_cte_defaults -> KW_ANCHO .)
-    OP_COMA         reduce using rule 106 (maneja_var_cte_defaults -> KW_ANCHO .)
+    OP_FACTOR       reduce using rule 107 (maneja_var_cte_defaults -> KW_ANCHO .)
+    OP_TERMINO      reduce using rule 107 (maneja_var_cte_defaults -> KW_ANCHO .)
+    OP_COMPARADOR   reduce using rule 107 (maneja_var_cte_defaults -> KW_ANCHO .)
+    OP_AND          reduce using rule 107 (maneja_var_cte_defaults -> KW_ANCHO .)
+    OP_OR           reduce using rule 107 (maneja_var_cte_defaults -> KW_ANCHO .)
+    OP_PARENTESIS_DER reduce using rule 107 (maneja_var_cte_defaults -> KW_ANCHO .)
+    OP_PUNTO_COMA   reduce using rule 107 (maneja_var_cte_defaults -> KW_ANCHO .)
+    OP_COMA         reduce using rule 107 (maneja_var_cte_defaults -> KW_ANCHO .)
 
 
 state 112
 
-    (94) var_cte -> var_consume_id_var_cte . var_cte2
-    (113) var_cte2 -> . arr_not arr_not
-    (114) var_cte2 -> . OP_PARENTESIS_IZQ var_cte3 OP_PARENTESIS_DER
+    (95) var_cte -> var_consume_id_var_cte . var_cte2
+    (114) var_cte2 -> . arr_not arr_not
+    (115) var_cte2 -> . OP_PARENTESIS_IZQ var_cte3 OP_PARENTESIS_DER
     (21) arr_not -> . OP_CORCHETE_IZQ CTE_E OP_CORCHETE_DER
     (22) arr_not -> . empty
     (1) empty -> .
@@ -2013,67 +2076,67 @@ state 112
 
 state 113
 
-    (95) var_cte -> a_string .
+    (96) var_cte -> a_string .
 
-    OP_FACTOR       reduce using rule 95 (var_cte -> a_string .)
-    OP_TERMINO      reduce using rule 95 (var_cte -> a_string .)
-    OP_COMPARADOR   reduce using rule 95 (var_cte -> a_string .)
-    OP_AND          reduce using rule 95 (var_cte -> a_string .)
-    OP_OR           reduce using rule 95 (var_cte -> a_string .)
-    OP_PUNTO_COMA   reduce using rule 95 (var_cte -> a_string .)
-    OP_PARENTESIS_DER reduce using rule 95 (var_cte -> a_string .)
-    OP_COMA         reduce using rule 95 (var_cte -> a_string .)
+    OP_FACTOR       reduce using rule 96 (var_cte -> a_string .)
+    OP_TERMINO      reduce using rule 96 (var_cte -> a_string .)
+    OP_COMPARADOR   reduce using rule 96 (var_cte -> a_string .)
+    OP_AND          reduce using rule 96 (var_cte -> a_string .)
+    OP_OR           reduce using rule 96 (var_cte -> a_string .)
+    OP_PUNTO_COMA   reduce using rule 96 (var_cte -> a_string .)
+    OP_PARENTESIS_DER reduce using rule 96 (var_cte -> a_string .)
+    OP_COMA         reduce using rule 96 (var_cte -> a_string .)
 
 
 state 114
 
-    (112) var_consume_id_var_cte -> ID .
+    (113) var_consume_id_var_cte -> ID .
 
-    OP_PARENTESIS_IZQ reduce using rule 112 (var_consume_id_var_cte -> ID .)
-    OP_CORCHETE_IZQ reduce using rule 112 (var_consume_id_var_cte -> ID .)
-    OP_FACTOR       reduce using rule 112 (var_consume_id_var_cte -> ID .)
-    OP_TERMINO      reduce using rule 112 (var_consume_id_var_cte -> ID .)
-    OP_COMPARADOR   reduce using rule 112 (var_consume_id_var_cte -> ID .)
-    OP_AND          reduce using rule 112 (var_consume_id_var_cte -> ID .)
-    OP_OR           reduce using rule 112 (var_consume_id_var_cte -> ID .)
-    OP_PARENTESIS_DER reduce using rule 112 (var_consume_id_var_cte -> ID .)
-    OP_COMA         reduce using rule 112 (var_consume_id_var_cte -> ID .)
-    OP_PUNTO_COMA   reduce using rule 112 (var_consume_id_var_cte -> ID .)
+    OP_PARENTESIS_IZQ reduce using rule 113 (var_consume_id_var_cte -> ID .)
+    OP_CORCHETE_IZQ reduce using rule 113 (var_consume_id_var_cte -> ID .)
+    OP_FACTOR       reduce using rule 113 (var_consume_id_var_cte -> ID .)
+    OP_TERMINO      reduce using rule 113 (var_consume_id_var_cte -> ID .)
+    OP_COMPARADOR   reduce using rule 113 (var_consume_id_var_cte -> ID .)
+    OP_AND          reduce using rule 113 (var_consume_id_var_cte -> ID .)
+    OP_OR           reduce using rule 113 (var_consume_id_var_cte -> ID .)
+    OP_PARENTESIS_DER reduce using rule 113 (var_consume_id_var_cte -> ID .)
+    OP_COMA         reduce using rule 113 (var_consume_id_var_cte -> ID .)
+    OP_PUNTO_COMA   reduce using rule 113 (var_consume_id_var_cte -> ID .)
 
 
 state 115
 
-    (93) retorna -> KW_RETORNA expresion .
+    (94) retorna -> KW_RETORNA expresion .
 
-    OP_PUNTO_COMA   reduce using rule 93 (retorna -> KW_RETORNA expresion .)
+    OP_PUNTO_COMA   reduce using rule 94 (retorna -> KW_RETORNA expresion .)
 
 
 state 116
 
-    (100) maneja_var_cte_defaults -> KW_VERDADERO .
+    (101) maneja_var_cte_defaults -> KW_VERDADERO .
 
-    OP_FACTOR       reduce using rule 100 (maneja_var_cte_defaults -> KW_VERDADERO .)
-    OP_TERMINO      reduce using rule 100 (maneja_var_cte_defaults -> KW_VERDADERO .)
-    OP_COMPARADOR   reduce using rule 100 (maneja_var_cte_defaults -> KW_VERDADERO .)
-    OP_AND          reduce using rule 100 (maneja_var_cte_defaults -> KW_VERDADERO .)
-    OP_OR           reduce using rule 100 (maneja_var_cte_defaults -> KW_VERDADERO .)
-    OP_PARENTESIS_DER reduce using rule 100 (maneja_var_cte_defaults -> KW_VERDADERO .)
-    OP_PUNTO_COMA   reduce using rule 100 (maneja_var_cte_defaults -> KW_VERDADERO .)
-    OP_COMA         reduce using rule 100 (maneja_var_cte_defaults -> KW_VERDADERO .)
+    OP_FACTOR       reduce using rule 101 (maneja_var_cte_defaults -> KW_VERDADERO .)
+    OP_TERMINO      reduce using rule 101 (maneja_var_cte_defaults -> KW_VERDADERO .)
+    OP_COMPARADOR   reduce using rule 101 (maneja_var_cte_defaults -> KW_VERDADERO .)
+    OP_AND          reduce using rule 101 (maneja_var_cte_defaults -> KW_VERDADERO .)
+    OP_OR           reduce using rule 101 (maneja_var_cte_defaults -> KW_VERDADERO .)
+    OP_PARENTESIS_DER reduce using rule 101 (maneja_var_cte_defaults -> KW_VERDADERO .)
+    OP_PUNTO_COMA   reduce using rule 101 (maneja_var_cte_defaults -> KW_VERDADERO .)
+    OP_COMA         reduce using rule 101 (maneja_var_cte_defaults -> KW_VERDADERO .)
 
 
 state 117
 
-    (111) consume_cte_entero -> CTE_E .
+    (112) consume_cte_entero -> CTE_E .
 
-    OP_FACTOR       reduce using rule 111 (consume_cte_entero -> CTE_E .)
-    OP_TERMINO      reduce using rule 111 (consume_cte_entero -> CTE_E .)
-    OP_COMPARADOR   reduce using rule 111 (consume_cte_entero -> CTE_E .)
-    OP_AND          reduce using rule 111 (consume_cte_entero -> CTE_E .)
-    OP_OR           reduce using rule 111 (consume_cte_entero -> CTE_E .)
-    OP_PARENTESIS_DER reduce using rule 111 (consume_cte_entero -> CTE_E .)
-    OP_PUNTO_COMA   reduce using rule 111 (consume_cte_entero -> CTE_E .)
-    OP_COMA         reduce using rule 111 (consume_cte_entero -> CTE_E .)
+    OP_FACTOR       reduce using rule 112 (consume_cte_entero -> CTE_E .)
+    OP_TERMINO      reduce using rule 112 (consume_cte_entero -> CTE_E .)
+    OP_COMPARADOR   reduce using rule 112 (consume_cte_entero -> CTE_E .)
+    OP_AND          reduce using rule 112 (consume_cte_entero -> CTE_E .)
+    OP_OR           reduce using rule 112 (consume_cte_entero -> CTE_E .)
+    OP_COMA         reduce using rule 112 (consume_cte_entero -> CTE_E .)
+    OP_PARENTESIS_DER reduce using rule 112 (consume_cte_entero -> CTE_E .)
+    OP_PUNTO_COMA   reduce using rule 112 (consume_cte_entero -> CTE_E .)
 
 
 state 118
@@ -2095,28 +2158,28 @@ state 119
     (74) factor -> . OP_TERMINO var_cte
     (75) factor -> . var_cte
     (76) consume_par_izq -> . OP_PARENTESIS_IZQ
-    (94) var_cte -> . var_consume_id_var_cte var_cte2
-    (95) var_cte -> . a_string
-    (96) var_cte -> . a_entero
-    (97) var_cte -> . a_flotante
-    (98) var_cte -> . p_cte_e_f
-    (99) var_cte -> . maneja_var_cte_defaults
-    (112) var_consume_id_var_cte -> . ID
+    (95) var_cte -> . var_consume_id_var_cte var_cte2
+    (96) var_cte -> . a_string
+    (97) var_cte -> . a_entero
+    (98) var_cte -> . a_flotante
+    (99) var_cte -> . p_cte_e_f
+    (100) var_cte -> . maneja_var_cte_defaults
+    (113) var_consume_id_var_cte -> . ID
     (80) a_string -> . KW_A_STRING OP_PARENTESIS_IZQ a_string2 OP_PARENTESIS_DER
     (84) a_entero -> . KW_A_ENTERO OP_PARENTESIS_IZQ a_entero2 OP_PARENTESIS_DER
-    (121) a_flotante -> . KW_A_FLOTANTE OP_PARENTESIS_IZQ a_flotante2 OP_PARENTESIS_DER
-    (108) p_cte_e_f -> . consume_cte_entero
-    (109) p_cte_e_f -> . consume_cte_flotante
-    (100) maneja_var_cte_defaults -> . KW_VERDADERO
-    (101) maneja_var_cte_defaults -> . KW_FALSO
-    (102) maneja_var_cte_defaults -> . KW_NORTE
-    (103) maneja_var_cte_defaults -> . KW_SUR
-    (104) maneja_var_cte_defaults -> . KW_ESTE
-    (105) maneja_var_cte_defaults -> . KW_OESTE
-    (106) maneja_var_cte_defaults -> . KW_ANCHO
-    (107) maneja_var_cte_defaults -> . KW_ALTO
-    (111) consume_cte_entero -> . CTE_E
-    (110) consume_cte_flotante -> . CTE_F
+    (122) a_flotante -> . KW_A_FLOTANTE OP_PARENTESIS_IZQ a_flotante2 OP_PARENTESIS_DER
+    (109) p_cte_e_f -> . consume_cte_entero
+    (110) p_cte_e_f -> . consume_cte_flotante
+    (101) maneja_var_cte_defaults -> . KW_VERDADERO
+    (102) maneja_var_cte_defaults -> . KW_FALSO
+    (103) maneja_var_cte_defaults -> . KW_NORTE
+    (104) maneja_var_cte_defaults -> . KW_SUR
+    (105) maneja_var_cte_defaults -> . KW_ESTE
+    (106) maneja_var_cte_defaults -> . KW_OESTE
+    (107) maneja_var_cte_defaults -> . KW_ANCHO
+    (108) maneja_var_cte_defaults -> . KW_ALTO
+    (112) consume_cte_entero -> . CTE_E
+    (111) consume_cte_flotante -> . CTE_F
 
     OP_TERMINO      shift and go to state 90
     OP_PARENTESIS_IZQ shift and go to state 121
@@ -2154,7 +2217,7 @@ state 119
 
 state 120
 
-    (121) a_flotante -> KW_A_FLOTANTE . OP_PARENTESIS_IZQ a_flotante2 OP_PARENTESIS_DER
+    (122) a_flotante -> KW_A_FLOTANTE . OP_PARENTESIS_IZQ a_flotante2 OP_PARENTESIS_DER
 
     OP_PARENTESIS_IZQ shift and go to state 149
 
@@ -2193,28 +2256,28 @@ state 122
     (74) factor -> . OP_TERMINO var_cte
     (75) factor -> . var_cte
     (76) consume_par_izq -> . OP_PARENTESIS_IZQ
-    (94) var_cte -> . var_consume_id_var_cte var_cte2
-    (95) var_cte -> . a_string
-    (96) var_cte -> . a_entero
-    (97) var_cte -> . a_flotante
-    (98) var_cte -> . p_cte_e_f
-    (99) var_cte -> . maneja_var_cte_defaults
-    (112) var_consume_id_var_cte -> . ID
+    (95) var_cte -> . var_consume_id_var_cte var_cte2
+    (96) var_cte -> . a_string
+    (97) var_cte -> . a_entero
+    (98) var_cte -> . a_flotante
+    (99) var_cte -> . p_cte_e_f
+    (100) var_cte -> . maneja_var_cte_defaults
+    (113) var_consume_id_var_cte -> . ID
     (80) a_string -> . KW_A_STRING OP_PARENTESIS_IZQ a_string2 OP_PARENTESIS_DER
     (84) a_entero -> . KW_A_ENTERO OP_PARENTESIS_IZQ a_entero2 OP_PARENTESIS_DER
-    (121) a_flotante -> . KW_A_FLOTANTE OP_PARENTESIS_IZQ a_flotante2 OP_PARENTESIS_DER
-    (108) p_cte_e_f -> . consume_cte_entero
-    (109) p_cte_e_f -> . consume_cte_flotante
-    (100) maneja_var_cte_defaults -> . KW_VERDADERO
-    (101) maneja_var_cte_defaults -> . KW_FALSO
-    (102) maneja_var_cte_defaults -> . KW_NORTE
-    (103) maneja_var_cte_defaults -> . KW_SUR
-    (104) maneja_var_cte_defaults -> . KW_ESTE
-    (105) maneja_var_cte_defaults -> . KW_OESTE
-    (106) maneja_var_cte_defaults -> . KW_ANCHO
-    (107) maneja_var_cte_defaults -> . KW_ALTO
-    (111) consume_cte_entero -> . CTE_E
-    (110) consume_cte_flotante -> . CTE_F
+    (122) a_flotante -> . KW_A_FLOTANTE OP_PARENTESIS_IZQ a_flotante2 OP_PARENTESIS_DER
+    (109) p_cte_e_f -> . consume_cte_entero
+    (110) p_cte_e_f -> . consume_cte_flotante
+    (101) maneja_var_cte_defaults -> . KW_VERDADERO
+    (102) maneja_var_cte_defaults -> . KW_FALSO
+    (103) maneja_var_cte_defaults -> . KW_NORTE
+    (104) maneja_var_cte_defaults -> . KW_SUR
+    (105) maneja_var_cte_defaults -> . KW_ESTE
+    (106) maneja_var_cte_defaults -> . KW_OESTE
+    (107) maneja_var_cte_defaults -> . KW_ANCHO
+    (108) maneja_var_cte_defaults -> . KW_ALTO
+    (112) consume_cte_entero -> . CTE_E
+    (111) consume_cte_flotante -> . CTE_F
 
     OP_TERMINO      shift and go to state 90
     OP_PARENTESIS_IZQ shift and go to state 121
@@ -2259,15 +2322,15 @@ state 123
 
 state 124
 
-    (129) salta_a -> KW_SALTA_A OP_PARENTESIS_IZQ CTE_E . OP_COMA CTE_E OP_PARENTESIS_DER
+    (130) salta_a -> KW_SALTA_A OP_PARENTESIS_IZQ expresion . OP_COMA expresion OP_PARENTESIS_DER
 
     OP_COMA         shift and go to state 152
 
 
 state 125
 
-    (87) condicion -> KW_SI OP_PARENTESIS_IZQ expresion . consume_par_der bloque_est si_no
-    (88) consume_par_der -> . OP_PARENTESIS_DER
+    (88) condicion -> KW_SI OP_PARENTESIS_IZQ expresion . consume_par_der bloque_est si_no
+    (89) consume_par_der -> . OP_PARENTESIS_DER
 
     OP_PARENTESIS_DER shift and go to state 154
 
@@ -2275,9 +2338,9 @@ state 125
 
 state 126
 
-    (124) reiniciar -> KW_REINICIAR OP_PARENTESIS_IZQ OP_PARENTESIS_DER .
+    (125) reiniciar -> KW_REINICIAR OP_PARENTESIS_IZQ OP_PARENTESIS_DER .
 
-    OP_PUNTO_COMA   reduce using rule 124 (reiniciar -> KW_REINICIAR OP_PARENTESIS_IZQ OP_PARENTESIS_DER .)
+    OP_PUNTO_COMA   reduce using rule 125 (reiniciar -> KW_REINICIAR OP_PARENTESIS_IZQ OP_PARENTESIS_DER .)
 
 
 state 127
@@ -2304,7 +2367,7 @@ state 129
 state 130
 
     (34) ciclo -> KW_MIENTRAS consume_par_izq_ciclo expresion . consume_par_der bloque_est
-    (88) consume_par_der -> . OP_PARENTESIS_DER
+    (89) consume_par_der -> . OP_PARENTESIS_DER
 
     OP_PARENTESIS_DER shift and go to state 154
 
@@ -2312,9 +2375,9 @@ state 130
 
 state 131
 
-    (125) input -> KW_INPUT OP_PARENTESIS_IZQ ID . input2 OP_PARENTESIS_DER
-    (126) input2 -> . OP_COMA ID input2
-    (127) input2 -> . empty
+    (126) input -> KW_INPUT OP_PARENTESIS_IZQ ID . input2 OP_PARENTESIS_DER
+    (127) input2 -> . OP_COMA ID input2
+    (128) input2 -> . empty
     (1) empty -> .
 
     OP_COMA         shift and go to state 159
@@ -2352,16 +2415,16 @@ state 134
 
 state 135
 
-    (128) output -> KW_OUTPUT OP_PARENTESIS_IZQ concat_string . OP_PARENTESIS_DER
+    (129) output -> KW_OUTPUT OP_PARENTESIS_IZQ concat_string . OP_PARENTESIS_DER
 
     OP_PARENTESIS_DER shift and go to state 165
 
 
 state 136
 
-    (118) concat_string -> CTE_S . concat_string2
-    (119) concat_string2 -> . OP_PUNTO CTE_S
-    (120) concat_string2 -> . empty
+    (119) concat_string -> CTE_S . concat_string2
+    (120) concat_string2 -> . OP_PUNTO CTE_S
+    (121) concat_string2 -> . empty
     (1) empty -> .
 
     OP_PUNTO        shift and go to state 166
@@ -2497,21 +2560,21 @@ state 143
 
 state 144
 
-    (94) var_cte -> var_consume_id_var_cte var_cte2 .
+    (95) var_cte -> var_consume_id_var_cte var_cte2 .
 
-    OP_FACTOR       reduce using rule 94 (var_cte -> var_consume_id_var_cte var_cte2 .)
-    OP_TERMINO      reduce using rule 94 (var_cte -> var_consume_id_var_cte var_cte2 .)
-    OP_COMPARADOR   reduce using rule 94 (var_cte -> var_consume_id_var_cte var_cte2 .)
-    OP_AND          reduce using rule 94 (var_cte -> var_consume_id_var_cte var_cte2 .)
-    OP_OR           reduce using rule 94 (var_cte -> var_consume_id_var_cte var_cte2 .)
-    OP_PUNTO_COMA   reduce using rule 94 (var_cte -> var_consume_id_var_cte var_cte2 .)
-    OP_PARENTESIS_DER reduce using rule 94 (var_cte -> var_consume_id_var_cte var_cte2 .)
-    OP_COMA         reduce using rule 94 (var_cte -> var_consume_id_var_cte var_cte2 .)
+    OP_FACTOR       reduce using rule 95 (var_cte -> var_consume_id_var_cte var_cte2 .)
+    OP_TERMINO      reduce using rule 95 (var_cte -> var_consume_id_var_cte var_cte2 .)
+    OP_COMPARADOR   reduce using rule 95 (var_cte -> var_consume_id_var_cte var_cte2 .)
+    OP_AND          reduce using rule 95 (var_cte -> var_consume_id_var_cte var_cte2 .)
+    OP_OR           reduce using rule 95 (var_cte -> var_consume_id_var_cte var_cte2 .)
+    OP_PUNTO_COMA   reduce using rule 95 (var_cte -> var_consume_id_var_cte var_cte2 .)
+    OP_PARENTESIS_DER reduce using rule 95 (var_cte -> var_consume_id_var_cte var_cte2 .)
+    OP_COMA         reduce using rule 95 (var_cte -> var_consume_id_var_cte var_cte2 .)
 
 
 state 145
 
-    (113) var_cte2 -> arr_not . arr_not
+    (114) var_cte2 -> arr_not . arr_not
     (21) arr_not -> . OP_CORCHETE_IZQ CTE_E OP_CORCHETE_DER
     (22) arr_not -> . empty
     (1) empty -> .
@@ -2531,8 +2594,8 @@ state 145
 
 state 146
 
-    (114) var_cte2 -> OP_PARENTESIS_IZQ . var_cte3 OP_PARENTESIS_DER
-    (115) var_cte3 -> . expresion var_cte4
+    (115) var_cte2 -> OP_PARENTESIS_IZQ . var_cte3 OP_PARENTESIS_DER
+    (116) var_cte3 -> . expresion var_cte4
     (48) expresion -> . comp_or genera_cuadruplo_or otra_expresion_or
     (53) comp_or -> . comp_and genera_cuadruplo_and otra_expresion_and
     (58) comp_and -> . exp genera_cuadruplo_comparador comp_and_end
@@ -2542,28 +2605,28 @@ state 146
     (74) factor -> . OP_TERMINO var_cte
     (75) factor -> . var_cte
     (76) consume_par_izq -> . OP_PARENTESIS_IZQ
-    (94) var_cte -> . var_consume_id_var_cte var_cte2
-    (95) var_cte -> . a_string
-    (96) var_cte -> . a_entero
-    (97) var_cte -> . a_flotante
-    (98) var_cte -> . p_cte_e_f
-    (99) var_cte -> . maneja_var_cte_defaults
-    (112) var_consume_id_var_cte -> . ID
+    (95) var_cte -> . var_consume_id_var_cte var_cte2
+    (96) var_cte -> . a_string
+    (97) var_cte -> . a_entero
+    (98) var_cte -> . a_flotante
+    (99) var_cte -> . p_cte_e_f
+    (100) var_cte -> . maneja_var_cte_defaults
+    (113) var_consume_id_var_cte -> . ID
     (80) a_string -> . KW_A_STRING OP_PARENTESIS_IZQ a_string2 OP_PARENTESIS_DER
     (84) a_entero -> . KW_A_ENTERO OP_PARENTESIS_IZQ a_entero2 OP_PARENTESIS_DER
-    (121) a_flotante -> . KW_A_FLOTANTE OP_PARENTESIS_IZQ a_flotante2 OP_PARENTESIS_DER
-    (108) p_cte_e_f -> . consume_cte_entero
-    (109) p_cte_e_f -> . consume_cte_flotante
-    (100) maneja_var_cte_defaults -> . KW_VERDADERO
-    (101) maneja_var_cte_defaults -> . KW_FALSO
-    (102) maneja_var_cte_defaults -> . KW_NORTE
-    (103) maneja_var_cte_defaults -> . KW_SUR
-    (104) maneja_var_cte_defaults -> . KW_ESTE
-    (105) maneja_var_cte_defaults -> . KW_OESTE
-    (106) maneja_var_cte_defaults -> . KW_ANCHO
-    (107) maneja_var_cte_defaults -> . KW_ALTO
-    (111) consume_cte_entero -> . CTE_E
-    (110) consume_cte_flotante -> . CTE_F
+    (122) a_flotante -> . KW_A_FLOTANTE OP_PARENTESIS_IZQ a_flotante2 OP_PARENTESIS_DER
+    (109) p_cte_e_f -> . consume_cte_entero
+    (110) p_cte_e_f -> . consume_cte_flotante
+    (101) maneja_var_cte_defaults -> . KW_VERDADERO
+    (102) maneja_var_cte_defaults -> . KW_FALSO
+    (103) maneja_var_cte_defaults -> . KW_NORTE
+    (104) maneja_var_cte_defaults -> . KW_SUR
+    (105) maneja_var_cte_defaults -> . KW_ESTE
+    (106) maneja_var_cte_defaults -> . KW_OESTE
+    (107) maneja_var_cte_defaults -> . KW_ANCHO
+    (108) maneja_var_cte_defaults -> . KW_ALTO
+    (112) consume_cte_entero -> . CTE_E
+    (111) consume_cte_flotante -> . CTE_F
 
     OP_TERMINO      shift and go to state 90
     OP_PARENTESIS_IZQ shift and go to state 121
@@ -2605,9 +2668,11 @@ state 147
     (84) a_entero -> KW_A_ENTERO OP_PARENTESIS_IZQ . a_entero2 OP_PARENTESIS_DER
     (85) a_entero2 -> . CTE_F
     (86) a_entero2 -> . concat_string
-    (118) concat_string -> . CTE_S concat_string2
+    (87) a_entero2 -> . ID arr_not arr_not
+    (119) concat_string -> . CTE_S concat_string2
 
     CTE_F           shift and go to state 197
+    ID              shift and go to state 199
     CTE_S           shift and go to state 136
 
     a_entero2                      shift and go to state 198
@@ -2617,27 +2682,27 @@ state 148
 
     (73) factor -> consume_par_izq expresion . OP_PARENTESIS_DER
 
-    OP_PARENTESIS_DER shift and go to state 199
+    OP_PARENTESIS_DER shift and go to state 200
 
 
 state 149
 
-    (121) a_flotante -> KW_A_FLOTANTE OP_PARENTESIS_IZQ . a_flotante2 OP_PARENTESIS_DER
-    (122) a_flotante2 -> . concat_string
-    (123) a_flotante2 -> . CTE_F
-    (118) concat_string -> . CTE_S concat_string2
+    (122) a_flotante -> KW_A_FLOTANTE OP_PARENTESIS_IZQ . a_flotante2 OP_PARENTESIS_DER
+    (123) a_flotante2 -> . concat_string
+    (124) a_flotante2 -> . CTE_F
+    (119) concat_string -> . CTE_S concat_string2
 
-    CTE_F           shift and go to state 202
+    CTE_F           shift and go to state 203
     CTE_S           shift and go to state 136
 
-    a_flotante2                    shift and go to state 200
-    concat_string                  shift and go to state 201
+    a_flotante2                    shift and go to state 201
+    concat_string                  shift and go to state 202
 
 state 150
 
     (79) mira -> KW_MIRA OP_PARENTESIS_IZQ expresion . OP_PARENTESIS_DER
 
-    OP_PARENTESIS_DER shift and go to state 203
+    OP_PARENTESIS_DER shift and go to state 204
 
 
 state 151
@@ -2649,25 +2714,87 @@ state 151
 
 state 152
 
-    (129) salta_a -> KW_SALTA_A OP_PARENTESIS_IZQ CTE_E OP_COMA . CTE_E OP_PARENTESIS_DER
+    (130) salta_a -> KW_SALTA_A OP_PARENTESIS_IZQ expresion OP_COMA . expresion OP_PARENTESIS_DER
+    (48) expresion -> . comp_or genera_cuadruplo_or otra_expresion_or
+    (53) comp_or -> . comp_and genera_cuadruplo_and otra_expresion_and
+    (58) comp_and -> . exp genera_cuadruplo_comparador comp_and_end
+    (63) exp -> . termino genera_cuadruplo_termino exp2
+    (68) termino -> . factor genera_cuadruplo_factor termino2
+    (73) factor -> . consume_par_izq expresion OP_PARENTESIS_DER
+    (74) factor -> . OP_TERMINO var_cte
+    (75) factor -> . var_cte
+    (76) consume_par_izq -> . OP_PARENTESIS_IZQ
+    (95) var_cte -> . var_consume_id_var_cte var_cte2
+    (96) var_cte -> . a_string
+    (97) var_cte -> . a_entero
+    (98) var_cte -> . a_flotante
+    (99) var_cte -> . p_cte_e_f
+    (100) var_cte -> . maneja_var_cte_defaults
+    (113) var_consume_id_var_cte -> . ID
+    (80) a_string -> . KW_A_STRING OP_PARENTESIS_IZQ a_string2 OP_PARENTESIS_DER
+    (84) a_entero -> . KW_A_ENTERO OP_PARENTESIS_IZQ a_entero2 OP_PARENTESIS_DER
+    (122) a_flotante -> . KW_A_FLOTANTE OP_PARENTESIS_IZQ a_flotante2 OP_PARENTESIS_DER
+    (109) p_cte_e_f -> . consume_cte_entero
+    (110) p_cte_e_f -> . consume_cte_flotante
+    (101) maneja_var_cte_defaults -> . KW_VERDADERO
+    (102) maneja_var_cte_defaults -> . KW_FALSO
+    (103) maneja_var_cte_defaults -> . KW_NORTE
+    (104) maneja_var_cte_defaults -> . KW_SUR
+    (105) maneja_var_cte_defaults -> . KW_ESTE
+    (106) maneja_var_cte_defaults -> . KW_OESTE
+    (107) maneja_var_cte_defaults -> . KW_ANCHO
+    (108) maneja_var_cte_defaults -> . KW_ALTO
+    (112) consume_cte_entero -> . CTE_E
+    (111) consume_cte_flotante -> . CTE_F
 
-    CTE_E           shift and go to state 204
+    OP_TERMINO      shift and go to state 90
+    OP_PARENTESIS_IZQ shift and go to state 121
+    ID              shift and go to state 114
+    KW_A_STRING     shift and go to state 107
+    KW_A_ENTERO     shift and go to state 118
+    KW_A_FLOTANTE   shift and go to state 120
+    KW_VERDADERO    shift and go to state 116
+    KW_FALSO        shift and go to state 100
+    KW_NORTE        shift and go to state 98
+    KW_SUR          shift and go to state 108
+    KW_ESTE         shift and go to state 93
+    KW_OESTE        shift and go to state 102
+    KW_ANCHO        shift and go to state 111
+    KW_ALTO         shift and go to state 92
+    CTE_E           shift and go to state 117
+    CTE_F           shift and go to state 104
 
+    var_cte                        shift and go to state 91
+    termino                        shift and go to state 94
+    maneja_var_cte_defaults        shift and go to state 95
+    comp_or                        shift and go to state 96
+    a_entero                       shift and go to state 97
+    comp_and                       shift and go to state 101
+    factor                         shift and go to state 103
+    a_flotante                     shift and go to state 105
+    consume_cte_entero             shift and go to state 106
+    consume_cte_flotante           shift and go to state 110
+    var_consume_id_var_cte         shift and go to state 112
+    a_string                       shift and go to state 113
+    expresion                      shift and go to state 205
+    consume_par_izq                shift and go to state 119
+    p_cte_e_f                      shift and go to state 99
+    exp                            shift and go to state 109
 
 state 153
 
-    (87) condicion -> KW_SI OP_PARENTESIS_IZQ expresion consume_par_der . bloque_est si_no
-    (92) bloque_est -> . OP_LLAVE_IZQ estatuto_rec OP_LLAVE_DER
+    (88) condicion -> KW_SI OP_PARENTESIS_IZQ expresion consume_par_der . bloque_est si_no
+    (93) bloque_est -> . OP_LLAVE_IZQ estatuto_rec OP_LLAVE_DER
 
-    OP_LLAVE_IZQ    shift and go to state 206
+    OP_LLAVE_IZQ    shift and go to state 207
 
-    bloque_est                     shift and go to state 205
+    bloque_est                     shift and go to state 206
 
 state 154
 
-    (88) consume_par_der -> OP_PARENTESIS_DER .
+    (89) consume_par_der -> OP_PARENTESIS_DER .
 
-    OP_LLAVE_IZQ    reduce using rule 88 (consume_par_der -> OP_PARENTESIS_DER .)
+    OP_LLAVE_IZQ    reduce using rule 89 (consume_par_der -> OP_PARENTESIS_DER .)
 
 
 state 155
@@ -2689,28 +2816,28 @@ state 156
     (74) factor -> . OP_TERMINO var_cte
     (75) factor -> . var_cte
     (76) consume_par_izq -> . OP_PARENTESIS_IZQ
-    (94) var_cte -> . var_consume_id_var_cte var_cte2
-    (95) var_cte -> . a_string
-    (96) var_cte -> . a_entero
-    (97) var_cte -> . a_flotante
-    (98) var_cte -> . p_cte_e_f
-    (99) var_cte -> . maneja_var_cte_defaults
-    (112) var_consume_id_var_cte -> . ID
+    (95) var_cte -> . var_consume_id_var_cte var_cte2
+    (96) var_cte -> . a_string
+    (97) var_cte -> . a_entero
+    (98) var_cte -> . a_flotante
+    (99) var_cte -> . p_cte_e_f
+    (100) var_cte -> . maneja_var_cte_defaults
+    (113) var_consume_id_var_cte -> . ID
     (80) a_string -> . KW_A_STRING OP_PARENTESIS_IZQ a_string2 OP_PARENTESIS_DER
     (84) a_entero -> . KW_A_ENTERO OP_PARENTESIS_IZQ a_entero2 OP_PARENTESIS_DER
-    (121) a_flotante -> . KW_A_FLOTANTE OP_PARENTESIS_IZQ a_flotante2 OP_PARENTESIS_DER
-    (108) p_cte_e_f -> . consume_cte_entero
-    (109) p_cte_e_f -> . consume_cte_flotante
-    (100) maneja_var_cte_defaults -> . KW_VERDADERO
-    (101) maneja_var_cte_defaults -> . KW_FALSO
-    (102) maneja_var_cte_defaults -> . KW_NORTE
-    (103) maneja_var_cte_defaults -> . KW_SUR
-    (104) maneja_var_cte_defaults -> . KW_ESTE
-    (105) maneja_var_cte_defaults -> . KW_OESTE
-    (106) maneja_var_cte_defaults -> . KW_ANCHO
-    (107) maneja_var_cte_defaults -> . KW_ALTO
-    (111) consume_cte_entero -> . CTE_E
-    (110) consume_cte_flotante -> . CTE_F
+    (122) a_flotante -> . KW_A_FLOTANTE OP_PARENTESIS_IZQ a_flotante2 OP_PARENTESIS_DER
+    (109) p_cte_e_f -> . consume_cte_entero
+    (110) p_cte_e_f -> . consume_cte_flotante
+    (101) maneja_var_cte_defaults -> . KW_VERDADERO
+    (102) maneja_var_cte_defaults -> . KW_FALSO
+    (103) maneja_var_cte_defaults -> . KW_NORTE
+    (104) maneja_var_cte_defaults -> . KW_SUR
+    (105) maneja_var_cte_defaults -> . KW_ESTE
+    (106) maneja_var_cte_defaults -> . KW_OESTE
+    (107) maneja_var_cte_defaults -> . KW_ANCHO
+    (108) maneja_var_cte_defaults -> . KW_ALTO
+    (112) consume_cte_entero -> . CTE_E
+    (111) consume_cte_flotante -> . CTE_F
 
     OP_TERMINO      shift and go to state 90
     OP_PARENTESIS_IZQ shift and go to state 121
@@ -2741,7 +2868,7 @@ state 156
     consume_cte_flotante           shift and go to state 110
     var_consume_id_var_cte         shift and go to state 112
     a_string                       shift and go to state 113
-    expresion                      shift and go to state 207
+    expresion                      shift and go to state 208
     consume_par_izq                shift and go to state 119
     p_cte_e_f                      shift and go to state 99
     exp                            shift and go to state 109
@@ -2749,31 +2876,31 @@ state 156
 state 157
 
     (34) ciclo -> KW_MIENTRAS consume_par_izq_ciclo expresion consume_par_der . bloque_est
-    (92) bloque_est -> . OP_LLAVE_IZQ estatuto_rec OP_LLAVE_DER
+    (93) bloque_est -> . OP_LLAVE_IZQ estatuto_rec OP_LLAVE_DER
 
-    OP_LLAVE_IZQ    shift and go to state 206
+    OP_LLAVE_IZQ    shift and go to state 207
 
-    bloque_est                     shift and go to state 208
+    bloque_est                     shift and go to state 209
 
 state 158
 
-    (125) input -> KW_INPUT OP_PARENTESIS_IZQ ID input2 . OP_PARENTESIS_DER
+    (126) input -> KW_INPUT OP_PARENTESIS_IZQ ID input2 . OP_PARENTESIS_DER
 
-    OP_PARENTESIS_DER shift and go to state 209
+    OP_PARENTESIS_DER shift and go to state 210
 
 
 state 159
 
-    (126) input2 -> OP_COMA . ID input2
+    (127) input2 -> OP_COMA . ID input2
 
-    ID              shift and go to state 210
+    ID              shift and go to state 211
 
 
 state 160
 
-    (127) input2 -> empty .
+    (128) input2 -> empty .
 
-    OP_PARENTESIS_DER reduce using rule 127 (input2 -> empty .)
+    OP_PARENTESIS_DER reduce using rule 128 (input2 -> empty .)
 
 
 state 161
@@ -2795,28 +2922,28 @@ state 162
     (74) factor -> . OP_TERMINO var_cte
     (75) factor -> . var_cte
     (76) consume_par_izq -> . OP_PARENTESIS_IZQ
-    (94) var_cte -> . var_consume_id_var_cte var_cte2
-    (95) var_cte -> . a_string
-    (96) var_cte -> . a_entero
-    (97) var_cte -> . a_flotante
-    (98) var_cte -> . p_cte_e_f
-    (99) var_cte -> . maneja_var_cte_defaults
-    (112) var_consume_id_var_cte -> . ID
+    (95) var_cte -> . var_consume_id_var_cte var_cte2
+    (96) var_cte -> . a_string
+    (97) var_cte -> . a_entero
+    (98) var_cte -> . a_flotante
+    (99) var_cte -> . p_cte_e_f
+    (100) var_cte -> . maneja_var_cte_defaults
+    (113) var_consume_id_var_cte -> . ID
     (80) a_string -> . KW_A_STRING OP_PARENTESIS_IZQ a_string2 OP_PARENTESIS_DER
     (84) a_entero -> . KW_A_ENTERO OP_PARENTESIS_IZQ a_entero2 OP_PARENTESIS_DER
-    (121) a_flotante -> . KW_A_FLOTANTE OP_PARENTESIS_IZQ a_flotante2 OP_PARENTESIS_DER
-    (108) p_cte_e_f -> . consume_cte_entero
-    (109) p_cte_e_f -> . consume_cte_flotante
-    (100) maneja_var_cte_defaults -> . KW_VERDADERO
-    (101) maneja_var_cte_defaults -> . KW_FALSO
-    (102) maneja_var_cte_defaults -> . KW_NORTE
-    (103) maneja_var_cte_defaults -> . KW_SUR
-    (104) maneja_var_cte_defaults -> . KW_ESTE
-    (105) maneja_var_cte_defaults -> . KW_OESTE
-    (106) maneja_var_cte_defaults -> . KW_ANCHO
-    (107) maneja_var_cte_defaults -> . KW_ALTO
-    (111) consume_cte_entero -> . CTE_E
-    (110) consume_cte_flotante -> . CTE_F
+    (122) a_flotante -> . KW_A_FLOTANTE OP_PARENTESIS_IZQ a_flotante2 OP_PARENTESIS_DER
+    (109) p_cte_e_f -> . consume_cte_entero
+    (110) p_cte_e_f -> . consume_cte_flotante
+    (101) maneja_var_cte_defaults -> . KW_VERDADERO
+    (102) maneja_var_cte_defaults -> . KW_FALSO
+    (103) maneja_var_cte_defaults -> . KW_NORTE
+    (104) maneja_var_cte_defaults -> . KW_SUR
+    (105) maneja_var_cte_defaults -> . KW_ESTE
+    (106) maneja_var_cte_defaults -> . KW_OESTE
+    (107) maneja_var_cte_defaults -> . KW_ANCHO
+    (108) maneja_var_cte_defaults -> . KW_ALTO
+    (112) consume_cte_entero -> . CTE_E
+    (111) consume_cte_flotante -> . CTE_F
 
     OP_TERMINO      shift and go to state 90
     OP_PARENTESIS_IZQ shift and go to state 121
@@ -2847,7 +2974,7 @@ state 162
     consume_cte_flotante           shift and go to state 110
     var_consume_id_var_cte         shift and go to state 112
     a_string                       shift and go to state 113
-    expresion                      shift and go to state 211
+    expresion                      shift and go to state 212
     consume_par_izq                shift and go to state 119
     p_cte_e_f                      shift and go to state 99
     exp                            shift and go to state 109
@@ -2868,30 +2995,30 @@ state 164
 
 state 165
 
-    (128) output -> KW_OUTPUT OP_PARENTESIS_IZQ concat_string OP_PARENTESIS_DER .
+    (129) output -> KW_OUTPUT OP_PARENTESIS_IZQ concat_string OP_PARENTESIS_DER .
 
-    OP_PUNTO_COMA   reduce using rule 128 (output -> KW_OUTPUT OP_PARENTESIS_IZQ concat_string OP_PARENTESIS_DER .)
+    OP_PUNTO_COMA   reduce using rule 129 (output -> KW_OUTPUT OP_PARENTESIS_IZQ concat_string OP_PARENTESIS_DER .)
 
 
 state 166
 
-    (119) concat_string2 -> OP_PUNTO . CTE_S
+    (120) concat_string2 -> OP_PUNTO . CTE_S
 
-    CTE_S           shift and go to state 212
+    CTE_S           shift and go to state 213
 
 
 state 167
 
-    (118) concat_string -> CTE_S concat_string2 .
+    (119) concat_string -> CTE_S concat_string2 .
 
-    OP_PARENTESIS_DER reduce using rule 118 (concat_string -> CTE_S concat_string2 .)
+    OP_PARENTESIS_DER reduce using rule 119 (concat_string -> CTE_S concat_string2 .)
 
 
 state 168
 
-    (120) concat_string2 -> empty .
+    (121) concat_string2 -> empty .
 
-    OP_PARENTESIS_DER reduce using rule 120 (concat_string2 -> empty .)
+    OP_PARENTESIS_DER reduce using rule 121 (concat_string2 -> empty .)
 
 
 state 169
@@ -2925,28 +3052,28 @@ state 170
     (74) factor -> . OP_TERMINO var_cte
     (75) factor -> . var_cte
     (76) consume_par_izq -> . OP_PARENTESIS_IZQ
-    (94) var_cte -> . var_consume_id_var_cte var_cte2
-    (95) var_cte -> . a_string
-    (96) var_cte -> . a_entero
-    (97) var_cte -> . a_flotante
-    (98) var_cte -> . p_cte_e_f
-    (99) var_cte -> . maneja_var_cte_defaults
-    (112) var_consume_id_var_cte -> . ID
+    (95) var_cte -> . var_consume_id_var_cte var_cte2
+    (96) var_cte -> . a_string
+    (97) var_cte -> . a_entero
+    (98) var_cte -> . a_flotante
+    (99) var_cte -> . p_cte_e_f
+    (100) var_cte -> . maneja_var_cte_defaults
+    (113) var_consume_id_var_cte -> . ID
     (80) a_string -> . KW_A_STRING OP_PARENTESIS_IZQ a_string2 OP_PARENTESIS_DER
     (84) a_entero -> . KW_A_ENTERO OP_PARENTESIS_IZQ a_entero2 OP_PARENTESIS_DER
-    (121) a_flotante -> . KW_A_FLOTANTE OP_PARENTESIS_IZQ a_flotante2 OP_PARENTESIS_DER
-    (108) p_cte_e_f -> . consume_cte_entero
-    (109) p_cte_e_f -> . consume_cte_flotante
-    (100) maneja_var_cte_defaults -> . KW_VERDADERO
-    (101) maneja_var_cte_defaults -> . KW_FALSO
-    (102) maneja_var_cte_defaults -> . KW_NORTE
-    (103) maneja_var_cte_defaults -> . KW_SUR
-    (104) maneja_var_cte_defaults -> . KW_ESTE
-    (105) maneja_var_cte_defaults -> . KW_OESTE
-    (106) maneja_var_cte_defaults -> . KW_ANCHO
-    (107) maneja_var_cte_defaults -> . KW_ALTO
-    (111) consume_cte_entero -> . CTE_E
-    (110) consume_cte_flotante -> . CTE_F
+    (122) a_flotante -> . KW_A_FLOTANTE OP_PARENTESIS_IZQ a_flotante2 OP_PARENTESIS_DER
+    (109) p_cte_e_f -> . consume_cte_entero
+    (110) p_cte_e_f -> . consume_cte_flotante
+    (101) maneja_var_cte_defaults -> . KW_VERDADERO
+    (102) maneja_var_cte_defaults -> . KW_FALSO
+    (103) maneja_var_cte_defaults -> . KW_NORTE
+    (104) maneja_var_cte_defaults -> . KW_SUR
+    (105) maneja_var_cte_defaults -> . KW_ESTE
+    (106) maneja_var_cte_defaults -> . KW_OESTE
+    (107) maneja_var_cte_defaults -> . KW_ANCHO
+    (108) maneja_var_cte_defaults -> . KW_ALTO
+    (112) consume_cte_entero -> . CTE_E
+    (111) consume_cte_flotante -> . CTE_F
 
     OP_TERMINO      shift and go to state 90
     OP_PARENTESIS_IZQ shift and go to state 121
@@ -2977,7 +3104,7 @@ state 170
     consume_cte_entero             shift and go to state 106
     consume_par_izq                shift and go to state 119
     p_cte_e_f                      shift and go to state 99
-    exp                            shift and go to state 213
+    exp                            shift and go to state 214
 
 state 171
 
@@ -3047,28 +3174,28 @@ state 175
     (74) factor -> . OP_TERMINO var_cte
     (75) factor -> . var_cte
     (76) consume_par_izq -> . OP_PARENTESIS_IZQ
-    (94) var_cte -> . var_consume_id_var_cte var_cte2
-    (95) var_cte -> . a_string
-    (96) var_cte -> . a_entero
-    (97) var_cte -> . a_flotante
-    (98) var_cte -> . p_cte_e_f
-    (99) var_cte -> . maneja_var_cte_defaults
-    (112) var_consume_id_var_cte -> . ID
+    (95) var_cte -> . var_consume_id_var_cte var_cte2
+    (96) var_cte -> . a_string
+    (97) var_cte -> . a_entero
+    (98) var_cte -> . a_flotante
+    (99) var_cte -> . p_cte_e_f
+    (100) var_cte -> . maneja_var_cte_defaults
+    (113) var_consume_id_var_cte -> . ID
     (80) a_string -> . KW_A_STRING OP_PARENTESIS_IZQ a_string2 OP_PARENTESIS_DER
     (84) a_entero -> . KW_A_ENTERO OP_PARENTESIS_IZQ a_entero2 OP_PARENTESIS_DER
-    (121) a_flotante -> . KW_A_FLOTANTE OP_PARENTESIS_IZQ a_flotante2 OP_PARENTESIS_DER
-    (108) p_cte_e_f -> . consume_cte_entero
-    (109) p_cte_e_f -> . consume_cte_flotante
-    (100) maneja_var_cte_defaults -> . KW_VERDADERO
-    (101) maneja_var_cte_defaults -> . KW_FALSO
-    (102) maneja_var_cte_defaults -> . KW_NORTE
-    (103) maneja_var_cte_defaults -> . KW_SUR
-    (104) maneja_var_cte_defaults -> . KW_ESTE
-    (105) maneja_var_cte_defaults -> . KW_OESTE
-    (106) maneja_var_cte_defaults -> . KW_ANCHO
-    (107) maneja_var_cte_defaults -> . KW_ALTO
-    (111) consume_cte_entero -> . CTE_E
-    (110) consume_cte_flotante -> . CTE_F
+    (122) a_flotante -> . KW_A_FLOTANTE OP_PARENTESIS_IZQ a_flotante2 OP_PARENTESIS_DER
+    (109) p_cte_e_f -> . consume_cte_entero
+    (110) p_cte_e_f -> . consume_cte_flotante
+    (101) maneja_var_cte_defaults -> . KW_VERDADERO
+    (102) maneja_var_cte_defaults -> . KW_FALSO
+    (103) maneja_var_cte_defaults -> . KW_NORTE
+    (104) maneja_var_cte_defaults -> . KW_SUR
+    (105) maneja_var_cte_defaults -> . KW_ESTE
+    (106) maneja_var_cte_defaults -> . KW_OESTE
+    (107) maneja_var_cte_defaults -> . KW_ANCHO
+    (108) maneja_var_cte_defaults -> . KW_ALTO
+    (112) consume_cte_entero -> . CTE_E
+    (111) consume_cte_flotante -> . CTE_F
 
     OP_TERMINO      shift and go to state 90
     OP_PARENTESIS_IZQ shift and go to state 121
@@ -3099,7 +3226,7 @@ state 175
     consume_cte_flotante           shift and go to state 110
     var_consume_id_var_cte         shift and go to state 112
     a_string                       shift and go to state 113
-    expresion                      shift and go to state 214
+    expresion                      shift and go to state 215
     consume_par_izq                shift and go to state 119
     p_cte_e_f                      shift and go to state 99
     exp                            shift and go to state 109
@@ -3126,28 +3253,28 @@ state 177
     (74) factor -> . OP_TERMINO var_cte
     (75) factor -> . var_cte
     (76) consume_par_izq -> . OP_PARENTESIS_IZQ
-    (94) var_cte -> . var_consume_id_var_cte var_cte2
-    (95) var_cte -> . a_string
-    (96) var_cte -> . a_entero
-    (97) var_cte -> . a_flotante
-    (98) var_cte -> . p_cte_e_f
-    (99) var_cte -> . maneja_var_cte_defaults
-    (112) var_consume_id_var_cte -> . ID
+    (95) var_cte -> . var_consume_id_var_cte var_cte2
+    (96) var_cte -> . a_string
+    (97) var_cte -> . a_entero
+    (98) var_cte -> . a_flotante
+    (99) var_cte -> . p_cte_e_f
+    (100) var_cte -> . maneja_var_cte_defaults
+    (113) var_consume_id_var_cte -> . ID
     (80) a_string -> . KW_A_STRING OP_PARENTESIS_IZQ a_string2 OP_PARENTESIS_DER
     (84) a_entero -> . KW_A_ENTERO OP_PARENTESIS_IZQ a_entero2 OP_PARENTESIS_DER
-    (121) a_flotante -> . KW_A_FLOTANTE OP_PARENTESIS_IZQ a_flotante2 OP_PARENTESIS_DER
-    (108) p_cte_e_f -> . consume_cte_entero
-    (109) p_cte_e_f -> . consume_cte_flotante
-    (100) maneja_var_cte_defaults -> . KW_VERDADERO
-    (101) maneja_var_cte_defaults -> . KW_FALSO
-    (102) maneja_var_cte_defaults -> . KW_NORTE
-    (103) maneja_var_cte_defaults -> . KW_SUR
-    (104) maneja_var_cte_defaults -> . KW_ESTE
-    (105) maneja_var_cte_defaults -> . KW_OESTE
-    (106) maneja_var_cte_defaults -> . KW_ANCHO
-    (107) maneja_var_cte_defaults -> . KW_ALTO
-    (111) consume_cte_entero -> . CTE_E
-    (110) consume_cte_flotante -> . CTE_F
+    (122) a_flotante -> . KW_A_FLOTANTE OP_PARENTESIS_IZQ a_flotante2 OP_PARENTESIS_DER
+    (109) p_cte_e_f -> . consume_cte_entero
+    (110) p_cte_e_f -> . consume_cte_flotante
+    (101) maneja_var_cte_defaults -> . KW_VERDADERO
+    (102) maneja_var_cte_defaults -> . KW_FALSO
+    (103) maneja_var_cte_defaults -> . KW_NORTE
+    (104) maneja_var_cte_defaults -> . KW_SUR
+    (105) maneja_var_cte_defaults -> . KW_ESTE
+    (106) maneja_var_cte_defaults -> . KW_OESTE
+    (107) maneja_var_cte_defaults -> . KW_ANCHO
+    (108) maneja_var_cte_defaults -> . KW_ALTO
+    (112) consume_cte_entero -> . CTE_E
+    (111) consume_cte_flotante -> . CTE_F
 
     OP_TERMINO      shift and go to state 90
     OP_PARENTESIS_IZQ shift and go to state 121
@@ -3178,7 +3305,7 @@ state 177
     consume_cte_flotante           shift and go to state 110
     var_consume_id_var_cte         shift and go to state 112
     a_string                       shift and go to state 113
-    expresion                      shift and go to state 215
+    expresion                      shift and go to state 216
     consume_par_izq                shift and go to state 119
     p_cte_e_f                      shift and go to state 99
     exp                            shift and go to state 109
@@ -3255,8 +3382,8 @@ state 182
     OP_COMPARADOR   reduce using rule 68 (termino -> factor genera_cuadruplo_factor termino2 .)
     OP_AND          reduce using rule 68 (termino -> factor genera_cuadruplo_factor termino2 .)
     OP_OR           reduce using rule 68 (termino -> factor genera_cuadruplo_factor termino2 .)
-    OP_COMA         reduce using rule 68 (termino -> factor genera_cuadruplo_factor termino2 .)
     OP_PARENTESIS_DER reduce using rule 68 (termino -> factor genera_cuadruplo_factor termino2 .)
+    OP_COMA         reduce using rule 68 (termino -> factor genera_cuadruplo_factor termino2 .)
     OP_PUNTO_COMA   reduce using rule 68 (termino -> factor genera_cuadruplo_factor termino2 .)
 
 
@@ -3281,28 +3408,28 @@ state 184
     (74) factor -> . OP_TERMINO var_cte
     (75) factor -> . var_cte
     (76) consume_par_izq -> . OP_PARENTESIS_IZQ
-    (94) var_cte -> . var_consume_id_var_cte var_cte2
-    (95) var_cte -> . a_string
-    (96) var_cte -> . a_entero
-    (97) var_cte -> . a_flotante
-    (98) var_cte -> . p_cte_e_f
-    (99) var_cte -> . maneja_var_cte_defaults
-    (112) var_consume_id_var_cte -> . ID
+    (95) var_cte -> . var_consume_id_var_cte var_cte2
+    (96) var_cte -> . a_string
+    (97) var_cte -> . a_entero
+    (98) var_cte -> . a_flotante
+    (99) var_cte -> . p_cte_e_f
+    (100) var_cte -> . maneja_var_cte_defaults
+    (113) var_consume_id_var_cte -> . ID
     (80) a_string -> . KW_A_STRING OP_PARENTESIS_IZQ a_string2 OP_PARENTESIS_DER
     (84) a_entero -> . KW_A_ENTERO OP_PARENTESIS_IZQ a_entero2 OP_PARENTESIS_DER
-    (121) a_flotante -> . KW_A_FLOTANTE OP_PARENTESIS_IZQ a_flotante2 OP_PARENTESIS_DER
-    (108) p_cte_e_f -> . consume_cte_entero
-    (109) p_cte_e_f -> . consume_cte_flotante
-    (100) maneja_var_cte_defaults -> . KW_VERDADERO
-    (101) maneja_var_cte_defaults -> . KW_FALSO
-    (102) maneja_var_cte_defaults -> . KW_NORTE
-    (103) maneja_var_cte_defaults -> . KW_SUR
-    (104) maneja_var_cte_defaults -> . KW_ESTE
-    (105) maneja_var_cte_defaults -> . KW_OESTE
-    (106) maneja_var_cte_defaults -> . KW_ANCHO
-    (107) maneja_var_cte_defaults -> . KW_ALTO
-    (111) consume_cte_entero -> . CTE_E
-    (110) consume_cte_flotante -> . CTE_F
+    (122) a_flotante -> . KW_A_FLOTANTE OP_PARENTESIS_IZQ a_flotante2 OP_PARENTESIS_DER
+    (109) p_cte_e_f -> . consume_cte_entero
+    (110) p_cte_e_f -> . consume_cte_flotante
+    (101) maneja_var_cte_defaults -> . KW_VERDADERO
+    (102) maneja_var_cte_defaults -> . KW_FALSO
+    (103) maneja_var_cte_defaults -> . KW_NORTE
+    (104) maneja_var_cte_defaults -> . KW_SUR
+    (105) maneja_var_cte_defaults -> . KW_ESTE
+    (106) maneja_var_cte_defaults -> . KW_OESTE
+    (107) maneja_var_cte_defaults -> . KW_ANCHO
+    (108) maneja_var_cte_defaults -> . KW_ALTO
+    (112) consume_cte_entero -> . CTE_E
+    (111) consume_cte_flotante -> . CTE_F
 
     OP_TERMINO      shift and go to state 90
     OP_PARENTESIS_IZQ shift and go to state 121
@@ -3330,7 +3457,7 @@ state 184
     a_string                       shift and go to state 113
     consume_cte_entero             shift and go to state 106
     var_consume_id_var_cte         shift and go to state 112
-    termino                        shift and go to state 216
+    termino                        shift and go to state 217
     factor                         shift and go to state 103
     a_flotante                     shift and go to state 105
 
@@ -3338,7 +3465,7 @@ state 185
 
     (80) a_string -> KW_A_STRING OP_PARENTESIS_IZQ a_string2 . OP_PARENTESIS_DER
 
-    OP_PARENTESIS_DER shift and go to state 217
+    OP_PARENTESIS_DER shift and go to state 218
 
 
 state 186
@@ -3354,7 +3481,7 @@ state 186
 
   ! OP_CORCHETE_IZQ [ reduce using rule 1 (empty -> .) ]
 
-    arr_not                        shift and go to state 218
+    arr_not                        shift and go to state 219
     empty                          shift and go to state 24
 
 state 187
@@ -3378,8 +3505,8 @@ state 189
     OP_AND          reduce using rule 58 (comp_and -> exp genera_cuadruplo_comparador comp_and_end .)
     OP_OR           reduce using rule 58 (comp_and -> exp genera_cuadruplo_comparador comp_and_end .)
     OP_PARENTESIS_DER reduce using rule 58 (comp_and -> exp genera_cuadruplo_comparador comp_and_end .)
-    OP_PUNTO_COMA   reduce using rule 58 (comp_and -> exp genera_cuadruplo_comparador comp_and_end .)
     OP_COMA         reduce using rule 58 (comp_and -> exp genera_cuadruplo_comparador comp_and_end .)
+    OP_PUNTO_COMA   reduce using rule 58 (comp_and -> exp genera_cuadruplo_comparador comp_and_end .)
 
 
 state 190
@@ -3414,28 +3541,28 @@ state 191
     (74) factor -> . OP_TERMINO var_cte
     (75) factor -> . var_cte
     (76) consume_par_izq -> . OP_PARENTESIS_IZQ
-    (94) var_cte -> . var_consume_id_var_cte var_cte2
-    (95) var_cte -> . a_string
-    (96) var_cte -> . a_entero
-    (97) var_cte -> . a_flotante
-    (98) var_cte -> . p_cte_e_f
-    (99) var_cte -> . maneja_var_cte_defaults
-    (112) var_consume_id_var_cte -> . ID
+    (95) var_cte -> . var_consume_id_var_cte var_cte2
+    (96) var_cte -> . a_string
+    (97) var_cte -> . a_entero
+    (98) var_cte -> . a_flotante
+    (99) var_cte -> . p_cte_e_f
+    (100) var_cte -> . maneja_var_cte_defaults
+    (113) var_consume_id_var_cte -> . ID
     (80) a_string -> . KW_A_STRING OP_PARENTESIS_IZQ a_string2 OP_PARENTESIS_DER
     (84) a_entero -> . KW_A_ENTERO OP_PARENTESIS_IZQ a_entero2 OP_PARENTESIS_DER
-    (121) a_flotante -> . KW_A_FLOTANTE OP_PARENTESIS_IZQ a_flotante2 OP_PARENTESIS_DER
-    (108) p_cte_e_f -> . consume_cte_entero
-    (109) p_cte_e_f -> . consume_cte_flotante
-    (100) maneja_var_cte_defaults -> . KW_VERDADERO
-    (101) maneja_var_cte_defaults -> . KW_FALSO
-    (102) maneja_var_cte_defaults -> . KW_NORTE
-    (103) maneja_var_cte_defaults -> . KW_SUR
-    (104) maneja_var_cte_defaults -> . KW_ESTE
-    (105) maneja_var_cte_defaults -> . KW_OESTE
-    (106) maneja_var_cte_defaults -> . KW_ANCHO
-    (107) maneja_var_cte_defaults -> . KW_ALTO
-    (111) consume_cte_entero -> . CTE_E
-    (110) consume_cte_flotante -> . CTE_F
+    (122) a_flotante -> . KW_A_FLOTANTE OP_PARENTESIS_IZQ a_flotante2 OP_PARENTESIS_DER
+    (109) p_cte_e_f -> . consume_cte_entero
+    (110) p_cte_e_f -> . consume_cte_flotante
+    (101) maneja_var_cte_defaults -> . KW_VERDADERO
+    (102) maneja_var_cte_defaults -> . KW_FALSO
+    (103) maneja_var_cte_defaults -> . KW_NORTE
+    (104) maneja_var_cte_defaults -> . KW_SUR
+    (105) maneja_var_cte_defaults -> . KW_ESTE
+    (106) maneja_var_cte_defaults -> . KW_OESTE
+    (107) maneja_var_cte_defaults -> . KW_ANCHO
+    (108) maneja_var_cte_defaults -> . KW_ALTO
+    (112) consume_cte_entero -> . CTE_E
+    (111) consume_cte_flotante -> . CTE_F
 
     OP_TERMINO      shift and go to state 90
     OP_PARENTESIS_IZQ shift and go to state 121
@@ -3458,7 +3585,7 @@ state 191
     termino                        shift and go to state 94
     maneja_var_cte_defaults        shift and go to state 95
     a_entero                       shift and go to state 97
-    comp_and                       shift and go to state 219
+    comp_and                       shift and go to state 220
     factor                         shift and go to state 103
     a_flotante                     shift and go to state 105
     consume_cte_entero             shift and go to state 106
@@ -3482,37 +3609,37 @@ state 192
 
 state 193
 
-    (113) var_cte2 -> arr_not arr_not .
+    (114) var_cte2 -> arr_not arr_not .
 
-    OP_FACTOR       reduce using rule 113 (var_cte2 -> arr_not arr_not .)
-    OP_TERMINO      reduce using rule 113 (var_cte2 -> arr_not arr_not .)
-    OP_COMPARADOR   reduce using rule 113 (var_cte2 -> arr_not arr_not .)
-    OP_AND          reduce using rule 113 (var_cte2 -> arr_not arr_not .)
-    OP_OR           reduce using rule 113 (var_cte2 -> arr_not arr_not .)
-    OP_PUNTO_COMA   reduce using rule 113 (var_cte2 -> arr_not arr_not .)
-    OP_PARENTESIS_DER reduce using rule 113 (var_cte2 -> arr_not arr_not .)
-    OP_COMA         reduce using rule 113 (var_cte2 -> arr_not arr_not .)
+    OP_FACTOR       reduce using rule 114 (var_cte2 -> arr_not arr_not .)
+    OP_TERMINO      reduce using rule 114 (var_cte2 -> arr_not arr_not .)
+    OP_COMPARADOR   reduce using rule 114 (var_cte2 -> arr_not arr_not .)
+    OP_AND          reduce using rule 114 (var_cte2 -> arr_not arr_not .)
+    OP_OR           reduce using rule 114 (var_cte2 -> arr_not arr_not .)
+    OP_PUNTO_COMA   reduce using rule 114 (var_cte2 -> arr_not arr_not .)
+    OP_PARENTESIS_DER reduce using rule 114 (var_cte2 -> arr_not arr_not .)
+    OP_COMA         reduce using rule 114 (var_cte2 -> arr_not arr_not .)
 
 
 state 194
 
-    (114) var_cte2 -> OP_PARENTESIS_IZQ var_cte3 . OP_PARENTESIS_DER
+    (115) var_cte2 -> OP_PARENTESIS_IZQ var_cte3 . OP_PARENTESIS_DER
 
-    OP_PARENTESIS_DER shift and go to state 220
+    OP_PARENTESIS_DER shift and go to state 221
 
 
 state 195
 
-    (115) var_cte3 -> expresion . var_cte4
-    (116) var_cte4 -> . OP_COMA expresion var_cte4
-    (117) var_cte4 -> . empty
+    (116) var_cte3 -> expresion . var_cte4
+    (117) var_cte4 -> . OP_COMA expresion var_cte4
+    (118) var_cte4 -> . empty
     (1) empty -> .
 
-    OP_COMA         shift and go to state 221
+    OP_COMA         shift and go to state 222
     OP_PARENTESIS_DER reduce using rule 1 (empty -> .)
 
-    var_cte4                       shift and go to state 222
-    empty                          shift and go to state 223
+    var_cte4                       shift and go to state 223
+    empty                          shift and go to state 224
 
 state 196
 
@@ -3532,10 +3659,26 @@ state 198
 
     (84) a_entero -> KW_A_ENTERO OP_PARENTESIS_IZQ a_entero2 . OP_PARENTESIS_DER
 
-    OP_PARENTESIS_DER shift and go to state 224
+    OP_PARENTESIS_DER shift and go to state 225
 
 
 state 199
+
+    (87) a_entero2 -> ID . arr_not arr_not
+    (21) arr_not -> . OP_CORCHETE_IZQ CTE_E OP_CORCHETE_DER
+    (22) arr_not -> . empty
+    (1) empty -> .
+
+  ! shift/reduce conflict for OP_CORCHETE_IZQ resolved as shift
+    OP_CORCHETE_IZQ shift and go to state 23
+    OP_PARENTESIS_DER reduce using rule 1 (empty -> .)
+
+  ! OP_CORCHETE_IZQ [ reduce using rule 1 (empty -> .) ]
+
+    arr_not                        shift and go to state 226
+    empty                          shift and go to state 24
+
+state 200
 
     (73) factor -> consume_par_izq expresion OP_PARENTESIS_DER .
 
@@ -3549,59 +3692,59 @@ state 199
     OP_COMA         reduce using rule 73 (factor -> consume_par_izq expresion OP_PARENTESIS_DER .)
 
 
-state 200
-
-    (121) a_flotante -> KW_A_FLOTANTE OP_PARENTESIS_IZQ a_flotante2 . OP_PARENTESIS_DER
-
-    OP_PARENTESIS_DER shift and go to state 225
-
-
 state 201
 
-    (122) a_flotante2 -> concat_string .
+    (122) a_flotante -> KW_A_FLOTANTE OP_PARENTESIS_IZQ a_flotante2 . OP_PARENTESIS_DER
 
-    OP_PARENTESIS_DER reduce using rule 122 (a_flotante2 -> concat_string .)
+    OP_PARENTESIS_DER shift and go to state 227
 
 
 state 202
 
-    (123) a_flotante2 -> CTE_F .
+    (123) a_flotante2 -> concat_string .
 
-    OP_PARENTESIS_DER reduce using rule 123 (a_flotante2 -> CTE_F .)
+    OP_PARENTESIS_DER reduce using rule 123 (a_flotante2 -> concat_string .)
 
 
 state 203
+
+    (124) a_flotante2 -> CTE_F .
+
+    OP_PARENTESIS_DER reduce using rule 124 (a_flotante2 -> CTE_F .)
+
+
+state 204
 
     (79) mira -> KW_MIRA OP_PARENTESIS_IZQ expresion OP_PARENTESIS_DER .
 
     OP_PUNTO_COMA   reduce using rule 79 (mira -> KW_MIRA OP_PARENTESIS_IZQ expresion OP_PARENTESIS_DER .)
 
 
-state 204
-
-    (129) salta_a -> KW_SALTA_A OP_PARENTESIS_IZQ CTE_E OP_COMA CTE_E . OP_PARENTESIS_DER
-
-    OP_PARENTESIS_DER shift and go to state 226
-
-
 state 205
 
-    (87) condicion -> KW_SI OP_PARENTESIS_IZQ expresion consume_par_der bloque_est . si_no
-    (89) si_no -> . consume_si_no bloque_est
-    (90) si_no -> . empty
-    (91) consume_si_no -> . KW_SI_NO
-    (1) empty -> .
+    (130) salta_a -> KW_SALTA_A OP_PARENTESIS_IZQ expresion OP_COMA expresion . OP_PARENTESIS_DER
 
-    KW_SI_NO        shift and go to state 229
-    OP_PUNTO_COMA   reduce using rule 1 (empty -> .)
+    OP_PARENTESIS_DER shift and go to state 228
 
-    consume_si_no                  shift and go to state 227
-    si_no                          shift and go to state 228
-    empty                          shift and go to state 230
 
 state 206
 
-    (92) bloque_est -> OP_LLAVE_IZQ . estatuto_rec OP_LLAVE_DER
+    (88) condicion -> KW_SI OP_PARENTESIS_IZQ expresion consume_par_der bloque_est . si_no
+    (90) si_no -> . consume_si_no bloque_est
+    (91) si_no -> . empty
+    (92) consume_si_no -> . KW_SI_NO
+    (1) empty -> .
+
+    KW_SI_NO        shift and go to state 231
+    OP_PUNTO_COMA   reduce using rule 1 (empty -> .)
+
+    consume_si_no                  shift and go to state 229
+    si_no                          shift and go to state 230
+    empty                          shift and go to state 232
+
+state 207
+
+    (93) bloque_est -> OP_LLAVE_IZQ . estatuto_rec OP_LLAVE_DER
     (31) estatuto_rec -> . estatuto OP_PUNTO_COMA estatuto_rec
     (32) estatuto_rec -> . empty
     (25) estatuto -> . asignacion
@@ -3612,7 +3755,7 @@ state 206
     (30) estatuto -> . retorna
     (1) empty -> .
     (33) asignacion -> . var_consume_id_var_cte arr_not arr_not OP_ASIGNACION expresion
-    (87) condicion -> . KW_SI OP_PARENTESIS_IZQ expresion consume_par_der bloque_est si_no
+    (88) condicion -> . KW_SI OP_PARENTESIS_IZQ expresion consume_par_der bloque_est si_no
     (34) ciclo -> . KW_MIENTRAS consume_par_izq_ciclo expresion consume_par_der bloque_est
     (36) ejec_funcion -> . ID OP_PARENTESIS_IZQ ejec_funcion_medio OP_PARENTESIS_DER
     (41) funcion_predef -> . camina
@@ -3622,15 +3765,15 @@ state 206
     (45) funcion_predef -> . input
     (46) funcion_predef -> . output
     (47) funcion_predef -> . salta_a
-    (93) retorna -> . KW_RETORNA expresion
-    (112) var_consume_id_var_cte -> . ID
+    (94) retorna -> . KW_RETORNA expresion
+    (113) var_consume_id_var_cte -> . ID
     (77) camina -> . KW_CAMINA OP_PARENTESIS_IZQ expresion OP_PARENTESIS_DER
     (78) gira -> . KW_GIRA OP_PARENTESIS_IZQ expresion OP_PARENTESIS_DER
     (79) mira -> . KW_MIRA OP_PARENTESIS_IZQ expresion OP_PARENTESIS_DER
-    (124) reiniciar -> . KW_REINICIAR OP_PARENTESIS_IZQ OP_PARENTESIS_DER
-    (125) input -> . KW_INPUT OP_PARENTESIS_IZQ ID input2 OP_PARENTESIS_DER
-    (128) output -> . KW_OUTPUT OP_PARENTESIS_IZQ concat_string OP_PARENTESIS_DER
-    (129) salta_a -> . KW_SALTA_A OP_PARENTESIS_IZQ CTE_E OP_COMA CTE_E OP_PARENTESIS_DER
+    (125) reiniciar -> . KW_REINICIAR OP_PARENTESIS_IZQ OP_PARENTESIS_DER
+    (126) input -> . KW_INPUT OP_PARENTESIS_IZQ ID input2 OP_PARENTESIS_DER
+    (129) output -> . KW_OUTPUT OP_PARENTESIS_IZQ concat_string OP_PARENTESIS_DER
+    (130) salta_a -> . KW_SALTA_A OP_PARENTESIS_IZQ expresion OP_COMA expresion OP_PARENTESIS_DER
 
     OP_LLAVE_DER    reduce using rule 1 (empty -> .)
     KW_SI           shift and go to state 55
@@ -3657,47 +3800,47 @@ state 206
     input                          shift and go to state 62
     empty                          shift and go to state 63
     mira                           shift and go to state 64
-    estatuto_rec                   shift and go to state 231
+    estatuto_rec                   shift and go to state 233
     var_consume_id_var_cte         shift and go to state 67
     asignacion                     shift and go to state 71
     salta_a                        shift and go to state 73
     output                         shift and go to state 76
 
-state 207
+state 208
 
     (33) asignacion -> var_consume_id_var_cte arr_not arr_not OP_ASIGNACION expresion .
 
     OP_PUNTO_COMA   reduce using rule 33 (asignacion -> var_consume_id_var_cte arr_not arr_not OP_ASIGNACION expresion .)
 
 
-state 208
+state 209
 
     (34) ciclo -> KW_MIENTRAS consume_par_izq_ciclo expresion consume_par_der bloque_est .
 
     OP_PUNTO_COMA   reduce using rule 34 (ciclo -> KW_MIENTRAS consume_par_izq_ciclo expresion consume_par_der bloque_est .)
 
 
-state 209
-
-    (125) input -> KW_INPUT OP_PARENTESIS_IZQ ID input2 OP_PARENTESIS_DER .
-
-    OP_PUNTO_COMA   reduce using rule 125 (input -> KW_INPUT OP_PARENTESIS_IZQ ID input2 OP_PARENTESIS_DER .)
-
-
 state 210
 
-    (126) input2 -> OP_COMA ID . input2
-    (126) input2 -> . OP_COMA ID input2
-    (127) input2 -> . empty
+    (126) input -> KW_INPUT OP_PARENTESIS_IZQ ID input2 OP_PARENTESIS_DER .
+
+    OP_PUNTO_COMA   reduce using rule 126 (input -> KW_INPUT OP_PARENTESIS_IZQ ID input2 OP_PARENTESIS_DER .)
+
+
+state 211
+
+    (127) input2 -> OP_COMA ID . input2
+    (127) input2 -> . OP_COMA ID input2
+    (128) input2 -> . empty
     (1) empty -> .
 
     OP_COMA         shift and go to state 159
     OP_PARENTESIS_DER reduce using rule 1 (empty -> .)
 
-    input2                         shift and go to state 232
+    input2                         shift and go to state 234
     empty                          shift and go to state 160
 
-state 211
+state 212
 
     (39) ejec_funcion_cont -> OP_COMA expresion . ejec_funcion_cont
     (39) ejec_funcion_cont -> . OP_COMA expresion ejec_funcion_cont
@@ -3708,16 +3851,16 @@ state 211
     OP_PARENTESIS_DER reduce using rule 1 (empty -> .)
 
     empty                          shift and go to state 163
-    ejec_funcion_cont              shift and go to state 233
-
-state 212
-
-    (119) concat_string2 -> OP_PUNTO CTE_S .
-
-    OP_PARENTESIS_DER reduce using rule 119 (concat_string2 -> OP_PUNTO CTE_S .)
-
+    ejec_funcion_cont              shift and go to state 235
 
 state 213
+
+    (120) concat_string2 -> OP_PUNTO CTE_S .
+
+    OP_PARENTESIS_DER reduce using rule 120 (concat_string2 -> OP_PUNTO CTE_S .)
+
+
+state 214
 
     (65) exp2 -> consume_op_termino exp .
 
@@ -3729,7 +3872,7 @@ state 213
     OP_COMA         reduce using rule 65 (exp2 -> consume_op_termino exp .)
 
 
-state 214
+state 215
 
     (50) otra_expresion_or -> consume_op_or expresion .
 
@@ -3739,7 +3882,7 @@ state 214
     OP_COMA         reduce using rule 50 (otra_expresion_or -> consume_op_or expresion .)
 
 
-state 215
+state 216
 
     (55) otra_expresion_and -> consume_op_and expresion .
 
@@ -3749,7 +3892,7 @@ state 215
     OP_COMA         reduce using rule 55 (otra_expresion_and -> consume_op_and expresion .)
 
 
-state 216
+state 217
 
     (70) termino2 -> consume_op_factor termino .
 
@@ -3762,7 +3905,7 @@ state 216
     OP_COMA         reduce using rule 70 (termino2 -> consume_op_factor termino .)
 
 
-state 217
+state 218
 
     (80) a_string -> KW_A_STRING OP_PARENTESIS_IZQ a_string2 OP_PARENTESIS_DER .
 
@@ -3776,7 +3919,7 @@ state 217
     OP_PUNTO_COMA   reduce using rule 80 (a_string -> KW_A_STRING OP_PARENTESIS_IZQ a_string2 OP_PARENTESIS_DER .)
 
 
-state 218
+state 219
 
     (83) a_string2 -> ID arr_not . arr_not
     (21) arr_not -> . OP_CORCHETE_IZQ CTE_E OP_CORCHETE_DER
@@ -3786,10 +3929,10 @@ state 218
     OP_CORCHETE_IZQ shift and go to state 23
     OP_PARENTESIS_DER reduce using rule 1 (empty -> .)
 
-    arr_not                        shift and go to state 234
+    arr_not                        shift and go to state 236
     empty                          shift and go to state 24
 
-state 219
+state 220
 
     (60) comp_and_end -> op_comparador comp_and .
 
@@ -3800,23 +3943,23 @@ state 219
     OP_COMA         reduce using rule 60 (comp_and_end -> op_comparador comp_and .)
 
 
-state 220
-
-    (114) var_cte2 -> OP_PARENTESIS_IZQ var_cte3 OP_PARENTESIS_DER .
-
-    OP_FACTOR       reduce using rule 114 (var_cte2 -> OP_PARENTESIS_IZQ var_cte3 OP_PARENTESIS_DER .)
-    OP_TERMINO      reduce using rule 114 (var_cte2 -> OP_PARENTESIS_IZQ var_cte3 OP_PARENTESIS_DER .)
-    OP_COMPARADOR   reduce using rule 114 (var_cte2 -> OP_PARENTESIS_IZQ var_cte3 OP_PARENTESIS_DER .)
-    OP_AND          reduce using rule 114 (var_cte2 -> OP_PARENTESIS_IZQ var_cte3 OP_PARENTESIS_DER .)
-    OP_OR           reduce using rule 114 (var_cte2 -> OP_PARENTESIS_IZQ var_cte3 OP_PARENTESIS_DER .)
-    OP_PUNTO_COMA   reduce using rule 114 (var_cte2 -> OP_PARENTESIS_IZQ var_cte3 OP_PARENTESIS_DER .)
-    OP_PARENTESIS_DER reduce using rule 114 (var_cte2 -> OP_PARENTESIS_IZQ var_cte3 OP_PARENTESIS_DER .)
-    OP_COMA         reduce using rule 114 (var_cte2 -> OP_PARENTESIS_IZQ var_cte3 OP_PARENTESIS_DER .)
-
-
 state 221
 
-    (116) var_cte4 -> OP_COMA . expresion var_cte4
+    (115) var_cte2 -> OP_PARENTESIS_IZQ var_cte3 OP_PARENTESIS_DER .
+
+    OP_FACTOR       reduce using rule 115 (var_cte2 -> OP_PARENTESIS_IZQ var_cte3 OP_PARENTESIS_DER .)
+    OP_TERMINO      reduce using rule 115 (var_cte2 -> OP_PARENTESIS_IZQ var_cte3 OP_PARENTESIS_DER .)
+    OP_COMPARADOR   reduce using rule 115 (var_cte2 -> OP_PARENTESIS_IZQ var_cte3 OP_PARENTESIS_DER .)
+    OP_AND          reduce using rule 115 (var_cte2 -> OP_PARENTESIS_IZQ var_cte3 OP_PARENTESIS_DER .)
+    OP_OR           reduce using rule 115 (var_cte2 -> OP_PARENTESIS_IZQ var_cte3 OP_PARENTESIS_DER .)
+    OP_PUNTO_COMA   reduce using rule 115 (var_cte2 -> OP_PARENTESIS_IZQ var_cte3 OP_PARENTESIS_DER .)
+    OP_PARENTESIS_DER reduce using rule 115 (var_cte2 -> OP_PARENTESIS_IZQ var_cte3 OP_PARENTESIS_DER .)
+    OP_COMA         reduce using rule 115 (var_cte2 -> OP_PARENTESIS_IZQ var_cte3 OP_PARENTESIS_DER .)
+
+
+state 222
+
+    (117) var_cte4 -> OP_COMA . expresion var_cte4
     (48) expresion -> . comp_or genera_cuadruplo_or otra_expresion_or
     (53) comp_or -> . comp_and genera_cuadruplo_and otra_expresion_and
     (58) comp_and -> . exp genera_cuadruplo_comparador comp_and_end
@@ -3826,28 +3969,28 @@ state 221
     (74) factor -> . OP_TERMINO var_cte
     (75) factor -> . var_cte
     (76) consume_par_izq -> . OP_PARENTESIS_IZQ
-    (94) var_cte -> . var_consume_id_var_cte var_cte2
-    (95) var_cte -> . a_string
-    (96) var_cte -> . a_entero
-    (97) var_cte -> . a_flotante
-    (98) var_cte -> . p_cte_e_f
-    (99) var_cte -> . maneja_var_cte_defaults
-    (112) var_consume_id_var_cte -> . ID
+    (95) var_cte -> . var_consume_id_var_cte var_cte2
+    (96) var_cte -> . a_string
+    (97) var_cte -> . a_entero
+    (98) var_cte -> . a_flotante
+    (99) var_cte -> . p_cte_e_f
+    (100) var_cte -> . maneja_var_cte_defaults
+    (113) var_consume_id_var_cte -> . ID
     (80) a_string -> . KW_A_STRING OP_PARENTESIS_IZQ a_string2 OP_PARENTESIS_DER
     (84) a_entero -> . KW_A_ENTERO OP_PARENTESIS_IZQ a_entero2 OP_PARENTESIS_DER
-    (121) a_flotante -> . KW_A_FLOTANTE OP_PARENTESIS_IZQ a_flotante2 OP_PARENTESIS_DER
-    (108) p_cte_e_f -> . consume_cte_entero
-    (109) p_cte_e_f -> . consume_cte_flotante
-    (100) maneja_var_cte_defaults -> . KW_VERDADERO
-    (101) maneja_var_cte_defaults -> . KW_FALSO
-    (102) maneja_var_cte_defaults -> . KW_NORTE
-    (103) maneja_var_cte_defaults -> . KW_SUR
-    (104) maneja_var_cte_defaults -> . KW_ESTE
-    (105) maneja_var_cte_defaults -> . KW_OESTE
-    (106) maneja_var_cte_defaults -> . KW_ANCHO
-    (107) maneja_var_cte_defaults -> . KW_ALTO
-    (111) consume_cte_entero -> . CTE_E
-    (110) consume_cte_flotante -> . CTE_F
+    (122) a_flotante -> . KW_A_FLOTANTE OP_PARENTESIS_IZQ a_flotante2 OP_PARENTESIS_DER
+    (109) p_cte_e_f -> . consume_cte_entero
+    (110) p_cte_e_f -> . consume_cte_flotante
+    (101) maneja_var_cte_defaults -> . KW_VERDADERO
+    (102) maneja_var_cte_defaults -> . KW_FALSO
+    (103) maneja_var_cte_defaults -> . KW_NORTE
+    (104) maneja_var_cte_defaults -> . KW_SUR
+    (105) maneja_var_cte_defaults -> . KW_ESTE
+    (106) maneja_var_cte_defaults -> . KW_OESTE
+    (107) maneja_var_cte_defaults -> . KW_ANCHO
+    (108) maneja_var_cte_defaults -> . KW_ALTO
+    (112) consume_cte_entero -> . CTE_E
+    (111) consume_cte_flotante -> . CTE_F
 
     OP_TERMINO      shift and go to state 90
     OP_PARENTESIS_IZQ shift and go to state 121
@@ -3878,26 +4021,26 @@ state 221
     consume_cte_flotante           shift and go to state 110
     var_consume_id_var_cte         shift and go to state 112
     a_string                       shift and go to state 113
-    expresion                      shift and go to state 235
+    expresion                      shift and go to state 237
     consume_par_izq                shift and go to state 119
     p_cte_e_f                      shift and go to state 99
     exp                            shift and go to state 109
 
-state 222
-
-    (115) var_cte3 -> expresion var_cte4 .
-
-    OP_PARENTESIS_DER reduce using rule 115 (var_cte3 -> expresion var_cte4 .)
-
-
 state 223
 
-    (117) var_cte4 -> empty .
+    (116) var_cte3 -> expresion var_cte4 .
 
-    OP_PARENTESIS_DER reduce using rule 117 (var_cte4 -> empty .)
+    OP_PARENTESIS_DER reduce using rule 116 (var_cte3 -> expresion var_cte4 .)
 
 
 state 224
+
+    (118) var_cte4 -> empty .
+
+    OP_PARENTESIS_DER reduce using rule 118 (var_cte4 -> empty .)
+
+
+state 225
 
     (84) a_entero -> KW_A_ENTERO OP_PARENTESIS_IZQ a_entero2 OP_PARENTESIS_DER .
 
@@ -3911,118 +4054,138 @@ state 224
     OP_COMA         reduce using rule 84 (a_entero -> KW_A_ENTERO OP_PARENTESIS_IZQ a_entero2 OP_PARENTESIS_DER .)
 
 
-state 225
-
-    (121) a_flotante -> KW_A_FLOTANTE OP_PARENTESIS_IZQ a_flotante2 OP_PARENTESIS_DER .
-
-    OP_FACTOR       reduce using rule 121 (a_flotante -> KW_A_FLOTANTE OP_PARENTESIS_IZQ a_flotante2 OP_PARENTESIS_DER .)
-    OP_TERMINO      reduce using rule 121 (a_flotante -> KW_A_FLOTANTE OP_PARENTESIS_IZQ a_flotante2 OP_PARENTESIS_DER .)
-    OP_COMPARADOR   reduce using rule 121 (a_flotante -> KW_A_FLOTANTE OP_PARENTESIS_IZQ a_flotante2 OP_PARENTESIS_DER .)
-    OP_AND          reduce using rule 121 (a_flotante -> KW_A_FLOTANTE OP_PARENTESIS_IZQ a_flotante2 OP_PARENTESIS_DER .)
-    OP_OR           reduce using rule 121 (a_flotante -> KW_A_FLOTANTE OP_PARENTESIS_IZQ a_flotante2 OP_PARENTESIS_DER .)
-    OP_PUNTO_COMA   reduce using rule 121 (a_flotante -> KW_A_FLOTANTE OP_PARENTESIS_IZQ a_flotante2 OP_PARENTESIS_DER .)
-    OP_PARENTESIS_DER reduce using rule 121 (a_flotante -> KW_A_FLOTANTE OP_PARENTESIS_IZQ a_flotante2 OP_PARENTESIS_DER .)
-    OP_COMA         reduce using rule 121 (a_flotante -> KW_A_FLOTANTE OP_PARENTESIS_IZQ a_flotante2 OP_PARENTESIS_DER .)
-
-
 state 226
 
-    (129) salta_a -> KW_SALTA_A OP_PARENTESIS_IZQ CTE_E OP_COMA CTE_E OP_PARENTESIS_DER .
+    (87) a_entero2 -> ID arr_not . arr_not
+    (21) arr_not -> . OP_CORCHETE_IZQ CTE_E OP_CORCHETE_DER
+    (22) arr_not -> . empty
+    (1) empty -> .
 
-    OP_PUNTO_COMA   reduce using rule 129 (salta_a -> KW_SALTA_A OP_PARENTESIS_IZQ CTE_E OP_COMA CTE_E OP_PARENTESIS_DER .)
+    OP_CORCHETE_IZQ shift and go to state 23
+    OP_PARENTESIS_DER reduce using rule 1 (empty -> .)
 
+    arr_not                        shift and go to state 238
+    empty                          shift and go to state 24
 
 state 227
 
-    (89) si_no -> consume_si_no . bloque_est
-    (92) bloque_est -> . OP_LLAVE_IZQ estatuto_rec OP_LLAVE_DER
+    (122) a_flotante -> KW_A_FLOTANTE OP_PARENTESIS_IZQ a_flotante2 OP_PARENTESIS_DER .
 
-    OP_LLAVE_IZQ    shift and go to state 206
+    OP_FACTOR       reduce using rule 122 (a_flotante -> KW_A_FLOTANTE OP_PARENTESIS_IZQ a_flotante2 OP_PARENTESIS_DER .)
+    OP_TERMINO      reduce using rule 122 (a_flotante -> KW_A_FLOTANTE OP_PARENTESIS_IZQ a_flotante2 OP_PARENTESIS_DER .)
+    OP_COMPARADOR   reduce using rule 122 (a_flotante -> KW_A_FLOTANTE OP_PARENTESIS_IZQ a_flotante2 OP_PARENTESIS_DER .)
+    OP_AND          reduce using rule 122 (a_flotante -> KW_A_FLOTANTE OP_PARENTESIS_IZQ a_flotante2 OP_PARENTESIS_DER .)
+    OP_OR           reduce using rule 122 (a_flotante -> KW_A_FLOTANTE OP_PARENTESIS_IZQ a_flotante2 OP_PARENTESIS_DER .)
+    OP_PUNTO_COMA   reduce using rule 122 (a_flotante -> KW_A_FLOTANTE OP_PARENTESIS_IZQ a_flotante2 OP_PARENTESIS_DER .)
+    OP_PARENTESIS_DER reduce using rule 122 (a_flotante -> KW_A_FLOTANTE OP_PARENTESIS_IZQ a_flotante2 OP_PARENTESIS_DER .)
+    OP_COMA         reduce using rule 122 (a_flotante -> KW_A_FLOTANTE OP_PARENTESIS_IZQ a_flotante2 OP_PARENTESIS_DER .)
 
-    bloque_est                     shift and go to state 236
 
 state 228
 
-    (87) condicion -> KW_SI OP_PARENTESIS_IZQ expresion consume_par_der bloque_est si_no .
+    (130) salta_a -> KW_SALTA_A OP_PARENTESIS_IZQ expresion OP_COMA expresion OP_PARENTESIS_DER .
 
-    OP_PUNTO_COMA   reduce using rule 87 (condicion -> KW_SI OP_PARENTESIS_IZQ expresion consume_par_der bloque_est si_no .)
+    OP_PUNTO_COMA   reduce using rule 130 (salta_a -> KW_SALTA_A OP_PARENTESIS_IZQ expresion OP_COMA expresion OP_PARENTESIS_DER .)
 
 
 state 229
 
-    (91) consume_si_no -> KW_SI_NO .
+    (90) si_no -> consume_si_no . bloque_est
+    (93) bloque_est -> . OP_LLAVE_IZQ estatuto_rec OP_LLAVE_DER
 
-    OP_LLAVE_IZQ    reduce using rule 91 (consume_si_no -> KW_SI_NO .)
+    OP_LLAVE_IZQ    shift and go to state 207
 
+    bloque_est                     shift and go to state 239
 
 state 230
 
-    (90) si_no -> empty .
+    (88) condicion -> KW_SI OP_PARENTESIS_IZQ expresion consume_par_der bloque_est si_no .
 
-    OP_PUNTO_COMA   reduce using rule 90 (si_no -> empty .)
+    OP_PUNTO_COMA   reduce using rule 88 (condicion -> KW_SI OP_PARENTESIS_IZQ expresion consume_par_der bloque_est si_no .)
 
 
 state 231
 
-    (92) bloque_est -> OP_LLAVE_IZQ estatuto_rec . OP_LLAVE_DER
+    (92) consume_si_no -> KW_SI_NO .
 
-    OP_LLAVE_DER    shift and go to state 237
+    OP_LLAVE_IZQ    reduce using rule 92 (consume_si_no -> KW_SI_NO .)
 
 
 state 232
 
-    (126) input2 -> OP_COMA ID input2 .
+    (91) si_no -> empty .
 
-    OP_PARENTESIS_DER reduce using rule 126 (input2 -> OP_COMA ID input2 .)
+    OP_PUNTO_COMA   reduce using rule 91 (si_no -> empty .)
 
 
 state 233
+
+    (93) bloque_est -> OP_LLAVE_IZQ estatuto_rec . OP_LLAVE_DER
+
+    OP_LLAVE_DER    shift and go to state 240
+
+
+state 234
+
+    (127) input2 -> OP_COMA ID input2 .
+
+    OP_PARENTESIS_DER reduce using rule 127 (input2 -> OP_COMA ID input2 .)
+
+
+state 235
 
     (39) ejec_funcion_cont -> OP_COMA expresion ejec_funcion_cont .
 
     OP_PARENTESIS_DER reduce using rule 39 (ejec_funcion_cont -> OP_COMA expresion ejec_funcion_cont .)
 
 
-state 234
+state 236
 
     (83) a_string2 -> ID arr_not arr_not .
 
     OP_PARENTESIS_DER reduce using rule 83 (a_string2 -> ID arr_not arr_not .)
 
 
-state 235
-
-    (116) var_cte4 -> OP_COMA expresion . var_cte4
-    (116) var_cte4 -> . OP_COMA expresion var_cte4
-    (117) var_cte4 -> . empty
-    (1) empty -> .
-
-    OP_COMA         shift and go to state 221
-    OP_PARENTESIS_DER reduce using rule 1 (empty -> .)
-
-    var_cte4                       shift and go to state 238
-    empty                          shift and go to state 223
-
-state 236
-
-    (89) si_no -> consume_si_no bloque_est .
-
-    OP_PUNTO_COMA   reduce using rule 89 (si_no -> consume_si_no bloque_est .)
-
-
 state 237
 
-    (92) bloque_est -> OP_LLAVE_IZQ estatuto_rec OP_LLAVE_DER .
+    (117) var_cte4 -> OP_COMA expresion . var_cte4
+    (117) var_cte4 -> . OP_COMA expresion var_cte4
+    (118) var_cte4 -> . empty
+    (1) empty -> .
 
-    KW_SI_NO        reduce using rule 92 (bloque_est -> OP_LLAVE_IZQ estatuto_rec OP_LLAVE_DER .)
-    OP_PUNTO_COMA   reduce using rule 92 (bloque_est -> OP_LLAVE_IZQ estatuto_rec OP_LLAVE_DER .)
+    OP_COMA         shift and go to state 222
+    OP_PARENTESIS_DER reduce using rule 1 (empty -> .)
 
+    var_cte4                       shift and go to state 241
+    empty                          shift and go to state 224
 
 state 238
 
-    (116) var_cte4 -> OP_COMA expresion var_cte4 .
+    (87) a_entero2 -> ID arr_not arr_not .
 
-    OP_PARENTESIS_DER reduce using rule 116 (var_cte4 -> OP_COMA expresion var_cte4 .)
+    OP_PARENTESIS_DER reduce using rule 87 (a_entero2 -> ID arr_not arr_not .)
+
+
+state 239
+
+    (90) si_no -> consume_si_no bloque_est .
+
+    OP_PUNTO_COMA   reduce using rule 90 (si_no -> consume_si_no bloque_est .)
+
+
+state 240
+
+    (93) bloque_est -> OP_LLAVE_IZQ estatuto_rec OP_LLAVE_DER .
+
+    OP_PUNTO_COMA   reduce using rule 93 (bloque_est -> OP_LLAVE_IZQ estatuto_rec OP_LLAVE_DER .)
+    KW_SI_NO        reduce using rule 93 (bloque_est -> OP_LLAVE_IZQ estatuto_rec OP_LLAVE_DER .)
+
+
+state 241
+
+    (117) var_cte4 -> OP_COMA expresion var_cte4 .
+
+    OP_PARENTESIS_DER reduce using rule 117 (var_cte4 -> OP_COMA expresion var_cte4 .)
 
 WARNING: 
 WARNING: Conflicts:
@@ -4032,3 +4195,4 @@ WARNING: shift/reduce conflict for OP_CORCHETE_IZQ in state 67 resolved as shift
 WARNING: shift/reduce conflict for OP_CORCHETE_IZQ in state 112 resolved as shift
 WARNING: shift/reduce conflict for OP_OR in state 139 resolved as shift
 WARNING: shift/reduce conflict for OP_CORCHETE_IZQ in state 186 resolved as shift
+WARNING: shift/reduce conflict for OP_CORCHETE_IZQ in state 199 resolved as shift
