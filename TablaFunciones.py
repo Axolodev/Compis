@@ -22,13 +22,15 @@ class TablaFunciones:
             return self.__scopeActual
 
         def checaParam(self, nombre, params):
-            funcion = self.__listaFunciones.getValue(str(self.__scopeActual) + "_" + str(nombre), default=None)
+            funcion = self.__listaFunciones.get(str(nombre))
             if len(funcion.getParams()) != len(params):
                 raise ValueError('Longitud de parametros no coincide')
             else:
                 listaParams = funcion.getParams()
-                for i in listaParams:
-                    if listaParams[i].tipo != params.tipo:
+                print listaParams
+                print params
+                for i in range(0, len(listaParams)-1):
+                    if listaParams[i] != params[i]:
                         raise ValueError('Tipo de parametro no coincide')
                 return True
 
