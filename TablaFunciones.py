@@ -34,7 +34,7 @@ class TablaFunciones:
 
         def __str__(self):
             for k in self.__listaFunciones:
-                print str(k)
+                print(str(k))
             return ""
 
     instancia = None

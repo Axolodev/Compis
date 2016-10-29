@@ -82,7 +82,7 @@ t_OP_PUNTO_COMA = r';'
 t_OP_PUNTO = r'[\.]'
 t_OP_COMA = r'[\,]'
 
-tipo_actual = None
+tipo_actual = Utils.Tipo.Vacio
 variable_actual_es_arreglo = False
 variable_actual_es_matriz = False
 
@@ -148,15 +148,32 @@ def p_empty(p):
 
 
 def p_inicio(p):
-    """inicio : crear_var crear_funciones KW_INICIO funcion"""
+    """inicio : crear_cuadruplo_inicio crear_var crear_funciones KW_INICIO funcion"""
     cuadruplo_inicial[0] = 'end'
     lista_cuadruplos.append(cuadruplo_inicial)
+    print("Tabla de variables:")
     print(var_table)
+    print("Tabla de funciones:")
     print(func_table)
-    print(lista_cuadruplos)
+    print("Lista de cuadruplos:")
+    i = 0
+    for item in lista_cuadruplos:
+        print(str(i) + ':' + str(item))
+        i += 1
+
+    print()
+    print("Pila de operadores:")
     print(pila_operador)
+    print("Pila de operandos:")
     print(pila_operando)
+    print("Pila de tipos:")
     print(pila_tipos)
+
+
+def p_crear_cuadruplo_inicio(p):
+    """
+    crear_cuadruplo_inicio :
+    """
 
 
 def p_crear_funciones(p):
@@ -172,12 +189,14 @@ def p_funcion(p):
     funcion : KW_FUNCION tipo_funcion ID OP_PARENTESIS_IZQ parametros OP_PARENTESIS_DER bloque_func
     """
     global listaParam
+    global tipo_actual
     func_table.nuevaFuncion(tipo_actual, p[3], listaParam)
     listaParam = []
     while len(pila_tipos) > 0:
         tipo_retorno = pila_tipos.pop()
         if tipo_retorno != tipo_actual:
             raise TypeError('Funcion de ' + tipo_actual + ' no puede retornar ' + tipo_retorno)
+    tipo_actual = Utils.Tipo.Vacio
 
 
 def p_tipo_funcion(p):
@@ -586,7 +605,7 @@ def p_camina(p):
     """
     camina : KW_CAMINA OP_PARENTESIS_IZQ expresion OP_PARENTESIS_DER
     """
-    metros = pila_operando.poo()
+    metros = pila_operando.pop()
     tipo = pila_tipos.pop()
     if tipo == Utils.Tipo.Entero:
         raise TypeError('Solo puedes caminar unidades enteras')
@@ -601,7 +620,7 @@ def p_gira(p):
     """
     gira : KW_GIRA OP_PARENTESIS_IZQ expresion OP_PARENTESIS_DER
     """
-    metros = pila_operando.poo()
+    metros = pila_operando.pop()
     tipo = pila_tipos.pop()
     if tipo == Utils.Tipo.String:
         raise TypeError('No puedes girar con palabras')
@@ -616,7 +635,7 @@ def p_mira(p):
     """
     mira : KW_MIRA OP_PARENTESIS_IZQ expresion OP_PARENTESIS_DER
     """
-    metros = pila_operando.poo()
+    metros = pila_operando.pop()
     tipo = pila_tipos.pop()
     if tipo == Utils.Tipo.String:
         raise TypeError('No puedes mirar en dirar en direccion a palabras')
@@ -962,8 +981,7 @@ def genera_operando(operando_a_generar):
 
 parser = yacc.yacc()
 
-data = '''
-flotante global;
+data = '''flotante global;
 flotante globalDos[2];
 string una_var[2][3], otra_var, another;
 funcion prueba(entero x, flotante y){
