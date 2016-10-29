@@ -186,17 +186,23 @@ def p_crear_funciones(p):
 
 def p_funcion(p):
     """
-    funcion : KW_FUNCION tipo_funcion ID OP_PARENTESIS_IZQ parametros OP_PARENTESIS_DER bloque_func
+    funcion : KW_FUNCION tipo_funcion ID OP_PARENTESIS_IZQ parametros OP_PARENTESIS_DER dar_de_alta_funcion bloque_func
+    """
+
+    #while len(pila_tipos) > 0:
+        #tipo_retorno = pila_tipos.pop()
+        #if tipo_retorno != tipo_actual:
+            #raise TypeError('Funcion de ' + tipo_actual + ' no puede retornar ' + tipo_retorno)
+
+
+def p_dar_de_alta_funcion(p):
+    """
+    dar_de_alta_funcion :
     """
     global listaParam
     global tipo_actual
     func_table.nuevaFuncion(tipo_actual, p[3], listaParam)
     listaParam = []
-    while len(pila_tipos) > 0:
-        tipo_retorno = pila_tipos.pop()
-        if tipo_retorno != tipo_actual:
-            raise TypeError('Funcion de ' + tipo_actual + ' no puede retornar ' + tipo_retorno)
-    tipo_actual = Utils.Tipo.Vacio
 
 
 def p_tipo_funcion(p):
@@ -205,6 +211,7 @@ def p_tipo_funcion(p):
                     | empty
     """
     func_table.nuevoScope()
+    pila_tipos.append(tipo_actual)
 
 
 def p_tipo(p):
@@ -236,7 +243,7 @@ def p_toma_parametro(p):
     toma_parametro : tipo ID otro_parametro
     """
     var_table.nuevaVariable(p[1], p[2], None, None)
-    listaParam.append(p[1])
+    listaParam.append(tipo_actual)
 
 
 def p_otro_parametro(p):
@@ -364,7 +371,9 @@ def p_ejec_funcion(p):
     """
     ejec_funcion : ID OP_PARENTESIS_IZQ ejec_funcion_medio OP_PARENTESIS_DER
     """
-    pass
+    global listaParam
+    func_table.checaParam(p[1], listaParam)
+
 
 
 def p_ejec_funcion_medio(p):
@@ -380,7 +389,9 @@ def p_ejec_funcion_cont(p):
     ejec_funcion_cont : OP_COMA expresion ejec_funcion_cont
                         | empty
     """
-    pass
+    global listaParam
+    global pila_tipos
+    listaParam.insert(0, pila_tipos.pop())
 
 
 def p_funcion_predef(p):
@@ -992,7 +1003,7 @@ funcion flotante cualquiera(entero dos){
 }
 inicio funcion entero ai(){
     entero a, b;
-
+    prueba(1,2.0);
     a = a + 1;
     input(a);
     output(1+2);
