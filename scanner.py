@@ -8,10 +8,11 @@ import Utils
 import TablaVariables
 import TablaFunciones
 import CuboSemantico
+import warnings
 
 var_table = TablaVariables.TablaVariables.getInstance()
 func_table = TablaFunciones.TablaFunciones.getInstance()
-listaParam = []
+lista_param = []
 
 logging.basicConfig()
 
@@ -27,7 +28,7 @@ tokens = (
     'OP_COMPARADOR', 'OP_FACTOR', 'OP_TERMINO', 'OP_AND', 'OP_OR', 'OP_ASIGNACION',
     'OP_PARENTESIS_IZQ', 'OP_PARENTESIS_DER', 'OP_LLAVE_IZQ', 'OP_LLAVE_DER',
     'OP_CORCHETE_IZQ', 'OP_CORCHETE_DER', 'OP_PUNTO_COMA',
-    'OP_COMA', 'OP_PUNTO',
+    'OP_COMA',
 
     'ID', 'CTE_E', 'CTE_F', 'CTE_S',
 )
@@ -79,12 +80,13 @@ t_OP_CORCHETE_IZQ = r'\['
 t_OP_CORCHETE_DER = r'\]'
 
 t_OP_PUNTO_COMA = r';'
-t_OP_PUNTO = r'[\.]'
 t_OP_COMA = r'[\,]'
 
 tipo_actual = Utils.Tipo.Vacio
 variable_actual_es_arreglo = False
 variable_actual_es_matriz = False
+tipo_funcion_actual = Utils.Tipo.Vacio
+nombre_funcion_actual = None
 
 # Pilas auxiliares
 pila_tipos = []
@@ -148,7 +150,7 @@ def p_empty(p):
 
 
 def p_inicio(p):
-    """inicio : crear_cuadruplo_inicio crear_var crear_funciones KW_INICIO funcion"""
+    """inicio : crear_cuadruplo_inicio crear_var crear_funciones encontrar_posicion_cuadruplo_de_inicio funcion"""
     cuadruplo_inicial[0] = 'end'
     lista_cuadruplos.append(cuadruplo_inicial)
     print("Tabla de variables:")
@@ -170,10 +172,25 @@ def p_inicio(p):
     print(pila_tipos)
 
 
+def p_encontrar_posicion_cuadruplo_de_inicio(p):
+    """
+    encontrar_posicion_cuadruplo_de_inicio : KW_INICIO
+    """
+    global cuadruplo_inicial
+    cuadruplo_inicial = lista_cuadruplos[0]
+    cuadruplo_inicial[3] = len(lista_cuadruplos)
+    lista_cuadruplos[0] = cuadruplo_inicial
+    cuadruplo_inicial = [None] * 4
+
+
 def p_crear_cuadruplo_inicio(p):
     """
     crear_cuadruplo_inicio :
     """
+    global cuadruplo_inicial
+    cuadruplo_inicial[0] = 'goto'
+    lista_cuadruplos.append(cuadruplo_inicial)
+    cuadruplo_inicial = [None] * 4
 
 
 def p_crear_funciones(p):
@@ -184,25 +201,34 @@ def p_crear_funciones(p):
     pass
 
 
+def p_consumir_nombre_funcion(p):
+    """
+    consumir_nombre_funcion : ID
+    """
+    global nombre_funcion_actual
+    nombre_funcion_actual = p[1]
+
+
 def p_funcion(p):
     """
-    funcion : KW_FUNCION tipo_funcion ID OP_PARENTESIS_IZQ parametros OP_PARENTESIS_DER dar_de_alta_funcion bloque_func
+    funcion : KW_FUNCION tipo_funcion consumir_nombre_funcion OP_PARENTESIS_IZQ parametros OP_PARENTESIS_DER dar_de_alta_funcion bloque_func
     """
-
-    #while len(pila_tipos) > 0:
-        #tipo_retorno = pila_tipos.pop()
-        #if tipo_retorno != tipo_actual:
-            #raise TypeError('Funcion de ' + tipo_actual + ' no puede retornar ' + tipo_retorno)
+    global tipo_funcion_actual
+    tipo_funcion_actual = Utils.Tipo.Vacio
 
 
 def p_dar_de_alta_funcion(p):
     """
     dar_de_alta_funcion :
     """
-    global listaParam
+    global lista_param
     global tipo_actual
-    func_table.nuevaFuncion(tipo_actual, p[3], listaParam)
-    listaParam = []
+    global nombre_funcion_actual
+    func_table.nuevaFuncion(tipo_actual, nombre_funcion_actual, lista_param)
+    # TODO: dar de alta variable global con nombre de la funcion
+    # Borrar valores de variables que ya no se necesitan.
+    nombre_funcion_actual = None
+    lista_param = []
 
 
 def p_tipo_funcion(p):
@@ -211,7 +237,8 @@ def p_tipo_funcion(p):
                     | empty
     """
     func_table.nuevoScope()
-    pila_tipos.append(tipo_actual)
+    global tipo_funcion_actual
+    tipo_funcion_actual = tipo_actual
 
 
 def p_tipo(p):
@@ -238,12 +265,19 @@ def p_parametos(p):
     pass
 
 
-def p_toma_parametro(p):
+def p_consume_parametro_de_funcion(p):
     """
-    toma_parametro : tipo ID otro_parametro
+    consume_parametro_de_funcion : tipo ID
     """
     var_table.nuevaVariable(p[1], p[2], None, None)
-    listaParam.append(tipo_actual)
+    lista_param.append(tipo_actual)
+
+
+def p_toma_parametro(p):
+    """
+    toma_parametro : consume_parametro_de_funcion otro_parametro
+    """
+    pass
 
 
 def p_otro_parametro(p):
@@ -279,7 +313,7 @@ def p_op_punto_coma(p):
 
 def p_def_var(p):
     """
-    def_var : ID arr_not arr_not
+    def_var : ID arr_not
     """
     global variable_actual_es_arreglo, variable_actual_es_matriz
     var_table.nuevaVariable(tipo_actual, p[1], variable_actual_es_arreglo, variable_actual_es_matriz)
@@ -329,7 +363,7 @@ def p_estatuto_rec(p):
 
 def p_asignacion(p):
     """
-    asignacion : var_consume_id_var_cte arr_not arr_not OP_ASIGNACION expresion
+    asignacion : var_consume_id_var_cte arr_not OP_ASIGNACION expresion
     """
     global cuadruplo_inicial
     tipo_operando = pila_tipos.pop()
@@ -371,9 +405,11 @@ def p_ejec_funcion(p):
     """
     ejec_funcion : ID OP_PARENTESIS_IZQ ejec_funcion_medio OP_PARENTESIS_DER
     """
-    global listaParam
-    func_table.checaParam(p[1], listaParam)
-
+    global lista_param
+    print("Lista de parametros al llamar funcion:")
+    print(lista_param)
+    func_table.checaParam(p[1], lista_param)
+    print("parametros checados")
 
 
 def p_ejec_funcion_medio(p):
@@ -389,9 +425,9 @@ def p_ejec_funcion_cont(p):
     ejec_funcion_cont : OP_COMA expresion ejec_funcion_cont
                         | empty
     """
-    global listaParam
+    global lista_param
     global pila_tipos
-    listaParam.insert(0, pila_tipos.pop())
+    lista_param.insert(0, pila_tipos.pop())
 
 
 def p_funcion_predef(p):
@@ -666,16 +702,14 @@ def p_a_string(p):
 
 def p_a_string2(p):
     """
-    a_string2 : CTE_E
-            | CTE_F
-            | ID arr_not arr_not
+    a_string2 : expresion
     """
-    if len(p) == 2:
-        global cuadruplo_inicial
-        cuadruplo_inicial[0] = "a_string"
-        cuadruplo_inicial[3] = p[1]
-        lista_cuadruplos.append(cuadruplo_inicial)
-        cuadruplo_inicial = [None] * 4
+    global pila_tipos
+    tipo = pila_tipos.pop()
+    if tipo == Utils.Tipo.Entero or tipo == Utils.Tipo.Flotante:
+        pila_tipos.append(Utils.Tipo.String)
+    else:
+        warnings.warn("La expresion ya tiene como tipo de resultado un string. Seguro que quieres convertirlo?")
 
 
 def p_a_entero(p):
@@ -687,16 +721,14 @@ def p_a_entero(p):
 
 def p_a_entero2(p):
     """
-    a_entero2 : CTE_F
-            | concat_string
-            | ID arr_not arr_not
+    a_entero2 : expresion
     """
-    if len(p) == 2:
-        global cuadruplo_inicial
-        cuadruplo_inicial[0] = "a_entero"
-        cuadruplo_inicial[3] = p[1]
-        lista_cuadruplos.append(cuadruplo_inicial)
-        cuadruplo_inicial = [None] * 4
+    global pila_tipos
+    tipo = pila_tipos.pop()
+    if tipo == Utils.Tipo.Flotante or tipo == Utils.Tipo.String:
+        pila_tipos.append(Utils.Tipo.Entero)
+    else:
+        warnings.warn("La expresion ya tiene como tipo de resultado un entero. Seguro que quieres convertirlo?")
 
 
 def p_condicion(p):
@@ -761,6 +793,11 @@ def p_retorna(p):
     retorna : KW_RETORNA expresion
     """
     global cuadruplo_inicial
+    global tipo_funcion_actual
+    tipo_expresion = pila_tipos.pop()
+    if tipo_expresion != tipo_funcion_actual:
+        raise TypeError(
+            "Funcion de tipo " + tipo_funcion_actual + " no puede retornar un valor de tipo " + tipo_expresion)
     cuadruplo_inicial[0] = 'return'
     cuadruplo_inicial[3] = pila_operando.pop()
     lista_cuadruplos.append(cuadruplo_inicial)
@@ -773,15 +810,9 @@ def p_var_cte(p):
             | a_string
             | a_entero
             | a_flotante
-            | p_cte_e_f
+            | cte_e_f_s
             | maneja_var_cte_defaults
     """
-    if len(p) == 2:
-        global cuadruplo_inicial
-        cuadruplo_inicial[0] = "a_string"
-        cuadruplo_inicial[3] = p[1]
-        lista_cuadruplos.append(cuadruplo_inicial)
-        cuadruplo_inicial = [None] * 4
 
 
 def p_maneja_var_cte_defaults(p):
@@ -813,13 +844,14 @@ def p_maneja_var_cte_defaults(p):
     elif p[1] == 'alto':
         valor = 600
     tipo = Utils.Tipo.Entero
-    genera_operando({"tipo": tipo, "valor":valor})
+    genera_operando({"tipo": tipo, "valor": valor})
 
 
-def p_cte_e_f(p):
+def p_cte_e_f_s(p):
     """
-    p_cte_e_f : consume_cte_entero
+    cte_e_f_s : consume_cte_entero
             | consume_cte_flotante
+            | consume_cte_string
     """
     print(p[1])
 
@@ -838,6 +870,13 @@ def p_consume_entero(p):
     genera_operando({"valor": p[1], "tipo": Utils.Tipo.Entero})
 
 
+def p_consume_string(p):
+    """
+    consume_cte_string : CTE_S
+    """
+    genera_operando({"valor": p[1], "tipo": Utils.Tipo.String})
+
+
 def p_var_consume_id_var_cte(p):
     """
     var_consume_id_var_cte : ID
@@ -849,7 +888,7 @@ def p_var_consume_id_var_cte(p):
 
 def p_var_cte2(p):
     """
-    var_cte2 : arr_not arr_not
+    var_cte2 : arr_not
             | OP_PARENTESIS_IZQ var_cte3 OP_PARENTESIS_DER
     """
     pass
@@ -870,21 +909,6 @@ def p_var_cte4(p):
     pass
 
 
-def p_concat_string(p):
-    """
-    concat_string : CTE_S concat_string2
-    """
-    pass
-
-
-def p_concat_string2(p):
-    """
-    concat_string2 : OP_PUNTO CTE_S
-            | empty
-    """
-    pass
-
-
 def p_a_flotante(p):
     """
     a_flotante : KW_A_FLOTANTE OP_PARENTESIS_IZQ a_flotante2 OP_PARENTESIS_DER
@@ -894,10 +918,14 @@ def p_a_flotante(p):
 
 def p_a_flotante2(p):
     """
-    a_flotante2 : concat_string
-                | CTE_F
+    a_flotante2 : expresion
     """
-    pass
+    global pila_tipos
+    tipo = pila_tipos.pop()
+    if tipo == Utils.Tipo.Entero or tipo == Utils.Tipo.String:
+        pila_tipos.append(Utils.Tipo.Flotante)
+    else:
+        warnings.warn("La expresion ya tiene como tipo de resultado un flotante. Seguro que quieres convertirlo?")
 
 
 def p_reiniciar(p):
@@ -947,7 +975,6 @@ def p_output(p):
 def p_valores_a_imprimir(p):
     """
     valores_a_imprimir : expresion
-                     | concat_string
 
     """
     pila_tipos.pop()
@@ -957,7 +984,6 @@ def p_valores_a_imprimir(p):
     cuadruplo_inicial[3] = resultado
     lista_cuadruplos.append(cuadruplo_inicial)
     cuadruplo_inicial = [None] * 4
-
 
 
 def p_salta_a(p):
@@ -994,8 +1020,8 @@ parser = yacc.yacc()
 
 data = '''flotante global;
 flotante globalDos[2];
-string una_var[2][3], otra_var, another;
-funcion prueba(entero x, flotante y){
+string una_var[2], otra_var, another;
+funcion flotante prueba(entero x, flotante y){
     retorna 1.0;
 }
 funcion flotante cualquiera(entero dos){
@@ -1003,7 +1029,7 @@ funcion flotante cualquiera(entero dos){
 }
 inicio funcion entero ai(){
     entero a, b;
-    prueba(1,2.0);
+    prueba(1, a_flotante(2));
     a = a + 1;
     input(a);
     output(1+2);

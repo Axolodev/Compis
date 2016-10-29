@@ -27,9 +27,9 @@ class TablaFunciones:
                 raise ValueError('Longitud de parametros no coincide')
             else:
                 listaParams = funcion.getParams()
-                print listaParams
-                print params
-                for i in range(0, len(listaParams)-1):
+                print(listaParams)
+                for i in range(0, len(listaParams)):
+                    print(i)
                     if listaParams[i] != params[i]:
                         raise ValueError('Tipo de parametro no coincide')
                 return True
