@@ -13,6 +13,9 @@ import warnings
 var_table = TablaVariables.TablaVariables.getInstance()
 func_table = TablaFunciones.TablaFunciones.getInstance()
 lista_param = []
+variable_nombre_funcion = ""
+indiceParametro = 0
+
 
 logging.basicConfig()
 
@@ -224,7 +227,7 @@ def p_dar_de_alta_funcion(p):
     global lista_param
     global tipo_actual
     global nombre_funcion_actual
-    func_table.nuevaFuncion(tipo_actual, nombre_funcion_actual, lista_param)
+    func_table.nuevaFuncion(tipo_actual, nombre_funcion_actual, lista_param, len(lista_cuadruplos))
     # TODO: dar de alta variable global con nombre de la funcion
     # Borrar valores de variables que ya no se necesitan.
     nombre_funcion_actual = None
@@ -269,8 +272,11 @@ def p_consume_parametro_de_funcion(p):
     """
     consume_parametro_de_funcion : tipo ID
     """
+    global tipo_actual
+    global lista_param
     var_table.nuevaVariable(p[1], p[2], None, None)
     lista_param.append(tipo_actual)
+
 
 
 def p_toma_parametro(p):
@@ -403,13 +409,34 @@ def p_consume_par_izq_ciclo(p):
 
 def p_ejec_funcion(p):
     """
-    ejec_funcion : ID OP_PARENTESIS_IZQ ejec_funcion_medio OP_PARENTESIS_DER
+    ejec_funcion : consume_id_funcion OP_PARENTESIS_IZQ genera_era ejec_funcion_medio OP_PARENTESIS_DER
     """
     global lista_param
     print("Lista de parametros al llamar funcion:")
     print(lista_param)
-    func_table.checaParam(p[1], lista_param)
+    func_table.checaParam(variable_nombre_funcion, lista_param)
     print("parametros checados")
+
+
+def p_genera_era(p):
+    """
+    genera_era :
+    """
+    global cuadruplo_inicial
+    cuadruplo_inicial[0] = 'era'
+    cuadruplo_inicial[1] = variable_nombre_funcion
+    lista_cuadruplos.append(cuadruplo_inicial)
+    cuadruplo_inicial = [None] * 4
+
+
+def p_consume_id_funcion(p):
+    """
+    consume_id_funcion : ID
+    """
+    global variable_nombre_funcion
+    if not func_table.existeFuncion(p[1]):
+        raise NameError("La funcion no existe")
+    variable_nombre_funcion = p[1]
 
 
 def p_ejec_funcion_medio(p):
@@ -417,7 +444,13 @@ def p_ejec_funcion_medio(p):
     ejec_funcion_medio : expresion ejec_funcion_cont
                         | empty
     """
-    pass
+    global indiceParametro
+    global cuadruplo_inicial
+    indiceParametro = 0
+    cuadruplo_inicial[0] = 'gosub'
+    cuadruplo_inicial[1] = variable_nombre_funcion
+    lista_cuadruplos.append(cuadruplo_inicial)
+    cuadruplo_inicial = [None] * 4
 
 
 def p_ejec_funcion_cont(p):
@@ -427,7 +460,20 @@ def p_ejec_funcion_cont(p):
     """
     global lista_param
     global pila_tipos
+    global cuadruplo_inicial
+    global indiceParametro
     lista_param.insert(0, pila_tipos.pop())
+    print(variable_nombre_funcion)
+    funcion = func_table.getFuncion(variable_nombre_funcion)
+    lista_variables = var_table.consigueVariablesPara(funcion.getScope())
+
+    print(list(lista_variables.values()))
+    cuadruplo_inicial[0] = 'param'
+    cuadruplo_inicial[1] = pila_operando.pop()
+    cuadruplo_inicial[3] = list(lista_variables.values())[indiceParametro].getNombre()
+    indiceParametro += 1
+    lista_cuadruplos.append(cuadruplo_inicial)
+    cuadruplo_inicial = [None] * 4
 
 
 def p_funcion_predef(p):
@@ -1021,7 +1067,7 @@ parser = yacc.yacc()
 data = '''flotante global;
 flotante globalDos[2];
 string una_var[2], otra_var, another;
-funcion flotante prueba(entero x, flotante y){
+funcion flotante prueba(entero x, flotante y, entero b){
     retorna 1.0;
 }
 funcion flotante cualquiera(entero dos){
@@ -1029,7 +1075,7 @@ funcion flotante cualquiera(entero dos){
 }
 inicio funcion entero ai(){
     entero a, b;
-    prueba(1, a_flotante(2));
+    prueba(1, a_flotante(2), 3);
     a = a + 1;
     input(a);
     output(1+2);

@@ -51,6 +51,9 @@ class TablaVariables:
                 print(str(k))
             return ""
 
+        def consigueVariablesPara(self, scope):
+            return dict((key, value) for key, value in self.__listaVariables.items() if key.startswith(str(scope) + "_"))
+
     instancia = None
 
     @staticmethod
