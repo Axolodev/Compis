@@ -21,9 +21,9 @@ class TablaVariables:
             if (scope + "_" + str(nombre)) in self.__listaVariables or ("0_" + str(nombre)) in self.__listaVariables:
                 raise KeyError("Ya existe una variable con este nombre")
             else:
-                var = Variable.Variable(tipo, nombre, self.__scopeActual)
+                var = Variable.Variable(tipo, nombre, scope)
                 var.setValor(Utils.Tipo.getDefault(var.getTipo()))
-                self.__listaVariables.update({str(self.tablaFunciones.getScopeActual()) + "_" + str(nombre): var})
+                self.__listaVariables.update({scope + "_" + str(nombre): var})
                 return var
 
         def getVariable(self, nombre):

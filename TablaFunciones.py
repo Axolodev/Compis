@@ -1,6 +1,7 @@
 import Funcion
 import Variable
-
+import Utils
+import Memoria
 
 class TablaFunciones:
     class __TablaFunciones:
@@ -10,6 +11,7 @@ class TablaFunciones:
 
         def nuevoScope(self):
             self.__scopeActual += 1
+            Memoria.Memoria.getInstance().reseteaEspacios()
 
         def nuevaFuncion(self, tipo, nombre, params, cuadruplo):
             if str(nombre) in self.__listaFunciones:
@@ -22,17 +24,19 @@ class TablaFunciones:
             return self.__scopeActual
 
         def checaParam(self, nombre, params):
-            print(nombre)
             funcion = self.__listaFunciones.get(str(nombre))
-            print("lista:")
-            print(self.__listaFunciones)
+            if Utils.DEBUGGING_MODE:
+                print("En funcion " + nombre)
+                print("Lista de parametros de entrada:")
+                print(params)
+                print("Lista de parametros de funcion:")
+                print(funcion.getParams())
+                print("")
             if len(funcion.getParams()) != len(params):
                 raise ValueError('Longitud de parametros no coincide')
             else:
                 listaParams = funcion.getParams()
-                print(listaParams)
                 for i in range(0, len(listaParams)):
-                    print(i)
                     if listaParams[i] != params[i]:
                         raise ValueError('Tipo de parametro no coincide')
                 return True

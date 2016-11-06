@@ -1,5 +1,5 @@
 from __future__ import print_function
-
+import Memoria
 import random
 import logging
 import ply.lex as lex
@@ -93,8 +93,8 @@ nombre_funcion_actual = None
 
 # Pilas auxiliares
 pila_tipos = []
-pila_operador = []
-pila_operando = []
+pila_operadores = []
+pila_operandos = []
 pila_saltos = []
 
 # Lista de cuadruplos
@@ -154,7 +154,7 @@ def p_empty(p):
 
 def p_inicio(p):
     """inicio : crear_cuadruplo_inicio crear_var crear_funciones encontrar_posicion_cuadruplo_de_inicio funcion"""
-    cuadruplo_inicial[0] = 'end'
+    cuadruplo_inicial[0] = Utils.Operador.getId('end')
     lista_cuadruplos.append(cuadruplo_inicial)
     print("Tabla de variables:")
     print(var_table)
@@ -168,9 +168,9 @@ def p_inicio(p):
 
     print()
     print("Pila de operadores:")
-    print(pila_operador)
+    print(pila_operadores)
     print("Pila de operandos:")
-    print(pila_operando)
+    print(pila_operandos)
     print("Pila de tipos:")
     print(pila_tipos)
 
@@ -191,7 +191,7 @@ def p_crear_cuadruplo_inicio(p):
     crear_cuadruplo_inicio :
     """
     global cuadruplo_inicial
-    cuadruplo_inicial[0] = 'goto'
+    cuadruplo_inicial[0] = Utils.Operador.getId('goto')
     lista_cuadruplos.append(cuadruplo_inicial)
     cuadruplo_inicial = [None] * 4
 
@@ -209,7 +209,9 @@ def p_consumir_nombre_funcion(p):
     consumir_nombre_funcion : ID
     """
     global nombre_funcion_actual
+    global tipo_funcion_actual
     nombre_funcion_actual = p[1]
+    var_table.nuevaVariable(tipo_funcion_actual, p[1], None, None, scope="0")
 
 
 def p_funcion(p):
@@ -217,7 +219,20 @@ def p_funcion(p):
     funcion : KW_FUNCION tipo_funcion consumir_nombre_funcion OP_PARENTESIS_IZQ parametros OP_PARENTESIS_DER dar_de_alta_funcion bloque_func
     """
     global tipo_funcion_actual
+    global cuadruplo_inicial
+    global nombre_funcion_actual
     tipo_funcion_actual = Utils.Tipo.Vacio
+    print()
+    print()
+    print()
+    print()
+    print("Nombre actual:", variable_nombre_funcion)
+    print()
+    print()
+    cuadruplo_inicial[0] = Utils.Operador.getId('ret')
+    lista_cuadruplos.append(cuadruplo_inicial)
+    cuadruplo_inicial = [None] * 4
+
 
 
 def p_dar_de_alta_funcion(p):
@@ -274,9 +289,8 @@ def p_consume_parametro_de_funcion(p):
     """
     global tipo_actual
     global lista_param
-    var_table.nuevaVariable(p[1], p[2], None, None)
+    var_table.nuevaVariable(tipo_actual, p[2], None, None)
     lista_param.append(tipo_actual)
-
 
 
 def p_toma_parametro(p):
@@ -313,8 +327,10 @@ def p_op_punto_coma(p):
     """
     op_punto_coma : OP_PUNTO_COMA
     """
-    # print(";")
-    pass
+    global pila_tipos
+    global pila_operandos
+    pila_tipos = []
+    pila_operandos = []
 
 
 def p_def_var(p):
@@ -361,7 +377,7 @@ def p_estatuto(p):
 
 def p_estatuto_rec(p):
     """
-    estatuto_rec : estatuto OP_PUNTO_COMA estatuto_rec
+    estatuto_rec : estatuto op_punto_coma estatuto_rec
                 | empty
     """
     pass
@@ -375,9 +391,9 @@ def p_asignacion(p):
     tipo_operando = pila_tipos.pop()
     tipo_resultado = pila_tipos.pop()
     CuboSemantico.CuboSemantico.getTipo("=", tipo_operando, tipo_resultado)
-    cuadruplo_inicial[0] = '='
-    cuadruplo_inicial[1] = pila_operando.pop()
-    cuadruplo_inicial[3] = pila_operando.pop()
+    cuadruplo_inicial[0] = Utils.Operador.getId('=')
+    cuadruplo_inicial[1] = pila_operandos.pop()
+    cuadruplo_inicial[3] = pila_operandos.pop()
     lista_cuadruplos.append(cuadruplo_inicial)
     cuadruplo_inicial = [None] * 4
 
@@ -386,12 +402,10 @@ def p_ciclo(p):
     """
     ciclo : KW_MIENTRAS consume_par_izq_ciclo expresion consume_par_der bloque_est
     """
-    print(lista_cuadruplos)
-    print(pila_saltos)
     falso = pila_saltos.pop()
     retorno = pila_saltos.pop()
     global cuadruplo_inicial
-    cuadruplo_inicial[0] = 'goto'
+    cuadruplo_inicial[0] = Utils.Operador.getId('goto')
     cuadruplo_inicial[3] = retorno
     lista_cuadruplos.append(cuadruplo_inicial)
     cuadruplo_inicial = [None] * 4
@@ -409,13 +423,30 @@ def p_consume_par_izq_ciclo(p):
 
 def p_ejec_funcion(p):
     """
-    ejec_funcion : consume_id_funcion OP_PARENTESIS_IZQ genera_era ejec_funcion_medio OP_PARENTESIS_DER
+    ejec_funcion : consume_id_funcion consume_par_izq genera_era ejec_funcion_medio OP_PARENTESIS_DER
     """
     global lista_param
-    print("Lista de parametros al llamar funcion:")
-    print(lista_param)
+    global cuadruplo_inicial
+    global pila_operadores
+    i = 0
+    pila_operadores.pop()
     func_table.checaParam(variable_nombre_funcion, lista_param)
-    print("parametros checados")
+    lista_param = []
+    var = var_table.getVariable(variable_nombre_funcion)
+    pila_tipos.append(var.getTipo())
+    if Utils.DEBUGGING_MODE:
+        print("Tipo de retorno de funcion:", var.getTipo(), "\n")
+        print("Cuadruplos:")
+        print("Pila de tipos despues de funcion:\n", pila_tipos)
+        print("------------------------")
+
+    espacio = Memoria.Memoria.getInstance().generaEspacioTemporal(var.getTipo())
+    pila_operandos.append(espacio)
+    cuadruplo_inicial[0] = Utils.Operador.getId('=')
+    cuadruplo_inicial[1] = var.getEspacioMemoria()
+    cuadruplo_inicial[3] = espacio
+    lista_cuadruplos.append(cuadruplo_inicial)
+    cuadruplo_inicial = [None] * 4
 
 
 def p_genera_era(p):
@@ -423,9 +454,11 @@ def p_genera_era(p):
     genera_era :
     """
     global cuadruplo_inicial
-    cuadruplo_inicial[0] = 'era'
+
+    cuadruplo_inicial[0] = Utils.Operador.getId('era')
     cuadruplo_inicial[1] = variable_nombre_funcion
     lista_cuadruplos.append(cuadruplo_inicial)
+    print("Cuadruplo ERA:", cuadruplo_inicial)
     cuadruplo_inicial = [None] * 4
 
 
@@ -447,7 +480,7 @@ def p_ejec_funcion_medio(p):
     global indiceParametro
     global cuadruplo_inicial
     indiceParametro = 0
-    cuadruplo_inicial[0] = 'gosub'
+    cuadruplo_inicial[0] = Utils.Operador.getId('gosub')
     cuadruplo_inicial[1] = variable_nombre_funcion
     lista_cuadruplos.append(cuadruplo_inicial)
     cuadruplo_inicial = [None] * 4
@@ -463,13 +496,10 @@ def p_ejec_funcion_cont(p):
     global cuadruplo_inicial
     global indiceParametro
     lista_param.insert(0, pila_tipos.pop())
-    print(variable_nombre_funcion)
     funcion = func_table.getFuncion(variable_nombre_funcion)
     lista_variables = var_table.consigueVariablesPara(funcion.getScope())
-
-    print(list(lista_variables.values()))
-    cuadruplo_inicial[0] = 'param'
-    cuadruplo_inicial[1] = pila_operando.pop()
+    cuadruplo_inicial[0] = Utils.Operador.getId('param')
+    cuadruplo_inicial[1] = pila_operandos.pop()
     cuadruplo_inicial[3] = list(lista_variables.values())[indiceParametro].getNombre()
     indiceParametro += 1
     lista_cuadruplos.append(cuadruplo_inicial)
@@ -491,26 +521,25 @@ def p_funcion_predef(p):
 
 def genera_cuadruplo(lista_op):
     global cuadruplo_inicial
-    if len(pila_operador) > 0:
-        print(pila_operador)
-        operador = pila_operador.pop()
+    if len(pila_operadores) > 0:
+        operador = pila_operadores.pop()
         if operador in lista_op:
             tipo_2 = pila_tipos.pop()
             tipo_1 = pila_tipos.pop()
-            operando2 = pila_operando.pop()
-            operando1 = pila_operando.pop()
+            operando2 = pila_operandos.pop()
+            operando1 = pila_operandos.pop()
             tipo_resultado = CuboSemantico.CuboSemantico.getTipo(operador, tipo_1, tipo_2)
             pila_tipos.append(tipo_resultado)
-
-            cuadruplo_inicial[0] = operador
+            espacio = Memoria.Memoria.getInstance().generaEspacioTemporal(tipo_resultado)
+            cuadruplo_inicial[0] = Utils.Operador.getId(operador)
             cuadruplo_inicial[1] = operando1
             cuadruplo_inicial[2] = operando2
-            cuadruplo_inicial[3] = random.randint(1, 10)  # todo: Cambiar a resultado
+            cuadruplo_inicial[3] = espacio
             lista_cuadruplos.append(cuadruplo_inicial)
-            pila_operando.append(cuadruplo_inicial[3])
+            pila_operandos.append(espacio)
             cuadruplo_inicial = [None] * 4
         else:
-            pila_operador.append(operador)
+            pila_operadores.append(operador)
 
 
 def p_expresion(p):
@@ -539,7 +568,7 @@ def p_consume_op_or(p):
     """
     consume_op_or : OP_OR
     """
-    pila_operador.append(p[1])
+    pila_operadores.append(p[1])
 
 
 def p_comp_or(p):
@@ -569,7 +598,7 @@ def p_consume_op_and(p):
     consume_op_and : OP_AND
     """
 
-    pila_operador.append(p[1])
+    pila_operadores.append(p[1])
 
 
 def p_comp_and(p):
@@ -598,7 +627,7 @@ def p_op_comparador(p):
     """
     op_comparador : OP_COMPARADOR
     """
-    pila_operador.append(p[1])
+    pila_operadores.append(p[1])
 
 
 def p_exp(p):
@@ -608,7 +637,7 @@ def p_exp(p):
     pass
 
 
-def p_genera_cuadruplo(p):
+def p_genera_cuadruplo_termino(p):
     """
     genera_cuadruplo_termino :
     """
@@ -627,7 +656,7 @@ def p_consume_op_termino(p):
     """
     consume_op_termino : OP_TERMINO
     """
-    pila_operador.append(p[1])
+    pila_operadores.append(p[1])
 
 
 def p_termino(p):
@@ -656,7 +685,7 @@ def p_consume_op_factor(p):
     """
     consume_op_factor : OP_FACTOR
     """
-    pila_operador.append(p[1])
+    pila_operadores.append(p[1])
 
 
 def p_factor(p):
@@ -667,10 +696,10 @@ def p_factor(p):
     """
 
     if len(p) == 4:
-        if len(pila_operador) > 0:
-            top = pila_operador.pop()
+        if len(pila_operadores) > 0:
+            top = pila_operadores.pop()
             if top != "(":
-                pila_operador.append(top)
+                pila_operadores.append(top)
     elif len(p) == 3:
         tipo = pila_tipos.pop()
         if tipo == Utils.Tipo.String:
@@ -678,11 +707,11 @@ def p_factor(p):
         elif p[1] == '-':
             global cuadruplo_inicial
             cuadruplo_inicial[0] = '-'
-            cuadruplo_inicial[1] = pila_operando.pop()
+            cuadruplo_inicial[1] = pila_operandos.pop()
             cuadruplo_inicial[2] = None
             cuadruplo_inicial[3] = -cuadruplo_inicial[1]
             lista_cuadruplos.append(cuadruplo_inicial)
-            pila_operando.append(cuadruplo_inicial[3])
+            pila_operandos.append(cuadruplo_inicial[3])
             cuadruplo_inicial = [None] * 4
             pila_tipos.append(tipo)
 
@@ -691,19 +720,19 @@ def p_consume_par_izq(p):
     """
     consume_par_izq : OP_PARENTESIS_IZQ
     """
-    pila_operador.append("(")
+    pila_operadores.append("(")
 
 
 def p_camina(p):
     """
     camina : KW_CAMINA OP_PARENTESIS_IZQ expresion OP_PARENTESIS_DER
     """
-    metros = pila_operando.pop()
+    metros = pila_operandos.pop()
     tipo = pila_tipos.pop()
     if tipo == Utils.Tipo.Entero:
-        raise TypeError('Solo puedes caminar unidades enteras')
+        raise TypeError('Solo puedes caminar usando unidades enteras')
     global cuadruplo_inicial
-    cuadruplo_inicial[0] = 'camina'
+    cuadruplo_inicial[0] = Utils.Operador.getId('camina')
     cuadruplo_inicial[3] = metros
     lista_cuadruplos.append(cuadruplo_inicial)
     cuadruplo_inicial = [None] * 4
@@ -713,12 +742,12 @@ def p_gira(p):
     """
     gira : KW_GIRA OP_PARENTESIS_IZQ expresion OP_PARENTESIS_DER
     """
-    metros = pila_operando.pop()
+    metros = pila_operandos.pop()
     tipo = pila_tipos.pop()
     if tipo == Utils.Tipo.String:
         raise TypeError('No puedes girar con palabras')
     global cuadruplo_inicial
-    cuadruplo_inicial[0] = 'gira'
+    cuadruplo_inicial[0] = Utils.Operador.getId('gira')
     cuadruplo_inicial[3] = metros
     lista_cuadruplos.append(cuadruplo_inicial)
     cuadruplo_inicial = [None] * 4
@@ -728,12 +757,12 @@ def p_mira(p):
     """
     mira : KW_MIRA OP_PARENTESIS_IZQ expresion OP_PARENTESIS_DER
     """
-    metros = pila_operando.pop()
+    metros = pila_operandos.pop()
     tipo = pila_tipos.pop()
     if tipo == Utils.Tipo.String:
         raise TypeError('No puedes mirar en dirar en direccion a palabras')
     global cuadruplo_inicial
-    cuadruplo_inicial[0] = 'mira'
+    cuadruplo_inicial[0] = Utils.Operador.getId('mira')
     cuadruplo_inicial[3] = metros
     lista_cuadruplos.append(cuadruplo_inicial)
     cuadruplo_inicial = [None] * 4
@@ -791,12 +820,11 @@ def p_consume_par_der(p):
     tipo = pila_tipos.pop()
     if tipo == Utils.Tipo.String:
         raise TypeError('Tipo string no puede ser usado como condicion')
-    resultado = pila_operando.pop()
+    resultado = pila_operandos.pop()
     global cuadruplo_inicial
-    cuadruplo_inicial[0] = 'gotoF'
+    cuadruplo_inicial[0] = Utils.Operador.getId('gotoF')
     cuadruplo_inicial[1] = resultado
     lista_cuadruplos.append(cuadruplo_inicial)
-    print("Append here:")
     pila_saltos.append(len(lista_cuadruplos) - 1)
     cuadruplo_inicial = [None] * 4
 
@@ -818,7 +846,7 @@ def p_consume_si_no(p):
     """
     global cuadruplo_inicial
     posicion_falso = pila_saltos.pop()
-    cuadruplo_inicial[0] = 'goto'
+    cuadruplo_inicial[0] = Utils.Operador.getId('goto')
     lista_cuadruplos.append(cuadruplo_inicial)
     pila_saltos.append(len(lista_cuadruplos) - 1)
     cuadruplo_inicial = [None] * 4
@@ -844,15 +872,15 @@ def p_retorna(p):
     if tipo_expresion != tipo_funcion_actual:
         raise TypeError(
             "Funcion de tipo " + tipo_funcion_actual + " no puede retornar un valor de tipo " + tipo_expresion)
-    cuadruplo_inicial[0] = 'return'
-    cuadruplo_inicial[3] = pila_operando.pop()
+    cuadruplo_inicial[0] = Utils.Operador.getId('return')
+    cuadruplo_inicial[3] = pila_operandos.pop()
     lista_cuadruplos.append(cuadruplo_inicial)
     cuadruplo_inicial = [None] * 4
 
 
 def p_var_cte(p):
     """
-    var_cte : var_consume_id_var_cte var_cte2
+    var_cte : var_o_llamada_funcion
             | a_string
             | a_entero
             | a_flotante
@@ -899,28 +927,39 @@ def p_cte_e_f_s(p):
             | consume_cte_flotante
             | consume_cte_string
     """
-    print(p[1])
+    pass
 
 
 def p_consume_flotante(p):
     """
     consume_cte_flotante : CTE_F
     """
-    genera_operando({"valor": p[1], "tipo": Utils.Tipo.Flotante})
+    valor = Memoria.Memoria.getInstance().generaEspacioConstantes(Utils.Tipo.Flotante, p[1])
+    genera_operando({"valor": valor, "tipo": Utils.Tipo.Flotante})
 
 
 def p_consume_entero(p):
     """
     consume_cte_entero : CTE_E
     """
-    genera_operando({"valor": p[1], "tipo": Utils.Tipo.Entero})
+    valor = Memoria.Memoria.getInstance().generaEspacioConstantes(Utils.Tipo.Entero, p[1])
+    genera_operando({"valor": valor, "tipo": Utils.Tipo.Entero})
 
 
 def p_consume_string(p):
     """
     consume_cte_string : CTE_S
     """
-    genera_operando({"valor": p[1], "tipo": Utils.Tipo.String})
+    valor = Memoria.Memoria.getInstance().generaEspacioConstantes(Utils.Tipo.String, p[1])
+    genera_operando({"valor": valor, "tipo": Utils.Tipo.String})
+
+
+def p_var_o_llamada_funcion(p):
+    """
+    var_o_llamada_funcion : var_consume_id_var_cte arr_not
+                        | ejec_funcion
+    """
+    pass
 
 
 def p_var_consume_id_var_cte(p):
@@ -928,31 +967,7 @@ def p_var_consume_id_var_cte(p):
     var_consume_id_var_cte : ID
     """
     var = var_table.getVariable(p[1])
-    print(var.getValor())
-    genera_operando({"tipo": var.getTipo(), "valor": var.getValor()})
-
-
-def p_var_cte2(p):
-    """
-    var_cte2 : arr_not
-            | OP_PARENTESIS_IZQ var_cte3 OP_PARENTESIS_DER
-    """
-    pass
-
-
-def p_var_cte3(p):
-    """
-    var_cte3 : expresion var_cte4
-    """
-    pass
-
-
-def p_var_cte4(p):
-    """
-    var_cte4 : OP_COMA expresion var_cte4
-            | empty
-    """
-    pass
+    genera_operando({"tipo": var.getTipo(), "valor": var.getEspacioMemoria()})
 
 
 def p_a_flotante(p):
@@ -979,7 +994,7 @@ def p_reiniciar(p):
     reiniciar : KW_REINICIAR OP_PARENTESIS_IZQ OP_PARENTESIS_DER
     """
     global cuadruplo_inicial
-    cuadruplo_inicial[0] = "reiniciar"
+    cuadruplo_inicial[0] = Utils.Operador.getId('reiniciar')
     lista_cuadruplos.append(cuadruplo_inicial)
     cuadruplo_inicial = [None] * 4
 
@@ -1005,8 +1020,8 @@ def p_consume_id_input(p):
     """
     var = var_table.getVariable(p[1])
     global cuadruplo_inicial
-    cuadruplo_inicial[0] = 'input'
-    cuadruplo_inicial[3] = var.getValor()
+    cuadruplo_inicial[0] = Utils.Operador.getId('input')
+    cuadruplo_inicial[3] = var.getEspacioMemoria()
     lista_cuadruplos.append(cuadruplo_inicial)
     cuadruplo_inicial = [None] * 4
 
@@ -1024,9 +1039,9 @@ def p_valores_a_imprimir(p):
 
     """
     pila_tipos.pop()
-    resultado = pila_operando.pop()
+    resultado = pila_operandos.pop()
     global cuadruplo_inicial
-    cuadruplo_inicial[0] = 'output'
+    cuadruplo_inicial[0] = Utils.Operador.getId('output')
     cuadruplo_inicial[3] = resultado
     lista_cuadruplos.append(cuadruplo_inicial)
     cuadruplo_inicial = [None] * 4
@@ -1040,10 +1055,10 @@ def p_salta_a(p):
     tipo1 = pila_tipos.pop()
     if tipo1 == Utils.Tipo.String or tipo2 == Utils.Tipo.String:
         raise TypeError('Solo puedes caminar unidades enteras')
-    operando2 = pila_operando.pop()
-    operando1 = pila_operando.pop()
+    operando2 = pila_operandos.pop()
+    operando1 = pila_operandos.pop()
     global cuadruplo_inicial
-    cuadruplo_inicial[0] = 'salta_a'
+    cuadruplo_inicial[0] = Utils.Operador.getId('salta_a')
     cuadruplo_inicial[1] = operando1
     cuadruplo_inicial[2] = operando2
     cuadruplo_inicial = [None] * 4
@@ -1055,11 +1070,11 @@ def p_error(p):
 
 
 def genera_operando(operando_a_generar):
-    global pila_operando
+    global pila_operandos
     global pila_tipos
 
     pila_tipos.append(operando_a_generar["tipo"])
-    pila_operando.append(operando_a_generar["valor"])
+    pila_operandos.append(operando_a_generar["valor"])
 
 
 parser = yacc.yacc()
@@ -1072,11 +1087,28 @@ funcion flotante prueba(entero x, flotante y, entero b){
 }
 funcion flotante cualquiera(entero dos){
     entero variable_meh;
+    variable_meh = dos;
+}
+funcion entero uno(){
+    retorna 1;
+}
+funcion entero dos(){
+    retorna 2;
 }
 inicio funcion entero ai(){
     entero a, b;
-    prueba(1, a_flotante(2), 3);
-    a = a + 1;
+    entero d;
+    string x;
+    string otro;
+
+    x = "";
+    otro = "";
+
+    si(a < b || d && 1) {
+    } si_no {
+    };
+
+    d = prueba(4, 5.0, 6) * prueba(1, 2.0, 3);
     input(a);
     output(1+2);
 }

@@ -40,11 +40,27 @@ class Operador:
         'a_flotante': 100,
         'a_string': 101,
         'a_entero': 102,
+        'camina': 103,
+        'gira': 104,
+        'mira': 105,
+        'reiniciar': 106,
+        'salta_a': 107,
+        'input': 150,
+        'output': 151,
+
         'goto': 200,
         'gotoF': 201,
-        'gotoT': 202
+        'gotoT': 202,
+        'gosub': 300,
+        'return': 301,
+        'ret': 302,
+        'param': 303,
+        'era': 304,
+        'end': 999,
     }
 
     @staticmethod
     def getId(op):
         return Operador.__operadores[op]
+
+DEBUGGING_MODE = True

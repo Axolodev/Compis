@@ -177,8 +177,7 @@ class CuboSemantico:
     @staticmethod
     def getTipo(operador, tipo_operando1, tipo_operando2):
         operador_value = Utils.Operador.getId(operador)
-        print(operador, tipo_operando1, tipo_operando2)
         retorno = CuboSemantico.__cubo[tipo_operando1.value][tipo_operando2.value][operador_value]
         if retorno is CuboSemantico.ERROR:
-            raise ValueError("Error de semantica. " + tipo_operando1 + " y " + tipo_operando2 + " no pueden trabajar con " + operador)
+            raise ValueError("Error de semantica. " + tipo_operando1.name + " y " + tipo_operando2.name + " no pueden trabajar con " + operador)
         return retorno
