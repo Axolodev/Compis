@@ -1085,29 +1085,14 @@ string una_var[2], otra_var, another;
 funcion flotante prueba(entero x, flotante y, entero b){
     retorna 1.0;
 }
-funcion flotante cualquiera(entero dos){
-    entero variable_meh;
-    variable_meh = dos;
-}
 funcion entero uno(){
+    entero a;
+    a = uno() + uno();
     retorna 1;
 }
-funcion entero dos(){
-    retorna 2;
-}
 inicio funcion entero ai(){
-    entero a, b;
+    entero a;
     entero d;
-    string x;
-    string otro;
-
-    x = "";
-    otro = "";
-
-    si(a < b || d && 1) {
-    } si_no {
-    };
-
     d = prueba(4, 5.0, 6) * prueba(1, 2.0, 3);
     input(a);
     output(1+2);
@@ -1116,3 +1101,4 @@ inicio funcion entero ai(){
 # checar que las funciones esten definidas
 log = logging.getLogger("parserlog.log")
 parser.parse(data, debug=0)
+
