@@ -729,13 +729,15 @@ def p_camina(p):
     """
     metros = pila_operandos.pop()
     tipo = pila_tipos.pop()
-    if tipo == Utils.Tipo.Entero:
+    print (tipo)
+    if tipo != Utils.Tipo.Entero:
         raise TypeError('Solo puedes caminar usando unidades enteras')
     global cuadruplo_inicial
     cuadruplo_inicial[0] = Utils.Operador.getId('camina')
     cuadruplo_inicial[3] = metros
     lista_cuadruplos.append(cuadruplo_inicial)
     cuadruplo_inicial = [None] * 4
+    #t.forward(metros)
 
 
 def p_gira(p):
@@ -1077,42 +1079,43 @@ def genera_operando(operando_a_generar):
     pila_operandos.append(operando_a_generar["valor"])
 
 
-parser = yacc.yacc()
+def run(source):
+    with open('../Compis/source.txt', 'r') as content_file:
+        content = content_file.read()
+    parser = yacc.yacc()
+    parser.parse(source, debug=0)
 
 data = '''flotante global;
-flotante globalDos[2];
-string una_var[2], otra_var, another;
-funcion flotante prueba(entero x, flotante y, entero b){
-    retorna 1.0;
-}
-funcion flotante cualquiera(entero dos){
-    entero variable_meh;
-    variable_meh = dos;
-}
-funcion entero uno(){
-    retorna 1;
-}
-funcion entero dos(){
-    retorna 2;
-}
-inicio funcion entero ai(){
-    entero a, b;
-    entero d;
-    string x;
-    string otro;
+    flotante globalDos[2];
+    string una_var[2], otra_var, another;
+    funcion flotante prueba(entero x, flotante y, entero b){
+        retorna 1.0;
+    }
+    funcion flotante cualquiera(entero dos){
+        entero variable_meh;
+        variable_meh = dos;
+    }
 
-    x = "";
-    otro = "";
+    inicio funcion entero ai(){
+        entero a, b;
+        entero d;
+        string x;
+        string otro;
 
-    si(a < b || d && 1) {
-    } si_no {
-    };
+        x = "";
+        otro = "";
 
-    d = prueba(4, 5.0, 6) * prueba(1, 2.0, 3);
-    input(a);
-    output(1+2);
-}
+        si(a < b || d && 1) {
+        } si_no {
+        };
+        camina(2);
+
+        d = prueba(4, 5.0, 6) * prueba(1, 2.0, 3);
+        input(a);
+        output(1+2);
+    }
 '''
+
 # checar que las funciones esten definidas
 log = logging.getLogger("parserlog.log")
-parser.parse(data, debug=0)
+
