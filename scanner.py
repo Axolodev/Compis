@@ -1085,6 +1085,7 @@ def run(source):
     parser = yacc.yacc()
     parser.parse(source, debug=0)
 
+parser = yacc.yacc()
 data = '''flotante global;
     flotante globalDos[2];
     string una_var[2], otra_var, another;
@@ -1118,4 +1119,5 @@ data = '''flotante global;
 
 # checar que las funciones esten definidas
 log = logging.getLogger("parserlog.log")
+parser.parse(data, debug=0)
 
