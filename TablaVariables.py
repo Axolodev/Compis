@@ -51,7 +51,9 @@ class TablaVariables:
             return ""
 
         def consigueVariablesPara(self, scope):
-            return dict((key, value) for key, value in self.__listaVariables.items() if key.startswith(str(scope) + "_"))
+            return dict(
+                (key, value) for key, value in self.__listaVariables.items() if key.startswith(str(scope) + "_"))
+
 
     instancia = None
 
@@ -60,5 +62,3 @@ class TablaVariables:
         if not TablaVariables.instancia:
             TablaVariables.instancia = TablaVariables.__TablaVariables()
         return TablaVariables.instancia
-
-

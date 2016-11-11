@@ -3,6 +3,7 @@ import Funcion
 import Variable
 import Utils
 import Memoria
+import TablaVariables
 
 class TablaFunciones:
     class __TablaFunciones:
@@ -54,6 +55,9 @@ class TablaFunciones:
             for k, v in self.__listaFunciones.items():
                 print(k, str(v))
             return ""
+
+        def getListaVariablesDeMain(self):
+            return TablaVariables.TablaVariables.getInstance().consigueVariablesPara(self.__scopeActual)
 
     instancia = None
 

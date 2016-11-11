@@ -1089,10 +1089,30 @@ def run(source):
     parser.parse(source, debug=0)
 
 parser = yacc.yacc()
-data = '''
-    entero x;
-    inicio funcion entero ai(){
-        x = 1;
+data = '''flotante global;
+    flotante globalDos[2];
+    string una_var[2], otra_var, another;
+    funcion flotante prueba(entero x, flotante y, entero b){
+        retorna 1.0;
+    }
+    funcion flotante cualquiera(entero dos){
+        entero variable_meh;
+        variable_meh = dos;
+    }
+    inicio funcion entero dd(){
+        entero a, b;
+        flotante d;
+        string otro;
+        otro = "";
+
+        si(a < b || d && 1) {
+        } si_no {
+        };
+        camina(2);
+
+        d = prueba(4, 5.0, 6) * prueba(1, 2.0, 3);
+        input(a);
+        output(1+2);
     }
 '''
 

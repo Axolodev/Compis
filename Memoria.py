@@ -110,6 +110,17 @@ class Memoria:
             print("Constantes ejecucion:")
             print(self.__bloque_constantes_ejecucion)
 
+            print("Locales:")
+            print("Enteros:")
+            for i in self.__bloque_local[0]:
+                print(i)
+            print("Flotantes:")
+            for i in self.__bloque_local[1]:
+                print(i)
+            print("Strings:")
+            for i in self.__bloque_local[2]:
+                print(i)
+
         def generaEspaciosParaConstantes(self):
             for k in self.__bloque_constantes_compilacion:
                 tipo = int(k[0])
@@ -151,6 +162,25 @@ class Memoria:
                     print("\tEspacio:", espacio)
                 self.__bloque_global[valor_tipo][indice] = valor
 
+        def darDeAltaLocales(self, lista):
+            counter = 0
+            while counter < 3:
+                tipo = Utils.Tipo.Entero
+                if counter == 1:
+                    tipo = Utils.Tipo.Flotante
+                if counter == 2:
+                    tipo = Utils.Tipo.String
+
+                for i in range(0, lista[counter]):
+                    self.__bloque_local[counter].append(Utils.Tipo.getDefault(tipo))
+                counter += 1
+
+        def liberarLocales(self, cantidades):
+            counter = 0
+            while counter < 3:
+                for i in range(0, cantidades[counter]):
+                    self.__bloque_local[counter].pop()
+                counter += 1
 
     instancia = None
 
