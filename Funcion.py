@@ -46,3 +46,13 @@ class Funcion:
 
     def setCuadruplo(self, num_cuadruplo):
         self.__cuadruplo_de_inicio = num_cuadruplo
+
+    def __str__(self):
+        to_str = "Nombre: " + str(self.__nombre)
+        to_str += "\n\tScope identificador: " + str(self.__scope)
+        variables = TablaVariables.TablaVariables.getInstance().consigueVariablesPara(self.__scope)
+        to_str += "\n\tVariables: "
+        for i, j in variables.items():
+            to_str += "\n\t\t" + i + ": " + str(j)
+        to_str += "\n\tCuadruplo de inicio: " + str(self.__cuadruplo_de_inicio)
+        return to_str

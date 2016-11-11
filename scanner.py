@@ -9,6 +9,7 @@ import TablaVariables
 import TablaFunciones
 import CuboSemantico
 import warnings
+import MaquinaVirtual
 
 var_table = TablaVariables.TablaVariables.getInstance()
 func_table = TablaFunciones.TablaFunciones.getInstance()
@@ -156,23 +157,28 @@ def p_inicio(p):
     """inicio : crear_cuadruplo_inicio crear_var crear_funciones encontrar_posicion_cuadruplo_de_inicio funcion"""
     cuadruplo_inicial[0] = Utils.Operador.getId('end')
     lista_cuadruplos.append(cuadruplo_inicial)
-    print("Tabla de variables:")
-    print(var_table)
-    print("Tabla de funciones:")
-    print(func_table)
-    print("Lista de cuadruplos:")
-    i = 0
-    for item in lista_cuadruplos:
-        print(str(i) + ':' + str(item))
-        i += 1
 
-    print()
-    print("Pila de operadores:")
-    print(pila_operadores)
-    print("Pila de operandos:")
-    print(pila_operandos)
-    print("Pila de tipos:")
-    print(pila_tipos)
+    if Utils.DEBUGGING_MODE:
+        print("Tabla de variables:")
+        print(var_table)
+        print("Tabla de funciones:")
+        print(func_table)
+        print("Lista de cuadruplos:")
+        i = 0
+        for item in lista_cuadruplos:
+            print(str(i) + ':' + str(item))
+            i += 1
+
+        print()
+        print("Pila de operadores:")
+        print(pila_operadores)
+        print("Pila de operandos:")
+        print(pila_operandos)
+        print("Pila de tipos:")
+        print(pila_tipos)
+
+    mv = MaquinaVirtual.MaquinaVirtual(lista_cuadruplos)
+    mv.ejecutar()
 
 
 def p_encontrar_posicion_cuadruplo_de_inicio(p):
@@ -222,13 +228,8 @@ def p_funcion(p):
     global cuadruplo_inicial
     global nombre_funcion_actual
     tipo_funcion_actual = Utils.Tipo.Vacio
-    print()
-    print()
-    print()
-    print()
-    print("Nombre actual:", variable_nombre_funcion)
-    print()
-    print()
+    if Utils.DEBUGGING_MODE:
+        print("Nombre actual:", variable_nombre_funcion)
     cuadruplo_inicial[0] = Utils.Operador.getId('ret')
     lista_cuadruplos.append(cuadruplo_inicial)
     cuadruplo_inicial = [None] * 4
@@ -458,7 +459,8 @@ def p_genera_era(p):
     cuadruplo_inicial[0] = Utils.Operador.getId('era')
     cuadruplo_inicial[1] = variable_nombre_funcion
     lista_cuadruplos.append(cuadruplo_inicial)
-    print("Cuadruplo ERA:", cuadruplo_inicial)
+    if Utils.DEBUGGING_MODE:
+        print("Cuadruplo ERA:", cuadruplo_inicial)
     cuadruplo_inicial = [None] * 4
 
 
@@ -729,7 +731,8 @@ def p_camina(p):
     """
     metros = pila_operandos.pop()
     tipo = pila_tipos.pop()
-    print (tipo)
+    if Utils.DEBUGGING_MODE:
+        print (tipo)
     if tipo != Utils.Tipo.Entero:
         raise TypeError('Solo puedes caminar usando unidades enteras')
     global cuadruplo_inicial
@@ -1086,34 +1089,10 @@ def run(source):
     parser.parse(source, debug=0)
 
 parser = yacc.yacc()
-data = '''flotante global;
-    flotante globalDos[2];
-    string una_var[2], otra_var, another;
-    funcion flotante prueba(entero x, flotante y, entero b){
-        retorna 1.0;
-    }
-    funcion flotante cualquiera(entero dos){
-        entero variable_meh;
-        variable_meh = dos;
-    }
-
+data = '''
+    entero x;
     inicio funcion entero ai(){
-        entero a, b;
-        entero d;
-        string x;
-        string otro;
-
-        x = "";
-        otro = "";
-
-        si(a < b || d && 1) {
-        } si_no {
-        };
-        camina(2);
-
-        d = prueba(4, 5.0, 6) * prueba(1, 2.0, 3);
-        input(a);
-        output(1+2);
+        x = 1;
     }
 '''
 

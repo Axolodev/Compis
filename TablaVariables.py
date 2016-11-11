@@ -5,7 +5,6 @@ import Utils
 
 
 class TablaVariables:
-
     class __TablaVariables:
         def __init__(self):
             self.__scopeActual = 0

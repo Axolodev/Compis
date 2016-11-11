@@ -16,7 +16,8 @@ class Variable:
         self.__espacio_memoria = 0
         if tipo != Utils.Tipo.Vacio:
             self.__espacio_memoria = Memoria.Memoria.getInstance().generaEspacioVariable(scope, tipo)
-        print("Espacio nuevo de variable:", self.__espacio_memoria)
+        if Utils.DEBUGGING_MODE:
+            print("Espacio nuevo de variable:", self.__espacio_memoria)
 
     def getNombre(self):
         return self.__nombre
@@ -38,3 +39,8 @@ class Variable:
 
     def getScope(self):
         return self.__scope
+
+    def __str__(self):
+        to_str = self.__nombre
+        to_str += " " + str(self.__tipo)
+        return to_str

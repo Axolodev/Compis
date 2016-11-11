@@ -1,3 +1,4 @@
+from __future__ import print_function
 import Funcion
 import Variable
 import Utils
@@ -17,7 +18,7 @@ class TablaFunciones:
             if str(nombre) in self.__listaFunciones:
                 raise ValueError("Ya existe una funcion con este nombre")
             else:
-                funcion = Funcion.Funcion(tipo, nombre, params, self.__scopeActual, cuadruplo=cuadruplo)
+                funcion = Funcion.Funcion(nombre, tipo, params, self.__scopeActual, cuadruplo=cuadruplo)
                 self.__listaFunciones.update({str(nombre): funcion})
 
         def getScopeActual(self):
@@ -50,8 +51,8 @@ class TablaFunciones:
             raise KeyError("La funcion no existe")
 
         def __str__(self):
-            for k in self.__listaFunciones:
-                print(str(k))
+            for k, v in self.__listaFunciones.items():
+                print(k, str(v))
             return ""
 
     instancia = None

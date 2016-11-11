@@ -26,7 +26,6 @@ class Application(Frame):
         print(input)
         scanner.run(input)
 
-
     def createWidgets(self):
         self.QUIT = Button(self)
         self.QUIT["text"] = "QUIT"
@@ -49,10 +48,11 @@ class Application(Frame):
         self.pack()
         self.createWidgets()
 
+
 root = Tk()
 root.title("Draw with Jr. Lang!")
-cv = Tkinter.Canvas(root,width=600, height=600)
-cv.pack(side = Tkinter.BOTTOM)
+cv = Tkinter.Canvas(root, width=600, height=600)
+cv.pack(side=Tkinter.BOTTOM)
 t = turtle.RawTurtle(cv)
 t.shape("turtle")
 t.color("green")
