@@ -1103,7 +1103,7 @@ data = '''flotante global;
         entero a, b;
         flotante d;
         string otro;
-        otro = "";
+        otro = "hola";
 
         si(a < b || d && 1) {
         } si_no {

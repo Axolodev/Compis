@@ -19,6 +19,8 @@ class MaquinaVirtual:
         id_sum = Utils.Operador.getId('+')
         id_assign = Utils.Operador.getId('=')
         id_ret = Utils.Operador.getId('ret')
+        id_era = Utils.Operador.getId('era')
+        id_gosub = Utils.Operador.getId('gosub')
 
         lista_globales = TablaVariables.TablaVariables.getInstance().consigueVariablesPara(0)
 
@@ -63,6 +65,30 @@ class MaquinaVirtual:
 
             elif operator == id_ret:
                 Memoria.Memoria.getInstance().liberarLocales(self.__cantidades_variables_actuales)
+                if len(self.__pila_ejecucion) > 0:
+                    funcion_padre = self.__pila_ejecucion.pop()
+                    i = funcion_padre[0]
+                    self.__cantidades_variables_actuales = funcion_padre[1]
+
+
+            elif operator == id_era:
+                scope = TablaFunciones.TablaFunciones.getInstance().getFuncion(self.__lista_cuadruplos[i][1]).getScope()
+                variables = TablaVariables.TablaVariables.getInstance().consigueVariablesPara(scope)
+                print("variables locales de funciones: ")
+                print(variables)
+                lista_variables_funcion = [v.getTipo().value for v in
+                                       variables.values()]
+                lista_variables_funcion = [[x == 0, x == 1, x == 2] for x in lista_variables_funcion]
+                lista_variables_funcion = [sum(x) for x in zip(*lista_variables_funcion)]
+                Memoria.Memoria.getInstance().darDeAltaLocales(lista_variables_funcion)
+                self.__cantidades_variables_actuales = lista_variables_funcion
+
+            elif operator == id_gosub:
+                self.__pila_ejecucion.append([i, self.__cantidades_variables_actuales, []])
+                i = TablaFunciones.TablaFunciones.getInstance().getFuncion(self.__lista_cuadruplos[i][1]).getCuadruplo()-1
+
+
+
 
             i += 1
 
