@@ -1092,8 +1092,8 @@ parser = yacc.yacc()
 data = '''flotante global;
     flotante globalDos[2];
     string una_var[2], otra_var, another;
-    funcion flotante prueba(entero x, flotante y, entero b){
-        retorna 1.0;
+    funcion entero prueba(entero x, flotante y, entero b){
+        retorna 99;
     }
     funcion flotante cualquiera(entero dos){
         entero variable_meh;

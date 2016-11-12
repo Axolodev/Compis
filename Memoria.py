@@ -1,5 +1,6 @@
 from __future__ import print_function
 import Utils
+import operator
 
 
 class Memoria:
@@ -111,28 +112,28 @@ class Memoria:
             print(self.__bloque_constantes_ejecucion)
 
             print("Locales:")
-            print("Enteros:")
+            print("Enteros:", len(self.__bloque_local[0]))
             for i in self.__bloque_local[0]:
                 print(i)
-            print("Flotantes:")
+            print("Flotantes:", len(self.__bloque_local[1]))
             for i in self.__bloque_local[1]:
                 print(i)
-            print("Strings:")
+            print("Strings:", len(self.__bloque_local[2]))
             for i in self.__bloque_local[2]:
                 print(i)
 
         def generaEspaciosParaConstantes(self):
-            for k in self.__bloque_constantes_compilacion:
+            constantes_ordenadas = sorted(self.__bloque_constantes_compilacion.items(), key=operator.itemgetter(1))
+            for k, _ in constantes_ordenadas:
                 tipo = int(k[0])
                 valor = k[2:]
-
                 if tipo == Utils.Tipo.Entero.value:
                     valor = int(valor)
                 if tipo == Utils.Tipo.Flotante.value:
                     valor = float(valor)
                 if tipo == Utils.Tipo.String.value:
                     valor = valor[1:-1]
-                self.__bloque_constantes_ejecucion[tipo].insert(0, valor)
+                self.__bloque_constantes_ejecucion[tipo].append(valor)
 
         def getValorParaEspacio(self, espacio):
             if espacio < Memoria.OFFSET_ENTEROS_TEMPORALES:
@@ -152,7 +153,7 @@ class Memoria:
                 return self.__bloque_constantes_ejecucion[valor_tipo][indice]
 
         def setValorParaEspacio(self, espacio, valor):
-            if espacio < Memoria.OFFSET_ENTEROS_TEMPORALES:
+            if Memoria.OFFSET_ENTEROS_GLOBALES <= espacio <= Memoria.OFFSET_STRINGS_GLOBALES + Memoria.ESPACIO_GLOBALES:
                 # Es global
                 valor_tipo = (espacio - Memoria.OFFSET_ENTEROS_GLOBALES) / Memoria.ESPACIO_GLOBALES
                 indice = (espacio - Memoria.OFFSET_ENTEROS_GLOBALES) % Memoria.ESPACIO_GLOBALES
@@ -161,6 +162,10 @@ class Memoria:
                     print("\tValor:", valor)
                     print("\tEspacio:", espacio)
                 self.__bloque_global[valor_tipo][indice] = valor
+
+            if Memoria.OFFSET_ENTEROS_TEMPORALES <= espacio <= Memoria.OFFSET_STRINGS_TEMPORALES + \
+                    Memoria.ESPACIO_TEMPORALES:
+                pass
 
         def darDeAltaLocales(self, lista):
             counter = 0
