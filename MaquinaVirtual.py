@@ -1,17 +1,21 @@
 from __future__ import print_function
-import Utils
-import TablaVariables
-import TablaFunciones
+
 import Memoria
+import TablaFunciones
+import TablaVariables
+import Utils
+import scanner as scanner
 
 
 class MaquinaVirtual:
-    def __init__(self, lista_cuadruplos):
+    def __init__(self, _input):
+        lista_cuadruplos = scanner.parse(_input)
         self.__lista_cuadruplos = lista_cuadruplos
         self.__pila_ejecucion = []
         self.__cantidades_variables_locales_actuales = []
 
     def ejecutar(self):
+        import Interfaz
         if Utils.DEBUGGING_MODE:
             print("----------------------------")
             print("Ejecucion:")
@@ -22,6 +26,7 @@ class MaquinaVirtual:
         id_era = Utils.Operador.getId('era')
         id_gosub = Utils.Operador.getId('gosub')
         id_return = Utils.Operador.getId('return')
+        id_camina = Utils.Operador.getId('camina')
         offset_temporales = [0, 0, 0]
         offset_locales = [0, 0, 0]
 
@@ -113,6 +118,9 @@ class MaquinaVirtual:
                 # Obtener nuevo offset de locales
                 offset_locales = [x + y for x, y in zip(offset_locales, self.__cantidades_variables_locales_actuales)]
                 self.__cantidades_variables_locales_actuales = lista_variables_funcion
+
+            elif operator == id_camina:
+                Interfaz.Interfaz.getInstance().camina(Memoria.Memoria.getInstance().getValorParaEspacio(self.__lista_cuadruplos[i][3]))
 
             i += 1
 

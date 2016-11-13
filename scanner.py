@@ -1,15 +1,15 @@
 from __future__ import print_function
-import Memoria
-import random
+
 import logging
+import warnings
+
+import CuboSemantico
+import Memoria
+import TablaFunciones
+import TablaVariables
+import Utils
 import ply.lex as lex
 import ply.yacc as yacc
-import Utils
-import TablaVariables
-import TablaFunciones
-import CuboSemantico
-import warnings
-import MaquinaVirtual
 
 var_table = TablaVariables.TablaVariables.getInstance()
 func_table = TablaFunciones.TablaFunciones.getInstance()
@@ -177,8 +177,6 @@ def p_inicio(p):
         print("Pila de tipos:")
         print(pila_tipos)
 
-    mv = MaquinaVirtual.MaquinaVirtual(lista_cuadruplos)
-    mv.ejecutar()
 
 
 def p_encontrar_posicion_cuadruplo_de_inicio(p):
@@ -1082,13 +1080,13 @@ def genera_operando(operando_a_generar):
     pila_operandos.append(operando_a_generar["valor"])
 
 
-def run(source):
+def parse(source):
     with open('../Compis/source.txt', 'r') as content_file:
         content = content_file.read()
     parser = yacc.yacc()
     parser.parse(source, debug=0)
+    return lista_cuadruplos
 
-parser = yacc.yacc()
 data = '''flotante global;
     flotante globalDos[2];
     string una_var[2], otra_var, another;
@@ -1118,5 +1116,4 @@ data = '''flotante global;
 
 # checar que las funciones esten definidas
 log = logging.getLogger("parserlog.log")
-parser.parse(data, debug=0)
 

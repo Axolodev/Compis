@@ -1,62 +1,60 @@
 from __future__ import print_function
-import Memoria
-import random
-import logging
-import ply.lex as lex
-import ply.yacc as yacc
-import Utils
-import TablaVariables
-import TablaFunciones
-import CuboSemantico
-import warnings
-import Tortuga
-import scanner as scanner
-import io
 
 import Tkinter
-from Tkinter import *
 import turtle
+import MaquinaVirtual
+from Tkinter import *
 
 
-class Application(Frame):
-    def run(self):
-        input = self.TEXT.get("1.0", "end-1c")
-        with io.FileIO("source.txt", "w") as file:
-            file.write(input)
-        print(input)
-        scanner.run(input)
+class Interfaz():
+    class __Interfaz(Frame):
+        def __init__(self):
+            self.root = Tkinter.Tk()
+            self.root.title("Draw with Jr. Lang!")
+            cv = Tkinter.Canvas(self.root, width=600, height=600)
+            cv.pack(side=Tkinter.BOTTOM)
+            self.__turtle = turtle.RawTurtle(cv)
+            self.__turtle.shape("turtle")
+            self.__turtle.color("green")
+            Frame.__init__(self, self.root)
+            self.pack()
+            self.createWidgets()
 
-    def createWidgets(self):
-        self.QUIT = Button(self)
-        self.QUIT["text"] = "QUIT"
-        self.QUIT["fg"] = "red"
-        self.QUIT["command"] = self.quit
+        def run(self):
+            _input = self.TEXT.get("1.0", "end-1c")
+            mv = MaquinaVirtual.MaquinaVirtual(_input)
+            mv.ejecutar()
 
-        self.QUIT.pack({"side": "bottom"})
+        def createWidgets(self):
+            self.QUIT = Button(self)
+            self.QUIT["text"] = "QUIT"
+            self.QUIT["fg"] = "red"
+            self.QUIT["command"] = self.quit
 
-        self.RUN = Button(self)
-        self.RUN["text"] = "RUN",
-        self.RUN["fg"] = "green"
-        self.RUN["command"] = self.run
-        self.RUN.pack({"side": "top"})
+            self.QUIT.pack({"side": "bottom"})
 
-        self.TEXT = Text(self, width=70, height=70)
-        self.TEXT.pack()
+            self.RUN = Button(self)
+            self.RUN["text"] = "RUN",
+            self.RUN["fg"] = "green"
+            self.RUN["command"] = self.run
+            self.RUN.pack({"side": "top"})
 
-    def __init__(self, master=None):
-        Frame.__init__(self, master)
-        self.pack()
-        self.createWidgets()
+            self.TEXT = Text(self, width=70, height=70)
+            self.TEXT.pack()
+
+        def camina(self, metros):
+            self.__turtle.forward(metros)
+
+        def destroy(self):
+            self.root.destroy()
+
+    instancia = None
+
+    @staticmethod
+    def getInstance():
+        if not Interfaz.instancia:
+            Interfaz.instancia = Interfaz.__Interfaz()
+        return Interfaz.instancia
 
 
-root = Tk()
-root.title("Draw with Jr. Lang!")
-cv = Tkinter.Canvas(root, width=600, height=600)
-cv.pack(side=Tkinter.BOTTOM)
-t = turtle.RawTurtle(cv)
-t.shape("turtle")
-t.color("green")
-screen = t.getscreen()
-app = Application(master=root)
-app.mainloop()
-root.destroy()
+
