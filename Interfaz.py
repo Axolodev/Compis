@@ -43,7 +43,7 @@ class Interfaz():
             self.TEXT.pack()
 
         def camina(self, metros):
-            self.__turtle.forward(metros)
+            self.__turtle.forward(metros * 5)
 
         def destroy(self):
             self.root.destroy()

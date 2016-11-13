@@ -1084,35 +1084,34 @@ def parse(source):
     with open('../Compis/source.txt', 'r') as content_file:
         content = content_file.read()
     parser = yacc.yacc()
-    parser.parse(source, debug=0)
+    data = '''flotante global;
+        flotante globalDos[2];
+        string una_var[2], otra_var, another;
+        funcion entero prueba(entero x, flotante y, entero b){
+            retorna 99;
+        }
+        funcion flotante cualquiera(entero dos){
+            entero variable_meh;
+            variable_meh = dos;
+        }
+        inicio funcion entero dd(){
+            entero a, b;
+            flotante d;
+            string otro;
+            otro = "hola";
+
+            si(a < b || d && 1) {
+            } si_no {
+            };
+            camina(10);
+
+            d = prueba(4, 5.0, 6) * prueba(1, 2.0, 3);
+            input(a);
+            output(1+2);
+        }
+    '''
+    parser.parse(data, debug=0)
     return lista_cuadruplos
-
-data = '''flotante global;
-    flotante globalDos[2];
-    string una_var[2], otra_var, another;
-    funcion entero prueba(entero x, flotante y, entero b){
-        retorna 99;
-    }
-    funcion flotante cualquiera(entero dos){
-        entero variable_meh;
-        variable_meh = dos;
-    }
-    inicio funcion entero dd(){
-        entero a, b;
-        flotante d;
-        string otro;
-        otro = "hola";
-
-        si(a < b || d && 1) {
-        } si_no {
-        };
-        camina(2);
-
-        d = prueba(4, 5.0, 6) * prueba(1, 2.0, 3);
-        input(a);
-        output(1+2);
-    }
-'''
 
 # checar que las funciones esten definidas
 log = logging.getLogger("parserlog.log")

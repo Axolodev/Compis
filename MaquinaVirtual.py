@@ -120,6 +120,9 @@ class MaquinaVirtual:
                 self.__cantidades_variables_locales_actuales = lista_variables_funcion
 
             elif operator == id_camina:
+                print("camina a la veeee")
+                print(self.__lista_cuadruplos[i])
+                print(Memoria.Memoria.getInstance().getValorParaEspacio(self.__lista_cuadruplos[i][3]))
                 Interfaz.Interfaz.getInstance().camina(Memoria.Memoria.getInstance().getValorParaEspacio(self.__lista_cuadruplos[i][3]))
 
             i += 1
