@@ -1064,6 +1064,7 @@ def p_salta_a(p):
     cuadruplo_inicial[0] = Utils.Operador.getId('salta_a')
     cuadruplo_inicial[1] = operando1
     cuadruplo_inicial[2] = operando2
+    lista_cuadruplos.append(cuadruplo_inicial)
     cuadruplo_inicial = [None] * 4
 
 
@@ -1104,6 +1105,9 @@ def parse(source):
             } si_no {
             };
             camina(10);
+            gira(270);
+            mira(45);
+
 
             d = prueba(4, 5.0, 6) * prueba(1, 2.0, 3);
             input(a);

@@ -27,6 +27,10 @@ class MaquinaVirtual:
         id_gosub = Utils.Operador.getId('gosub')
         id_return = Utils.Operador.getId('return')
         id_camina = Utils.Operador.getId('camina')
+        id_gira = Utils.Operador.getId('gira')
+        id_mira = Utils.Operador.getId('mira')
+        id_salta_a = Utils.Operador.getId('salta_a')
+        id_reiniciar = Utils.Operador.getId('reiniciar')
         offset_temporales = [0, 0, 0]
         offset_locales = [0, 0, 0]
 
@@ -120,10 +124,29 @@ class MaquinaVirtual:
                 self.__cantidades_variables_locales_actuales = lista_variables_funcion
 
             elif operator == id_camina:
-                print("camina a la veeee")
-                print(self.__lista_cuadruplos[i])
-                print(Memoria.Memoria.getInstance().getValorParaEspacio(self.__lista_cuadruplos[i][3]))
-                Interfaz.Interfaz.getInstance().camina(Memoria.Memoria.getInstance().getValorParaEspacio(self.__lista_cuadruplos[i][3]))
+                Interfaz.Interfaz.getInstance().camina(
+                    Memoria.Memoria.getInstance().getValorParaEspacio(self.__lista_cuadruplos[i][3]))
+
+            elif operator == id_mira:
+                Interfaz.Interfaz.getInstance().mira(
+                    Memoria.Memoria.getInstance().getValorParaEspacio(self.__lista_cuadruplos[i][3]))
+
+            elif operator == id_gira:
+                Interfaz.Interfaz.getInstance().gira(
+                    Memoria.Memoria.getInstance().getValorParaEspacio(self.__lista_cuadruplos[i][3]))
+
+            elif operator == id_salta_a:
+                Interfaz.Interfaz.getInstance().salta(
+                    Memoria.Memoria.getInstance().getValorParaEspacio(self.__lista_cuadruplos[i][1]),
+                    Memoria.Memoria.getInstance().getValorParaEspacio(self.__lista_cuadruplos[i][2]))
+
+            elif operator == id_salta_a:
+                Interfaz.Interfaz.getInstance().salta(
+                    Memoria.Memoria.getInstance().getValorParaEspacio(self.__lista_cuadruplos[i][1]),
+                    Memoria.Memoria.getInstance().getValorParaEspacio(self.__lista_cuadruplos[i][2]))
+
+            elif operator == id_reiniciar:
+                Interfaz.Interfaz.getInstance().reinicia()
 
             i += 1
 
