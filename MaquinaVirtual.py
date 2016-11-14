@@ -68,11 +68,16 @@ class MaquinaVirtual:
             elif operator == id_assign:
                 dir1 = self.__lista_cuadruplos[i][1]
                 dir2 = self.__lista_cuadruplos[i][3]
-                valor = Memoria.Memoria.getInstance().getValorParaEspacio(dir1)
-                Memoria.Memoria.getInstance().setValorParaEspacio(dir2, valor)
+                valor = Memoria.Memoria.getInstance().getValorParaEspacio(dir1,
+                                                                          offset_locales,
+                                                                          offset_temporales)
+                if Utils.DEBUGGING_MODE:
+                    print(self.__lista_cuadruplos[i])
+                Memoria.Memoria.getInstance().setValorParaEspacio(dir2, valor, offset_locales, offset_temporales)
 
             elif operator == id_ret:
                 Memoria.Memoria.getInstance().liberarLocales(self.__cantidades_variables_locales_actuales)
+                offset_locales = [x - y for x, y in zip(offset_locales, self.__cantidades_variables_locales_actuales)]
                 if len(self.__pila_ejecucion) > 0:
                     funcion_padre = self.__pila_ejecucion.pop()
                     i = funcion_padre[0]
@@ -81,9 +86,9 @@ class MaquinaVirtual:
             elif operator == id_era:
                 scope = TablaFunciones.TablaFunciones.getInstance().getFuncion(self.__lista_cuadruplos[i][1]).getScope()
                 variables = TablaVariables.TablaVariables.getInstance().consigueVariablesPara(scope)
-                print("Variables de scope:", scope)
-                print(variables)
                 if Utils.DEBUGGING_MODE:
+                    print("Variables de scope:", scope)
+                    print(variables)
                     print("variables locales de funciones: ")
                     print(variables)
                 lista_variables_funcion = [v.getTipo().value for v in
@@ -99,11 +104,14 @@ class MaquinaVirtual:
                 espacio_de_funcion = TablaVariables.TablaVariables.getInstance().getVariable(
                     nombre_funcion).getEspacioMemoria()
                 # Obtener el valor resultante de la expresion evaluada en el return
-                valor = Memoria.Memoria.getInstance().getValorParaEspacio(self.__lista_cuadruplos[i][3])
+                valor = Memoria.Memoria.getInstance().getValorParaEspacio(self.__lista_cuadruplos[i][3],
+                                                                          offset_locales,
+                                                                          offset_temporales)
                 if Utils.DEBUGGING_MODE:
                     print("Valor a retornar:", valor)
                 # Asignar el valor obtenido en la instruccion anterior a el espacio de la variable de la funcion.
-                Memoria.Memoria.getInstance().setValorParaEspacio(espacio_de_funcion, valor)
+                Memoria.Memoria.getInstance().setValorParaEspacio(espacio_de_funcion, valor, offset_locales,
+                                                                  offset_temporales)
                 # Encontrar el ret correspondiente de la funcion
                 while self.__lista_cuadruplos[i + 1][0] != id_ret:
                     i += 1
@@ -120,10 +128,10 @@ class MaquinaVirtual:
                 self.__cantidades_variables_locales_actuales = lista_variables_funcion
 
             elif operator == id_camina:
-                print("camina a la veeee")
-                print(self.__lista_cuadruplos[i])
-                print(Memoria.Memoria.getInstance().getValorParaEspacio(self.__lista_cuadruplos[i][3]))
-                Interfaz.Interfaz.getInstance().camina(Memoria.Memoria.getInstance().getValorParaEspacio(self.__lista_cuadruplos[i][3]))
+                Interfaz.Interfaz.getInstance().camina(
+                    Memoria.Memoria.getInstance().getValorParaEspacio(self.__lista_cuadruplos[i][3]),
+                    offset_locales,
+                    offset_temporales)
 
             i += 1
 

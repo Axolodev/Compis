@@ -135,7 +135,7 @@ class Memoria:
                     valor = valor[1:-1]
                 self.__bloque_constantes_ejecucion[tipo].append(valor)
 
-        def getValorParaEspacio(self, espacio):
+        def getValorParaEspacio(self, espacio, offset_actual_locales=None, offset_actual_temporales=None):
             if espacio < Memoria.OFFSET_ENTEROS_TEMPORALES:
                 # Es global
                 valor_tipo = (espacio - Memoria.OFFSET_ENTEROS_GLOBALES) / Memoria.ESPACIO_GLOBALES
@@ -152,8 +152,23 @@ class Memoria:
                     print("\tEspacio:", espacio)
                 return self.__bloque_constantes_ejecucion[valor_tipo][indice]
 
-        def setValorParaEspacio(self, espacio, valor):
-            if Memoria.OFFSET_ENTEROS_GLOBALES <= espacio <= Memoria.OFFSET_STRINGS_GLOBALES + Memoria.ESPACIO_GLOBALES:
+            # Es local
+            if Memoria.OFFSET_ENTEROS_LOCALES <= espacio <= Memoria.OFFSET_STRINGS_LOCALES + Memoria.ESPACIO_LOCALES:
+                valor_tipo = (espacio - Memoria.OFFSET_ENTEROS_LOCALES) / Memoria.ESPACIO_LOCALES
+                indice = (espacio - Memoria.OFFSET_ENTEROS_LOCALES) % Memoria.ESPACIO_LOCALES
+                return self.__bloque_local[valor_tipo][indice + offset_actual_locales[valor_tipo]]
+
+            pass
+
+        def setValorParaEspacio(self, espacio, valor, offset_actual_locales=None):
+            """
+            Funcion que se encarga de asignar valores a los espacios de memoria.
+            :param espacio: El espacio de memoria al que se le quiere asignar un valor
+            :param valor: Valor a asignar en el espacio de memoria
+            :param offset_actual_locales: Offsets utilizados para manejar las variables locales
+            :return: Nada.
+            """
+            if Memoria.OFFSET_ENTEROS_GLOBALES <= espacio < Memoria.OFFSET_STRINGS_GLOBALES + Memoria.ESPACIO_GLOBALES:
                 # Es global
                 valor_tipo = (espacio - Memoria.OFFSET_ENTEROS_GLOBALES) / Memoria.ESPACIO_GLOBALES
                 indice = (espacio - Memoria.OFFSET_ENTEROS_GLOBALES) % Memoria.ESPACIO_GLOBALES
@@ -161,11 +176,30 @@ class Memoria:
                     print("Set de global:")
                     print("\tValor:", valor)
                     print("\tEspacio:", espacio)
+                    print(espacio, indice, valor_tipo)
                 self.__bloque_global[valor_tipo][indice] = valor
 
-            if Memoria.OFFSET_ENTEROS_TEMPORALES <= espacio <= Memoria.OFFSET_STRINGS_TEMPORALES + \
-                    Memoria.ESPACIO_TEMPORALES:
-                pass
+            # Manejo de locales
+            if Memoria.OFFSET_ENTEROS_LOCALES <= espacio < Memoria.OFFSET_STRINGS_LOCALES + Memoria.ESPACIO_LOCALES:
+                if Utils.DEBUGGING_MODE:
+                    print("_______________________________________________")
+                    print(offset_actual_locales)
+                    print(self.__bloque_local)
+                    print("_______________________________________________")
+                valor_tipo = (espacio - Memoria.OFFSET_ENTEROS_LOCALES) / Memoria.ESPACIO_LOCALES
+                indice = (espacio - Memoria.OFFSET_ENTEROS_LOCALES) % Memoria.ESPACIO_LOCALES
+                self.__bloque_local[valor_tipo][indice + offset_actual_locales[valor_tipo]] = valor
+
+            # Aqui se manejan los temporales
+            if Memoria.OFFSET_ENTEROS_TEMPORALES <= espacio <= Memoria.OFFSET_STRINGS_TEMPORALES + Memoria.ESPACIO_TEMPORALES:
+                if Utils.DEBUGGING_MODE:
+                    print("_______________________________________________")
+                    print(offset_actual_temporales)
+                    print(self.__bloque_temporal)
+                    print("_______________________________________________")
+                valor_tipo = (espacio - Memoria.OFFSET_ENTEROS_TEMPORALES) / Memoria.ESPACIO_TEMPORALES
+                indice = (espacio - Memoria.OFFSET_ENTEROS_TEMPORALES) % Memoria.ESPACIO_TEMPORALES
+                self.__bloque_local[valor_tipo][indice + offset_actual_temporales[valor_tipo]] = valor
 
         def darDeAltaLocales(self, lista):
             counter = 0
@@ -186,6 +220,8 @@ class Memoria:
                 for i in range(0, cantidades[counter]):
                     self.__bloque_local[counter].pop()
                 counter += 1
+            if Utils.DEBUGGING_MODE:
+                print(self.__bloque_local)
 
     instancia = None
 

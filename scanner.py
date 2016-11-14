@@ -1084,30 +1084,30 @@ def parse(source):
     with open('../Compis/source.txt', 'r') as content_file:
         content = content_file.read()
     parser = yacc.yacc()
-    data = '''flotante global;
-        flotante globalDos[2];
-        string una_var[2], otra_var, another;
-        funcion entero prueba(entero x, flotante y, entero b){
-            retorna 99;
+    data = '''
+        entero global;
+        entero parametrizado;
+        entero parametrodos;
+        funcion entero dos(entero de_nuevo){
+            entero dosx, dosy;
+            dosx = 9;
+            global = dosx;
+            dosy = de_nuevo;
+            parametrodos=dosy;
         }
-        funcion flotante cualquiera(entero dos){
-            entero variable_meh;
-            variable_meh = dos;
+        funcion entero uno(entero unoparam){
+            flotante unox;
+            entero unoy;
+            unoy = 5;
+            parametrizado = unoy;
+            dos(a_entero(unox));
+            unoy=3;
+            parametrizado = unoy;
         }
         inicio funcion entero dd(){
-            entero a, b;
-            flotante d;
-            string otro;
-            otro = "hola";
-
-            si(a < b || d && 1) {
-            } si_no {
-            };
-            camina(10);
-
-            d = prueba(4, 5.0, 6) * prueba(1, 2.0, 3);
-            input(a);
-            output(1+2);
+            entero x;
+            string y;
+            uno(2);
         }
     '''
     parser.parse(data, debug=0)
