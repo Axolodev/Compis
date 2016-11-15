@@ -165,10 +165,16 @@ class Memoria:
                     Memoria.ESPACIO_TEMPORALES:
                 valor_tipo = (espacio - Memoria.OFFSET_ENTEROS_TEMPORALES) / Memoria.ESPACIO_TEMPORALES
                 indice = (espacio - Memoria.OFFSET_ENTEROS_TEMPORALES) % Memoria.ESPACIO_TEMPORALES
-                print(indice, valor_tipo)
+                print("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$")
+                print("Valor tipo:", valor_tipo)
+                print("Indice:", indice)
                 print(self.__bloque_temporal)
-
-                return self.__bloque_temporal[valor_tipo][indice + self.__offsets_temporales[valor_tipo] - 1]
+                print("Offsets: ", self.__offsets_temporales)
+                print("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$")
+                if len(self.__pila_offsets_temporales) > 0:
+                    return self.__bloque_temporal[valor_tipo][
+                        indice + self.__pila_offsets_temporales[-1][valor_tipo]]
+                return self.__bloque_temporal[valor_tipo][indice]
 
         def setValorParaEspacio(self, espacio, valor, offset_actual_locales=None):
             """
@@ -205,43 +211,63 @@ class Memoria:
                     Memoria.ESPACIO_TEMPORALES:
                 valor_tipo = (espacio - Memoria.OFFSET_ENTEROS_TEMPORALES) / Memoria.ESPACIO_TEMPORALES
                 self.__bloque_temporal[valor_tipo].append(valor)
-                self.__offsets_temporales[valor_tipo] += self.__offsets_temporales[valor_tipo] + 1
+                if Utils.DEBUGGING_MODE:
+                    print("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%")
+                    print(self.__offsets_temporales)
+                    print(self.__bloque_temporal)
+                    print("Pila de offsets", self.__pila_offsets_temporales)
+                    print("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%")
+                self.__offsets_temporales[valor_tipo] += 1
                 if Utils.DEBUGGING_MODE:
                     print("__________________TEMPORALES___________________")
                     print(self.__offsets_temporales)
                     print(self.__bloque_temporal)
+                    print("Pila de offsets", self.__pila_offsets_temporales)
                     print("_______________________________________________")
 
         def darDeAltaLocales(self, lista):
             counter = 0
-            while counter < 3:
-                tipo = Utils.Tipo.Entero
-                if counter == 1:
-                    tipo = Utils.Tipo.Flotante
-                if counter == 2:
-                    tipo = Utils.Tipo.String
-
-                for i in range(0, lista[counter]):
-                    self.__bloque_local[counter].append(Utils.Tipo.getDefault(tipo))
-                counter += 1
+            if len(lista) > 0:
+                while counter < 3:
+                    tipo = Utils.Tipo.Entero
+                    if counter == 1:
+                        tipo = Utils.Tipo.Flotante
+                    if counter == 2:
+                        tipo = Utils.Tipo.String
+                    print(lista)
+                    for i in range(0, lista[counter]):
+                        self.__bloque_local[counter].append(Utils.Tipo.getDefault(tipo))
+                    counter += 1
 
         def liberarLocales(self, cantidades):
             counter = 0
-            #offsets_de_padre = self.__pila_offsets_temporales.pop()
-            #differencias_de_offsets = [x - y for x, y in zip(self.__offsets_temporales, offsets_de_padre)]
-            while counter < 3:
-                #for i in range(0, differencias_de_offsets[counter]):
-                    #self.__bloque_temporal[counter].pop()
+            if len(self.__pila_offsets_temporales) > 0:
+                print("_________________________________")
+                print("Liberacion de offsets temporales")
+                print("Pila de offsets", self.__pila_offsets_temporales)
+                offsets_de_padre = self.__pila_offsets_temporales.pop()
 
-                for i in range(0, cantidades[counter]):
-                    self.__bloque_local[counter].pop()
-                counter += 1
-            #self.__offsets_temporales = offsets_de_padre
+                diferencias_de_offsets = [x - y for x, y in zip(self.__offsets_temporales, offsets_de_padre)]
+                print("Diferencias de offsets", diferencias_de_offsets)
+                while counter < 3:
+                    for i in range(0, diferencias_de_offsets[counter]):
+                        self.__bloque_temporal[counter].pop()
+                    counter += 1
+                self.__offsets_temporales = offsets_de_padre
+            counter = 0
+            if len(cantidades) > 0:
+                while counter < 3:
+                    for i in range(0, cantidades[counter]):
+                        self.__bloque_local[counter].pop()
+                    counter += 1
+
             if Utils.DEBUGGING_MODE:
-                print(self.__bloque_local)
+                print("Bloque local:", self.__bloque_local)
+                print("Bloque temporal:", self.__bloque_temporal)
+                print("Offsets temporales:", self.__offsets_temporales)
 
         def congelarTemporalesParaNuevaFuncion(self):
-            self.__pila_offsets_temporales.append(self.__offsets_temporales)
+            self.__pila_offsets_temporales.append(self.__offsets_temporales[:])
 
     instancia = None
 

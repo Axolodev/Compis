@@ -1087,8 +1087,21 @@ def parse(source):
     parser = yacc.yacc()
     data = '''
         entero global;
-        inicio funcion entero dos(entero de_nuevo){
-            global = 1 + 2 + 3;
+
+        funcion entero siete(){
+            retorna 3 + 4;
+        }
+
+        funcion entero cinco(){
+            retorna 1 + 4;
+        }
+
+        funcion entero whatever(){
+            retorna siete() + cinco();
+        }
+
+        inicio funcion entero main(){
+            global = whatever() + whatever() + whatever();
         }
     '''
     parser.parse(data, debug=0)
