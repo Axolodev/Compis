@@ -63,4 +63,4 @@ class Operador:
     def getId(op):
         return Operador.__operadores[op]
 
-DEBUGGING_MODE = True
+DEBUGGING_MODE = False

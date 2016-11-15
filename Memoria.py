@@ -165,12 +165,11 @@ class Memoria:
                     Memoria.ESPACIO_TEMPORALES:
                 valor_tipo = (espacio - Memoria.OFFSET_ENTEROS_TEMPORALES) / Memoria.ESPACIO_TEMPORALES
                 indice = (espacio - Memoria.OFFSET_ENTEROS_TEMPORALES) % Memoria.ESPACIO_TEMPORALES
-                print("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$")
-                print("Valor tipo:", valor_tipo)
-                print("Indice:", indice)
-                print(self.__bloque_temporal)
-                print("Offsets: ", self.__offsets_temporales)
-                print("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$")
+                if Utils.DEBUGGING_MODE:
+                    print("Valor tipo:", valor_tipo)
+                    print("Indice:", indice)
+                    print(self.__bloque_temporal)
+                    print("Offsets: ", self.__offsets_temporales)
                 if len(self.__pila_offsets_temporales) > 0:
                     return self.__bloque_temporal[valor_tipo][
                         indice + self.__pila_offsets_temporales[-1][valor_tipo]]
@@ -242,13 +241,13 @@ class Memoria:
         def liberarLocales(self, cantidades):
             counter = 0
             if len(self.__pila_offsets_temporales) > 0:
-                print("_________________________________")
-                print("Liberacion de offsets temporales")
-                print("Pila de offsets", self.__pila_offsets_temporales)
+                if Utils.DEBUGGING_MODE:
+                    print("_________________________________")
+                    print("Liberacion de offsets temporales")
+                    print("Pila de offsets", self.__pila_offsets_temporales)
                 offsets_de_padre = self.__pila_offsets_temporales.pop()
 
                 diferencias_de_offsets = [x - y for x, y in zip(self.__offsets_temporales, offsets_de_padre)]
-                print("Diferencias de offsets", diferencias_de_offsets)
                 while counter < 3:
                     for i in range(0, diferencias_de_offsets[counter]):
                         self.__bloque_temporal[counter].pop()
