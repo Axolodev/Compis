@@ -1064,6 +1064,7 @@ def p_salta_a(p):
     cuadruplo_inicial[0] = Utils.Operador.getId('salta_a')
     cuadruplo_inicial[1] = operando1
     cuadruplo_inicial[2] = operando2
+    lista_cuadruplos.append(cuadruplo_inicial)
     cuadruplo_inicial = [None] * 4
 
 
@@ -1086,28 +1087,8 @@ def parse(source):
     parser = yacc.yacc()
     data = '''
         entero global;
-        entero parametrizado;
-        entero parametrodos;
-        funcion entero dos(entero de_nuevo){
-            entero dosx, dosy;
-            dosx = 9;
-            global = dosx;
-            dosy = de_nuevo;
-            parametrodos=dosy;
-        }
-        funcion entero uno(entero unoparam){
-            flotante unox;
-            entero unoy;
-            unoy = 5;
-            parametrizado = unoy;
-            dos(a_entero(unox));
-            unoy=3;
-            parametrizado = unoy;
-        }
-        inicio funcion entero dd(){
-            entero x;
-            string y;
-            uno(2);
+        inicio funcion entero dos(entero de_nuevo){
+            global = 1 + 2 + 3;
         }
     '''
     parser.parse(data, debug=0)

@@ -27,7 +27,10 @@ class MaquinaVirtual:
         id_gosub = Utils.Operador.getId('gosub')
         id_return = Utils.Operador.getId('return')
         id_camina = Utils.Operador.getId('camina')
-        offset_temporales = [0, 0, 0]
+        id_gira = Utils.Operador.getId('gira')
+        id_mira = Utils.Operador.getId('mira')
+        id_salta_a = Utils.Operador.getId('salta_a')
+        id_reiniciar = Utils.Operador.getId('reiniciar')
         offset_locales = [0, 0, 0]
 
         lista_globales = TablaVariables.TablaVariables.getInstance().consigueVariablesPara(0)
@@ -63,17 +66,21 @@ class MaquinaVirtual:
                 i = self.__lista_cuadruplos[i][3] - 1
 
             elif operator == id_sum:
-                pass
+                dir1 = self.__lista_cuadruplos[i][1]
+                dir2 = self.__lista_cuadruplos[i][2]
+                valor1 = Memoria.Memoria.getInstance().getValorParaEspacio(dir1, offset_locales)
+                valor2 = Memoria.Memoria.getInstance().getValorParaEspacio(dir2, offset_locales)
+                dir_resultado = self.__lista_cuadruplos[i][3]
+                Memoria.Memoria.getInstance().setValorParaEspacio(dir_resultado, valor1 + valor2, offset_locales)
 
             elif operator == id_assign:
                 dir1 = self.__lista_cuadruplos[i][1]
                 dir2 = self.__lista_cuadruplos[i][3]
                 valor = Memoria.Memoria.getInstance().getValorParaEspacio(dir1,
-                                                                          offset_locales,
-                                                                          offset_temporales)
+                                                                          offset_locales)
                 if Utils.DEBUGGING_MODE:
                     print(self.__lista_cuadruplos[i])
-                Memoria.Memoria.getInstance().setValorParaEspacio(dir2, valor, offset_locales, offset_temporales)
+                Memoria.Memoria.getInstance().setValorParaEspacio(dir2, valor, offset_locales)
 
             elif operator == id_ret:
                 Memoria.Memoria.getInstance().liberarLocales(self.__cantidades_variables_locales_actuales)
@@ -105,13 +112,11 @@ class MaquinaVirtual:
                     nombre_funcion).getEspacioMemoria()
                 # Obtener el valor resultante de la expresion evaluada en el return
                 valor = Memoria.Memoria.getInstance().getValorParaEspacio(self.__lista_cuadruplos[i][3],
-                                                                          offset_locales,
-                                                                          offset_temporales)
+                                                                          offset_locales)
                 if Utils.DEBUGGING_MODE:
                     print("Valor a retornar:", valor)
                 # Asignar el valor obtenido en la instruccion anterior a el espacio de la variable de la funcion.
-                Memoria.Memoria.getInstance().setValorParaEspacio(espacio_de_funcion, valor, offset_locales,
-                                                                  offset_temporales)
+                Memoria.Memoria.getInstance().setValorParaEspacio(espacio_de_funcion, valor, offset_locales)
                 # Encontrar el ret correspondiente de la funcion
                 while self.__lista_cuadruplos[i + 1][0] != id_ret:
                     i += 1
@@ -126,13 +131,33 @@ class MaquinaVirtual:
                 # Obtener nuevo offset de locales
                 offset_locales = [x + y for x, y in zip(offset_locales, self.__cantidades_variables_locales_actuales)]
                 self.__cantidades_variables_locales_actuales = lista_variables_funcion
+                Memoria.Memoria.getInstance().congelarTemporalesParaNuevaFuncion()
 
             elif operator == id_camina:
                 Interfaz.Interfaz.getInstance().camina(
                     Memoria.Memoria.getInstance().getValorParaEspacio(self.__lista_cuadruplos[i][3]),
-                    offset_locales,
-                    offset_temporales)
+                    offset_locales)
 
+            elif operator == id_mira:
+                Interfaz.Interfaz.getInstance().mira(
+                    Memoria.Memoria.getInstance().getValorParaEspacio(self.__lista_cuadruplos[i][3]))
+
+            elif operator == id_gira:
+                Interfaz.Interfaz.getInstance().gira(
+                    Memoria.Memoria.getInstance().getValorParaEspacio(self.__lista_cuadruplos[i][3]))
+
+            elif operator == id_salta_a:
+                Interfaz.Interfaz.getInstance().salta(
+                    Memoria.Memoria.getInstance().getValorParaEspacio(self.__lista_cuadruplos[i][1]),
+                    Memoria.Memoria.getInstance().getValorParaEspacio(self.__lista_cuadruplos[i][2]))
+
+            elif operator == id_salta_a:
+                Interfaz.Interfaz.getInstance().salta(
+                    Memoria.Memoria.getInstance().getValorParaEspacio(self.__lista_cuadruplos[i][1]),
+                    Memoria.Memoria.getInstance().getValorParaEspacio(self.__lista_cuadruplos[i][2]))
+
+            elif operator == id_reiniciar:
+                Interfaz.Interfaz.getInstance().reinicia()
             i += 1
 
         if Utils.DEBUGGING_MODE:

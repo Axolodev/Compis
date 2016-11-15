@@ -45,6 +45,21 @@ class Interfaz():
         def camina(self, metros):
             self.__turtle.forward(metros * 5)
 
+        def mira(self, angulo):
+            self.__turtle.setheading(angulo)
+
+        def gira(self, angulo):
+            self.__turtle.left(angulo)
+
+        def salta(self, x, y):
+            self.__turtle.penup()
+            self.__turtle.goto(x, y)
+            self.__turtle.pendown()
+
+        def reinicia(self):
+            self.__turtle.home()
+            self.__turtle.clear()
+
         def destroy(self):
             self.root.destroy()
 
