@@ -14,6 +14,7 @@ class Interfaz():
             cv = Tkinter.Canvas(self.root, width=600, height=600)
             cv.pack(side=Tkinter.BOTTOM)
             self.__turtle = turtle.RawTurtle(cv)
+            self.__turtle.speed(2)
             self.__turtle.shape("turtle")
             self.__turtle.color("green")
             Frame.__init__(self, self.root)

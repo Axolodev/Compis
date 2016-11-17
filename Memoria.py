@@ -158,7 +158,10 @@ class Memoria:
                 # Es local
                 valor_tipo = (espacio - Memoria.OFFSET_ENTEROS_LOCALES) / Memoria.ESPACIO_LOCALES
                 indice = (espacio - Memoria.OFFSET_ENTEROS_LOCALES) % Memoria.ESPACIO_LOCALES
-                return self.__bloque_local[valor_tipo][indice + offset_actual_locales[valor_tipo]]
+                if offset_actual_locales is not None and len(offset_actual_locales) > 0:
+                    return self.__bloque_local[valor_tipo][indice + offset_actual_locales[valor_tipo]]
+                return self.__bloque_local[valor_tipo][indice]
+
 
             # Es temporal
             if Memoria.OFFSET_ENTEROS_TEMPORALES <= espacio <= Memoria.OFFSET_STRINGS_TEMPORALES + \
@@ -203,10 +206,14 @@ class Memoria:
                     print("_______________________________________________")
                 valor_tipo = (espacio - Memoria.OFFSET_ENTEROS_LOCALES) / Memoria.ESPACIO_LOCALES
                 indice = (espacio - Memoria.OFFSET_ENTEROS_LOCALES) % Memoria.ESPACIO_LOCALES
-                self.__bloque_local[valor_tipo][indice + offset_actual_locales[valor_tipo]] = valor
+
+                if len(offset_actual_locales) > 0:
+                    self.__bloque_local[valor_tipo][indice + offset_actual_locales[valor_tipo]] = valor
+                else:
+                    self.__bloque_local[valor_tipo][indice] = valor
 
             # Aqui se manejan los temporales
-            if Memoria.OFFSET_ENTEROS_TEMPORALES <= espacio <= Memoria.OFFSET_STRINGS_TEMPORALES + \
+            if Memoria.OFFSET_ENTEROS_TEMPORALES <= espacio < Memoria.OFFSET_STRINGS_TEMPORALES + \
                     Memoria.ESPACIO_TEMPORALES:
                 valor_tipo = (espacio - Memoria.OFFSET_ENTEROS_TEMPORALES) / Memoria.ESPACIO_TEMPORALES
                 self.__bloque_temporal[valor_tipo].append(valor)
@@ -233,7 +240,6 @@ class Memoria:
                         tipo = Utils.Tipo.Flotante
                     if counter == 2:
                         tipo = Utils.Tipo.String
-                    print(lista)
                     for i in range(0, lista[counter]):
                         self.__bloque_local[counter].append(Utils.Tipo.getDefault(tipo))
                     counter += 1
