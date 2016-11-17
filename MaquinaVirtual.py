@@ -135,8 +135,7 @@ class MaquinaVirtual:
 
             elif operator == id_camina:
                 Interfaz.Interfaz.getInstance().camina(
-                    Memoria.Memoria.getInstance().getValorParaEspacio(self.__lista_cuadruplos[i][3]),
-                    offset_locales)
+                    Memoria.Memoria.getInstance().getValorParaEspacio(self.__lista_cuadruplos[i][3]))
 
             elif operator == id_mira:
                 Interfaz.Interfaz.getInstance().mira(
