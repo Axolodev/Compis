@@ -178,7 +178,6 @@ def p_inicio(p):
         print(pila_tipos)
 
 
-
 def p_encontrar_posicion_cuadruplo_de_inicio(p):
     """
     encontrar_posicion_cuadruplo_de_inicio : KW_INICIO
@@ -738,7 +737,6 @@ def p_camina(p):
     cuadruplo_inicial[3] = metros
     lista_cuadruplos.append(cuadruplo_inicial)
     cuadruplo_inicial = [None] * 4
-    #t.forward(metros)
 
 
 def p_gira(p):
@@ -1024,6 +1022,7 @@ def p_consume_id_input(p):
     var = var_table.getVariable(p[1])
     global cuadruplo_inicial
     cuadruplo_inicial[0] = Utils.Operador.getId('input')
+    cuadruplo_inicial[1] = var.getTipo()
     cuadruplo_inicial[3] = var.getEspacioMemoria()
     lista_cuadruplos.append(cuadruplo_inicial)
     cuadruplo_inicial = [None] * 4
@@ -1086,22 +1085,23 @@ def parse(source):
         content = content_file.read()
     parser = yacc.yacc()
     data = '''
-        entero global;
 
-        funcion entero siete(){
-            retorna 3 + 4;
-        }
-
-        funcion entero cinco(){
-            retorna 1 + 4;
-        }
-
-        funcion entero whatever(){
-            retorna siete() + cinco();
+        funcion entero nombre(){
+            retorna 1+2+3+4+5+6;
         }
 
         inicio funcion entero main(){
-            global = whatever() + whatever() + whatever();
+            entero global;
+            entero x;
+            global = 123;
+            camina(nombre() + nombre());
+            salta_a(200,200);
+            camina(10);
+            input(global);
+            output(global);
+            salta_a(32,43);
+            camina(8);
+
         }
     '''
     parser.parse(data, debug=0)

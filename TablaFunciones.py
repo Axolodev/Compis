@@ -5,6 +5,7 @@ import Utils
 import Memoria
 import TablaVariables
 
+
 class TablaFunciones:
     class __TablaFunciones:
         def __init__(self):
@@ -17,7 +18,7 @@ class TablaFunciones:
 
         def nuevaFuncion(self, tipo, nombre, params, cuadruplo):
             if str(nombre) in self.__listaFunciones:
-                raise ValueError("Ya existe una funcion con este nombre")
+                raise ValueError("Ya existe una funcion con este nombre: ")
             else:
                 funcion = Funcion.Funcion(nombre, tipo, params, self.__scopeActual, cuadruplo=cuadruplo)
                 self.__listaFunciones.update({str(nombre): funcion})
