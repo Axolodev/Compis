@@ -36,6 +36,21 @@ class MaquinaVirtual:
         id_reiniciar = Utils.Operador.getId('reiniciar')
         id_input = Utils.Operador.getId('input')
         id_output = Utils.Operador.getId('output')
+        id_product = Utils.Operador.getId('*')
+        id_substract = Utils.Operador.getId('-')
+        id_division = Utils.Operador.getId('/')
+        id_mod = Utils.Operador.getId('%')
+        id_and = Utils.Operador.getId('&&')
+        id_or = Utils.Operador.getId('||')
+        id_lt = Utils.Operador.getId('<')
+        id_gt = Utils.Operador.getId('>')
+        id_loet = Utils.Operador.getId('<=')
+        id_goet = Utils.Operador.getId('>=')
+        id_equals = Utils.Operador.getId('==')
+        id_different = Utils.Operador.getId('!=')
+        id_goto_f = Utils.Operador.getId('gotoF')
+        id_goto_t = Utils.Operador.getId('gotoT')
+
         offset_locales = [0, 0, 0]
 
         lista_globales = TablaVariables.TablaVariables.getInstance().consigueVariablesPara(0)
@@ -158,9 +173,160 @@ class MaquinaVirtual:
             elif operator == id_reiniciar:
                 Interfaz.Interfaz.getInstance().reinicia()
 
+            elif operator == id_product:
+                dir1 = self.__lista_cuadruplos[i][1]
+                dir2 = self.__lista_cuadruplos[i][2]
+                dir_r = self.__lista_cuadruplos[i][3]
+                valor1 = Memoria.Memoria.getInstance().getValorParaEspacio(dir1)
+                valor2 = Memoria.Memoria.getInstance().getValorParaEspacio(dir2)
+                valor_r = valor1 * valor2
+                Memoria.Memoria.getInstance().setValorParaEspacio(dir_r, valor_r, offset_locales)
+
+            elif operator == id_mod:
+                dir1 = self.__lista_cuadruplos[i][1]
+                dir2 = self.__lista_cuadruplos[i][2]
+                dir_r = self.__lista_cuadruplos[i][3]
+                valor1 = Memoria.Memoria.getInstance().getValorParaEspacio(dir1)
+                valor2 = Memoria.Memoria.getInstance().getValorParaEspacio(dir2)
+                if valor2 == 0 or valor2 == 0.0:
+                    raise ZeroDivisionException('Intentaste hacer residuo con 0!')
+                valor_r = valor1 % valor2
+                Memoria.Memoria.getInstance().setValorParaEspacio(dir_r, valor_r, offset_locales)
+
+            elif operator == id_division:
+                dir1 = self.__lista_cuadruplos[i][1]
+                dir2 = self.__lista_cuadruplos[i][2]
+                dir_r = self.__lista_cuadruplos[i][3]
+                valor1 = Memoria.Memoria.getInstance().getValorParaEspacio(dir1)
+                valor2 = Memoria.Memoria.getInstance().getValorParaEspacio(dir2)
+                if valor2 == 0 or valor2 == 0.0:
+                    raise ZeroDivisionException('Intentaste dividir entre 0!')
+                valor_r = valor1 / valor2
+                Memoria.Memoria.getInstance().setValorParaEspacio(dir_r, valor_r, offset_locales)
+
+            elif operator == id_substract:
+                dir1 = self.__lista_cuadruplos[i][1]
+                dir_r = self.__lista_cuadruplos[i][3]
+                valor1 = Memoria.Memoria.getInstance().getValorParaEspacio(dir1)
+                if self.__lista_cuadruplos[i][2] is None:
+                    valor_r = - valor1
+                else:
+                    dir2 = self.__lista_cuadruplos[i][2]
+                    valor2 = Memoria.Memoria.getInstance().getValorParaEspacio(dir2)
+                    valor_r = valor1 - valor2
+                Memoria.Memoria.getInstance().setValorParaEspacio(dir_r, valor_r, offset_locales)
+
+            elif operator == id_lt:
+                dir1 = self.__lista_cuadruplos[i][1]
+                dir2 = self.__lista_cuadruplos[i][2]
+                dir_r = self.__lista_cuadruplos[i][3]
+                valor1 = Memoria.Memoria.getInstance().getValorParaEspacio(dir1)
+                valor2 = Memoria.Memoria.getInstance().getValorParaEspacio(dir2)
+                if valor1 < valor2:
+                    valor_r = 1
+                else:
+                    valor_r = 0
+                Memoria.Memoria.getInstance().setValorParaEspacio(dir_r, valor_r, offset_locales)
+
+            elif operator == id_gt:
+                dir1 = self.__lista_cuadruplos[i][1]
+                dir2 = self.__lista_cuadruplos[i][2]
+                dir_r = self.__lista_cuadruplos[i][3]
+                valor1 = Memoria.Memoria.getInstance().getValorParaEspacio(dir1)
+                valor2 = Memoria.Memoria.getInstance().getValorParaEspacio(dir2)
+                if valor1 > valor2:
+                    valor_r = 1
+                else:
+                    valor_r = 0
+                Memoria.Memoria.getInstance().setValorParaEspacio(dir_r, valor_r, offset_locales)
+
+            elif operator == id_loet:
+                dir1 = self.__lista_cuadruplos[i][1]
+                dir2 = self.__lista_cuadruplos[i][2]
+                dir_r = self.__lista_cuadruplos[i][3]
+                valor1 = Memoria.Memoria.getInstance().getValorParaEspacio(dir1)
+                valor2 = Memoria.Memoria.getInstance().getValorParaEspacio(dir2)
+                if valor1 <= valor2:
+                    valor_r = 1
+                else:
+                    valor_r = 0
+                Memoria.Memoria.getInstance().setValorParaEspacio(dir_r, valor_r, offset_locales)
+
+            elif operator == id_goet:
+                dir1 = self.__lista_cuadruplos[i][1]
+                dir2 = self.__lista_cuadruplos[i][2]
+                dir_r = self.__lista_cuadruplos[i][3]
+                valor1 = Memoria.Memoria.getInstance().getValorParaEspacio(dir1)
+                valor2 = Memoria.Memoria.getInstance().getValorParaEspacio(dir2)
+                if valor1 >= valor2:
+                    valor_r = 1
+                else:
+                    valor_r = 0
+                Memoria.Memoria.getInstance().setValorParaEspacio(dir_r, valor_r, offset_locales)
+
+            elif operator == id_equals:
+                dir1 = self.__lista_cuadruplos[i][1]
+                dir2 = self.__lista_cuadruplos[i][2]
+                dir_r = self.__lista_cuadruplos[i][3]
+                valor1 = Memoria.Memoria.getInstance().getValorParaEspacio(dir1)
+                valor2 = Memoria.Memoria.getInstance().getValorParaEspacio(dir2)
+                if valor1 == valor2:
+                    valor_r = 1
+                else:
+                    valor_r = 0
+                Memoria.Memoria.getInstance().setValorParaEspacio(dir_r, valor_r, offset_locales)
+
+            elif operator == id_and:
+                dir1 = self.__lista_cuadruplos[i][1]
+                dir2 = self.__lista_cuadruplos[i][2]
+                dir_r = self.__lista_cuadruplos[i][3]
+                valor1 = Memoria.Memoria.getInstance().getValorParaEspacio(dir1)
+                valor2 = Memoria.Memoria.getInstance().getValorParaEspacio(dir2)
+                if valor1 != 0 and valor2 != 0:
+                    valor_r = 1
+                else:
+                    valor_r = 0
+                Memoria.Memoria.getInstance().setValorParaEspacio(dir_r, valor_r, offset_locales)
+
+            elif operator == id_or:
+                dir1 = self.__lista_cuadruplos[i][1]
+                dir2 = self.__lista_cuadruplos[i][2]
+                dir_r = self.__lista_cuadruplos[i][3]
+                valor1 = Memoria.Memoria.getInstance().getValorParaEspacio(dir1)
+                valor2 = Memoria.Memoria.getInstance().getValorParaEspacio(dir2)
+                if valor1 != 0 or valor2 != 0:
+                    valor_r = 1
+                else:
+                    valor_r = 0
+                Memoria.Memoria.getInstance().setValorParaEspacio(dir_r, valor_r, offset_locales)
+
+            elif operator == id_different:
+                dir1 = self.__lista_cuadruplos[i][1]
+                dir2 = self.__lista_cuadruplos[i][2]
+                dir_r = self.__lista_cuadruplos[i][3]
+                valor1 = Memoria.Memoria.getInstance().getValorParaEspacio(dir1)
+                valor2 = Memoria.Memoria.getInstance().getValorParaEspacio(dir2)
+                if valor1 != valor2:
+                    valor_r = 1
+                else:
+                    valor_r = 0
+                Memoria.Memoria.getInstance().setValorParaEspacio(dir_r, valor_r, offset_locales)
+
+            elif operator == id_goto_f:
+                dir1 = self.__lista_cuadruplos[i][1]
+                valor1 = Memoria.Memoria.getInstance().getValorParaEspacio(dir1)
+                if valor1 == 0:
+                    i = self.__lista_cuadruplos[i][3] - 1
+
+            elif operator == id_goto_t:
+                dir1 = self.__lista_cuadruplos[i][1]
+                valor1 = Memoria.Memoria.getInstance().getValorParaEspacio(dir1)
+                if valor1 != 0:
+                    i = self.__lista_cuadruplos[i][3] - 1
+
             elif operator == id_input:
                 data = input("Escribe valor de variable : " + str(self.__lista_cuadruplos[i][1]) + "\n")
-                print ("------------------------------------------------------------------")
+                print("------------------------------------------------------------------")
                 if type(data) is IntType and self.__lista_cuadruplos[i][1].value == 0:
                     Memoria.Memoria.getInstance().setValorParaEspacio(self.__lista_cuadruplos[i][3], data,
                                                                       offset_locales)
@@ -174,9 +340,9 @@ class MaquinaVirtual:
                     raise TypeError('Tipo ingresado no corresponde a tipo declarado')
 
             elif operator == id_output:
-                print ("Este es el valor que imprimiste")
-                print (Memoria.Memoria.getInstance().getValorParaEspacio(self.__lista_cuadruplos[i][3]))
-                print ("-------------------------------------------------------------------")
+                print("Este es el valor que imprimiste")
+                print(Memoria.Memoria.getInstance().getValorParaEspacio(self.__lista_cuadruplos[i][3]))
+                print("-------------------------------------------------------------------")
 
             i += 1
 

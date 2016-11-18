@@ -154,7 +154,7 @@ class Memoria:
                     print("\tEspacio:", espacio)
                 return self.__bloque_constantes_ejecucion[valor_tipo][indice]
 
-            if Memoria.OFFSET_ENTEROS_LOCALES <= espacio <= Memoria.OFFSET_STRINGS_LOCALES + Memoria.ESPACIO_LOCALES:
+            if Memoria.OFFSET_ENTEROS_LOCALES <= espacio < Memoria.OFFSET_STRINGS_LOCALES + Memoria.ESPACIO_LOCALES:
                 # Es local
                 valor_tipo = (espacio - Memoria.OFFSET_ENTEROS_LOCALES) / Memoria.ESPACIO_LOCALES
                 indice = (espacio - Memoria.OFFSET_ENTEROS_LOCALES) % Memoria.ESPACIO_LOCALES
@@ -162,9 +162,8 @@ class Memoria:
                     return self.__bloque_local[valor_tipo][indice + offset_actual_locales[valor_tipo]]
                 return self.__bloque_local[valor_tipo][indice]
 
-
             # Es temporal
-            if Memoria.OFFSET_ENTEROS_TEMPORALES <= espacio <= Memoria.OFFSET_STRINGS_TEMPORALES + \
+            if Memoria.OFFSET_ENTEROS_TEMPORALES <= espacio < Memoria.OFFSET_STRINGS_TEMPORALES + \
                     Memoria.ESPACIO_TEMPORALES:
                 valor_tipo = (espacio - Memoria.OFFSET_ENTEROS_TEMPORALES) / Memoria.ESPACIO_TEMPORALES
                 indice = (espacio - Memoria.OFFSET_ENTEROS_TEMPORALES) % Memoria.ESPACIO_TEMPORALES
@@ -173,6 +172,7 @@ class Memoria:
                     print("Indice:", indice)
                     print(self.__bloque_temporal)
                     print("Offsets: ", self.__offsets_temporales)
+                    print("Offsets padre:", self.__pila_offsets_temporales[-1])
                 if len(self.__pila_offsets_temporales) > 0:
                     return self.__bloque_temporal[valor_tipo][
                         indice + self.__pila_offsets_temporales[-1][valor_tipo]]
@@ -216,14 +216,29 @@ class Memoria:
             if Memoria.OFFSET_ENTEROS_TEMPORALES <= espacio < Memoria.OFFSET_STRINGS_TEMPORALES + \
                     Memoria.ESPACIO_TEMPORALES:
                 valor_tipo = (espacio - Memoria.OFFSET_ENTEROS_TEMPORALES) / Memoria.ESPACIO_TEMPORALES
-                self.__bloque_temporal[valor_tipo].append(valor)
+                indice = (espacio - Memoria.OFFSET_ENTEROS_TEMPORALES) % Memoria.ESPACIO_TEMPORALES
+
                 if Utils.DEBUGGING_MODE:
                     print("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%")
                     print(self.__offsets_temporales)
                     print(self.__bloque_temporal)
                     print("Pila de offsets", self.__pila_offsets_temporales)
                     print("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%")
-                self.__offsets_temporales[valor_tipo] += 1
+
+                if len(self.__pila_offsets_temporales) > 0:
+                    t = self.__pila_offsets_temporales[-1][valor_tipo]
+                    while len(self.__bloque_temporal[valor_tipo]) - t <= indice:
+                        self.__bloque_temporal[valor_tipo].append(valor)
+                        self.__offsets_temporales[valor_tipo] += 1
+                    else:
+                        self.__bloque_temporal[valor_tipo][indice + t] = valor
+                else:
+                    while len(self.__bloque_temporal[
+                                  valor_tipo]) <= indice:  # PARCHE para que funcionen condiciones if/else
+                        self.__bloque_temporal[valor_tipo].append(valor)
+                        self.__offsets_temporales[valor_tipo] += 1
+                    else:
+                        self.__bloque_temporal[valor_tipo][indice] = valor
                 if Utils.DEBUGGING_MODE:
                     print("__________________TEMPORALES___________________")
                     print(self.__offsets_temporales)

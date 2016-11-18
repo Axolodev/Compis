@@ -72,10 +72,10 @@ reserved = {
 # Tokens
 t_OP_TERMINO = r'\+|\-'
 t_OP_FACTOR = r'\*|\/|\%'
-t_OP_COMPARADOR = r'[<]|[>]|[>][=]|[<][=]|[=][=]|![=]'
+t_OP_COMPARADOR = r'>=|<=|[<]|[>]|[=][=]|![=]'
 t_OP_AND = r'[&][&]'
 t_OP_OR = r'[|][|]'
-t_OP_ASIGNACION = r'[=]'
+t_OP_ASIGNACION = r'='
 t_OP_PARENTESIS_IZQ = r'\('
 t_OP_PARENTESIS_DER = r'\)'
 t_OP_LLAVE_IZQ = r'\{'
@@ -232,7 +232,6 @@ def p_funcion(p):
     cuadruplo_inicial = [None] * 4
 
 
-
 def p_dar_de_alta_funcion(p):
     """
     dar_de_alta_funcion :
@@ -241,7 +240,6 @@ def p_dar_de_alta_funcion(p):
     global tipo_actual
     global nombre_funcion_actual
     func_table.nuevaFuncion(tipo_actual, nombre_funcion_actual, lista_param, len(lista_cuadruplos))
-    # TODO: dar de alta variable global con nombre de la funcion
     # Borrar valores de variables que ya no se necesitan.
     nombre_funcion_actual = None
     lista_param = []
@@ -901,25 +899,26 @@ def p_maneja_var_cte_defaults(p):
             | KW_ANCHO
             | KW_ALTO
     """
-    valor = None
+    valor_kw = None
     if p[1] == 'verdadero':
-        valor = 1
+        valor_kw = 1
     elif p[1] == 'falso':
-        valor = 0
+        valor_kw = 0
     elif p[1] == 'norte':
-        valor = 90
+        valor_kw = 90
     elif p[1] == 'sur':
-        valor = 270
+        valor_kw = 270
     elif p[1] == 'este':
-        valor = 0
+        valor_kw = 0
     elif p[1] == 'oeste':
-        valor = 180
+        valor_kw = 180
     elif p[1] == 'ancho':
-        valor = 800
+        valor_kw = 800
     elif p[1] == 'alto':
-        valor = 600
+        valor_kw = 600
     tipo = Utils.Tipo.Entero
-    genera_operando({"tipo": tipo, "valor": valor})
+    espacio_memoria = Memoria.Memoria.getInstance().generaEspacioConstantes(Utils.Tipo.Entero, valor_kw)
+    genera_operando({"tipo": tipo, "valor": espacio_memoria})
 
 
 def p_cte_e_f_s(p):
@@ -1085,23 +1084,38 @@ def parse(source):
         content = content_file.read()
     parser = yacc.yacc()
     data = '''
+        entero global;
+        funcion entero fibonacci(){
+            entero num_uno, num_dos, num_tres;
+            entero contador;
+            num_uno = 1;
+            num_dos = 1;
+            mientras(contador < 10){
+                num_uno = num_dos;
+                num_dos = num_tres;
+                num_tres = num_uno + num_dos;
+                output(num_tres);
+                contador = contador + 1;
+            };
+            retorna num_tres;
+        }
 
-        funcion entero nombre(){
-            retorna 1+2+3+4+5+6;
+        funcion entero factorial_iterativo(entero aaaa, entero bbbb){
+            entero num;
+            entero res;
+            num = 5;
+            res = 1;
+            mientras(num > 0){
+                res = res * num;
+                num = num - 1;
+            };
+            output(res);
+            retorna res;
         }
 
         inicio funcion entero main(){
-            entero global;
-            entero x;
-            global = 123;
-            camina(nombre() + nombre());
-            salta_a(200,200);
-            camina(10);
-            input(global);
-            output(global);
-            salta_a(32,43);
-            camina(8);
-
+            factorial_iterativo(1, 2);
+            fibonacci();
         }
     '''
     parser.parse(data, debug=0)
