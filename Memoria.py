@@ -172,7 +172,6 @@ class Memoria:
                     print("Indice:", indice)
                     print(self.__bloque_temporal)
                     print("Offsets: ", self.__offsets_temporales)
-                    print("Offsets padre:", self.__pila_offsets_temporales[-1])
                 if len(self.__pila_offsets_temporales) > 0:
                     return self.__bloque_temporal[valor_tipo][
                         indice + self.__pila_offsets_temporales[-1][valor_tipo]]

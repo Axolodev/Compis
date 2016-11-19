@@ -50,6 +50,9 @@ class MaquinaVirtual:
         id_different = Utils.Operador.getId('!=')
         id_goto_f = Utils.Operador.getId('gotoF')
         id_goto_t = Utils.Operador.getId('gotoT')
+        id_a_entero = Utils.Operador.getId('a_entero')
+        id_a_flotante = Utils.Operador.getId('a_flotante')
+        id_a_string = Utils.Operador.getId('a_string')
 
         offset_locales = [0, 0, 0]
 
@@ -343,6 +346,20 @@ class MaquinaVirtual:
                 print("Este es el valor que imprimiste")
                 print(Memoria.Memoria.getInstance().getValorParaEspacio(self.__lista_cuadruplos[i][3]))
                 print("-------------------------------------------------------------------")
+
+            elif operator == id_a_entero:
+                var = Memoria.Memoria.getInstance().getValorParaEspacio(self.__lista_cuadruplos[i][1], offset_locales)
+                Memoria.Memoria.getInstance().setValorParaEspacio(self.__lista_cuadruplos[i][3], int(var),
+                                                                  offset_locales)
+
+            elif operator == id_a_flotante:
+                var = Memoria.Memoria.getInstance().getValorParaEspacio(self.__lista_cuadruplos[i][1], offset_locales)
+                Memoria.Memoria.getInstance().setValorParaEspacio(self.__lista_cuadruplos[i][3], float(var),
+                                                                  offset_locales)
+            elif operator == id_a_string:
+                var = Memoria.Memoria.getInstance().getValorParaEspacio(self.__lista_cuadruplos[i][1], offset_locales)
+                Memoria.Memoria.getInstance().setValorParaEspacio(self.__lista_cuadruplos[i][3], str(var),
+                                                                  offset_locales)
 
             i += 1
 
