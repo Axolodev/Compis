@@ -5,18 +5,32 @@ import Utils
 
 class Variable:
 
-    def __init__(self, tipo, nombre, scope):
+    def __init__(self, tipo, nombre, scope, lista_dimensiones):
         if Utils.DEBUGGING_MODE:
             print("Nombre:", nombre)
             print("\tTipo:", tipo)
+            print("\tDimensiones:", lista_dimensiones)
         self.__nombre = nombre
         self.__tipo = tipo
         self.__scope = scope
         self.__valor = None
         self.__espacio_memoria = 0
+        self.__constantes_acceso = []
+        if lista_dimensiones is not None and len(lista_dimensiones) > 0:
+            acum_dimensiones = 1
+            for dimension in lista_dimensiones:
+                acum_dimensiones *= dimension
+            k = acum_dimensiones
+            lista_constantes_acceso = []
+            for dimension in lista_dimensiones:
+                acum_dimensiones /= dimension
+                lista_constantes_acceso.append(acum_dimensiones)
+            lista_constantes_acceso[-1] = k
+            self.__constantes_acceso = lista_dimensiones
         if tipo != Utils.Tipo.Vacio:
-            self.__espacio_memoria = Memoria.Memoria.getInstance().generaEspacioVariable(scope, tipo)
+            self.__espacio_memoria = Memoria.Memoria.getInstance().generaEspacioVariable(scope, tipo, lista_dimensiones)
         if Utils.DEBUGGING_MODE:
+            print("Constantes de acceso:", self.__constantes_acceso)
             print("Espacio nuevo de variable:", self.__espacio_memoria)
 
     def getNombre(self):

@@ -17,7 +17,6 @@ lista_param = []
 variable_nombre_funcion = ""
 indiceParametro = 0
 
-
 logging.basicConfig()
 
 tokens = (
@@ -87,8 +86,7 @@ t_OP_PUNTO_COMA = r';'
 t_OP_COMA = r'[\,]'
 
 tipo_actual = Utils.Tipo.Vacio
-variable_actual_es_arreglo = False
-variable_actual_es_matriz = False
+lista_dimensiones = []
 tipo_funcion_actual = Utils.Tipo.Vacio
 nombre_funcion_actual = None
 
@@ -214,7 +212,7 @@ def p_consumir_nombre_funcion(p):
     global nombre_funcion_actual
     global tipo_funcion_actual
     nombre_funcion_actual = p[1]
-    var_table.nuevaVariable(tipo_funcion_actual, p[1], None, None, scope="0")
+    var_table.nuevaVariable(tipo_funcion_actual, p[1], None, scope="0")
 
 
 def p_funcion(p):
@@ -285,7 +283,7 @@ def p_consume_parametro_de_funcion(p):
     """
     global tipo_actual
     global lista_param
-    var_table.nuevaVariable(tipo_actual, p[2], None, None)
+    var_table.nuevaVariable(tipo_actual, p[2], None)
     lista_param.append(tipo_actual)
 
 
@@ -331,24 +329,26 @@ def p_op_punto_coma(p):
 
 def p_def_var(p):
     """
-    def_var : ID arr_not
+    def_var : ID def_dimensiones
     """
-    global variable_actual_es_arreglo, variable_actual_es_matriz
-    var_table.nuevaVariable(tipo_actual, p[1], variable_actual_es_arreglo, variable_actual_es_matriz)
-    variable_actual_es_arreglo = False
-    variable_actual_es_matriz = False
+    global lista_dimensiones
+    var_table.nuevaVariable(tipo_actual, p[1], lista_dimensiones=lista_dimensiones)
+    lista_dimensiones = []
 
 
-def p_arr_not(p):
+def p_def_dimensiones(p):
     """
-    arr_not : OP_CORCHETE_IZQ CTE_E OP_CORCHETE_DER
-            | empty
+    def_dimensiones : declaracion_dimensiones def_dimensiones
+                | empty
     """
-    global variable_actual_es_matriz, variable_actual_es_arreglo
-    if variable_actual_es_arreglo:
-        variable_actual_es_matriz = True
-    else:
-        variable_actual_es_arreglo = True
+
+
+def p_declaracion_dimensiones(p):
+    """
+    declaracion_dimensiones : OP_CORCHETE_IZQ CTE_E OP_CORCHETE_DER
+    """
+    global lista_dimensiones
+    lista_dimensiones.append(p[2])
 
 
 def p_otra_var(p):
@@ -379,9 +379,22 @@ def p_estatuto_rec(p):
     pass
 
 
+def p_acceso_variable_dimensionada(p):
+    """
+    acceso_variable_dimensionada : acceso_arreglo acceso_variable_dimensionada
+                | empty
+    """
+
+
+def p_acceso_arreglo(p):
+    """
+    acceso_arreglo : OP_CORCHETE_IZQ expresion OP_CORCHETE_DER
+    """
+
+
 def p_asignacion(p):
     """
-    asignacion : var_consume_id_var_cte arr_not OP_ASIGNACION expresion
+    asignacion : var_consume_id_var_cte acceso_variable_dimensionada OP_ASIGNACION expresion
     """
     global cuadruplo_inicial
     tipo_operando = pila_tipos.pop()
@@ -727,7 +740,7 @@ def p_camina(p):
     metros = pila_operandos.pop()
     tipo = pila_tipos.pop()
     if Utils.DEBUGGING_MODE:
-        print (tipo)
+        print(tipo)
     if tipo != Utils.Tipo.Entero:
         raise TypeError('Solo puedes caminar usando unidades enteras')
     global cuadruplo_inicial
@@ -956,7 +969,7 @@ def p_consume_string(p):
 
 def p_var_o_llamada_funcion(p):
     """
-    var_o_llamada_funcion : var_consume_id_var_cte arr_not
+    var_o_llamada_funcion : var_consume_id_var_cte acceso_variable_dimensionada
                         | ejec_funcion
     """
     pass
@@ -1085,8 +1098,10 @@ def parse(source):
     parser = yacc.yacc()
     data = '''
         entero global;
+        entero arreglo_global[10];
         funcion entero fibonacci(){
             entero num_uno, num_dos, num_tres;
+            entero arreglo_flotante[2][5];
             entero contador;
             num_uno = 1;
             num_dos = 1;
@@ -1121,6 +1136,6 @@ def parse(source):
     parser.parse(data, debug=0)
     return lista_cuadruplos
 
+
 # checar que las funciones esten definidas
 log = logging.getLogger("parserlog.log")
-

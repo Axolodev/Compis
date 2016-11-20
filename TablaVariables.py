@@ -14,13 +14,15 @@ class TablaVariables:
         def nuevoScope(self):
             self.__scopeActual += 1
 
-        def nuevaVariable(self, tipo, nombre, es_arreglo, es_matriz, scope=None):
+        def nuevaVariable(self, tipo, nombre, lista_dimensiones=None, scope=None):
             if scope is None:
                 scope = str(self.tablaFunciones.getScopeActual())
-            if (scope + "_" + str(nombre)) in self.__listaVariables or ("0_" + str(nombre)) in self.__listaVariables:
+            #
+            if (scope + "_" + str(nombre)) in self.__listaVariables or (
+                        "0_" + str(nombre)) in self.__listaVariables:
                 raise KeyError("Ya existe una variable con este nombre")
             else:
-                var = Variable.Variable(tipo, nombre, scope)
+                var = Variable.Variable(tipo, nombre, scope, lista_dimensiones)
                 var.setValor(Utils.Tipo.getDefault(var.getTipo()))
                 self.__listaVariables.update({scope + "_" + str(nombre): var})
                 return var
@@ -53,7 +55,6 @@ class TablaVariables:
         def consigueVariablesPara(self, scope):
             return dict(
                 (key, value) for key, value in self.__listaVariables.items() if key.startswith(str(scope) + "_"))
-
 
     instancia = None
 

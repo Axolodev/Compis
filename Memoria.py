@@ -54,21 +54,29 @@ class Memoria:
                 self.__contadores_constantes[tipo.value] += 1
             return self.__bloque_constantes_compilacion[llave_de_constante]
 
-        def generaEspacioVaraiablesLocales(self, tipo):
+        def generaEspacioVariablesLocales(self, tipo, lista_dimensiones):
             if Utils.DEBUGGING_MODE:
                 print(tipo)
                 print("Contadores locales", self.__contadores_locales)
             espacio = Memoria.OFFSET_ENTEROS_LOCALES + self.__contadores_locales[
                 tipo.value] + Memoria.ESPACIO_LOCALES * tipo.value
-            self.__contadores_locales[tipo.value] += 1
+            contador_dimensiones = 1
+            if lista_dimensiones is not None:
+                for dimension in lista_dimensiones:
+                    contador_dimensiones *= dimension
+            self.__contadores_locales[tipo.value] += contador_dimensiones
             if Utils.DEBUGGING_MODE:
                 print("Espacio:", espacio, "\n____________________________")
             return espacio
 
-        def generaEspacioVaraiablesGlobales(self, tipo):
+        def generaEspacioVariablesGlobales(self, tipo, lista_dimensiones):
             espacio = Memoria.OFFSET_ENTEROS_GLOBALES + self.__contadores_globales[
                 tipo.value] + Memoria.ESPACIO_GLOBALES * tipo.value
-            self.__contadores_globales[tipo.value] += 1
+            contador_dimensiones = 1
+            if lista_dimensiones is not None:
+                for dimension in lista_dimensiones:
+                    contador_dimensiones *= dimension
+            self.__contadores_globales[tipo.value] += contador_dimensiones
             if Utils.DEBUGGING_MODE:
                 print("Espacio:", espacio, "\n____________________________")
             return espacio
@@ -84,10 +92,10 @@ class Memoria:
                 print("Espacio:", espacio, "\n____________________________")
             return espacio
 
-        def generaEspacioVariable(self, scope, tipo):
+        def generaEspacioVariable(self, scope, tipo, lista_dimensiones):
             if int(scope) != 0:
-                return self.generaEspacioVaraiablesLocales(tipo)
-            return self.generaEspacioVaraiablesGlobales(tipo)
+                return self.generaEspacioVariablesLocales(tipo, lista_dimensiones)
+            return self.generaEspacioVariablesGlobales(tipo, lista_dimensiones)
 
         def reseteaEspacios(self):
             self.__contadores_locales = [0, 0, 0]
