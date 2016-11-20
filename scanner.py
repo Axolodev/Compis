@@ -1045,7 +1045,7 @@ def p_consume_id_input(p):
     var = var_table.getVariable(p[1])
     global cuadruplo_inicial
     cuadruplo_inicial[0] = Utils.Operador.getId('input')
-    cuadruplo_inicial[1] = var.getTipo()
+    cuadruplo_inicial[1] = var.getTipo().value
     cuadruplo_inicial[3] = var.getEspacioMemoria()
     lista_cuadruplos.append(cuadruplo_inicial)
     cuadruplo_inicial = [None] * 4
@@ -1154,8 +1154,8 @@ def parse(source):
             camina(4);
             gira(este);
             output(x);
-            output(y);
-            output(z);
+            input(x);
+            output(x);
 
         }
     '''

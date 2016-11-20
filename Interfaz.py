@@ -1,6 +1,7 @@
 from __future__ import print_function
 
 import Tkinter
+import tkSimpleDialog
 import turtle
 import MaquinaVirtual
 from Tkinter import *
@@ -11,20 +12,35 @@ class Interfaz():
         def __init__(self):
             self.root = Tkinter.Tk()
             self.root.title("Draw with Jr. Lang!")
-            cv = Tkinter.Canvas(self.root, width=600, height=600)
-            cv.pack(side=Tkinter.BOTTOM)
+            self.root.geometry("1920x1080")
+            cv = Tkinter.Canvas(self.root, width=2000, height=400)
+            cv.pack(side=BOTTOM)
             self.__turtle = turtle.RawTurtle(cv)
             self.__turtle.speed(2)
             self.__turtle.shape("turtle")
             self.__turtle.color("green")
+            self.parse_texto = ""
+            self.boton_presionado = False
             Frame.__init__(self, self.root)
             self.pack()
             self.createWidgets()
 
         def run(self):
-            _input = self.TEXT.get("1.0", "end-1c")
+            _input = self.CODE.get("1.0", "end-1c")
             mv = MaquinaVirtual.MaquinaVirtual(_input)
             mv.ejecutar()
+
+        def assign(self):
+            valor_a_asignar = self.INPUT.get("1.0", "end-1c")
+            print (valor_a_asignar)
+            self.INPUT.delete("1.0", END)
+            self.OUTPUT.configure(state="normal")
+            self.OUTPUT.delete('1.0', END)
+            self.OUTPUT.configure(state="disabled")
+            self.ASSIGN.configure(state="disabled")
+            self.parse_texto = valor_a_asignar
+            self.boton_presionado = True
+
 
         def createWidgets(self):
             self.QUIT = Button(self)
@@ -32,16 +48,24 @@ class Interfaz():
             self.QUIT["fg"] = "red"
             self.QUIT["command"] = self.quit
 
-            self.QUIT.pack({"side": "bottom"})
-
             self.RUN = Button(self)
             self.RUN["text"] = "RUN",
             self.RUN["fg"] = "green"
             self.RUN["command"] = self.run
-            self.RUN.pack({"side": "top"})
 
-            self.TEXT = Text(self, width=70, height=70)
-            self.TEXT.pack()
+            label_code = Label(self.root, text="CODIGO")
+            label_output = Label(self.root, text="OUTPUT")
+
+            self.CODE = Text(self.root)
+            label_code.pack(side=LEFT)
+
+            self.CODE.pack(side=LEFT)
+            self.OUTPUT = Text(self.root)
+            self.OUTPUT.configure(state="disabled")
+            self.OUTPUT.pack(side=RIGHT)
+            label_output.pack(side=RIGHT)
+            self.RUN.pack()
+            self.QUIT.pack()
 
         def camina(self, metros):
             self.__turtle.forward(metros * 5)
@@ -60,6 +84,24 @@ class Interfaz():
         def reinicia(self):
             self.__turtle.home()
             self.__turtle.clear()
+
+        def asigna(self, tipo):
+            if tipo == 0:
+                var = "entero"
+                resultado = tkSimpleDialog.askinteger('Address', 'Ingresa variable tipo: ' + var)
+            elif tipo == 1:
+                var = "flotante"
+                resultado = tkSimpleDialog.askfloat('Address', 'Ingresa variable tipo: ' + var)
+            else:
+                var = "string"
+                resultado = tkSimpleDialog.askstring('Address', 'Ingresa variable tipo: ' + var)
+
+            return resultado
+
+        def muestra(self, valor):
+            self.OUTPUT.configure(state="normal")
+            self.OUTPUT.insert('1.0', "Este es el valor que imprimiste: " + str(valor) + "\n")
+            self.OUTPUT.configure(state="disabled")
 
         def destroy(self):
             self.root.destroy()
