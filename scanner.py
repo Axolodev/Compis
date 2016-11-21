@@ -126,7 +126,7 @@ def t_ID(t):
     return t
 
 
-t_CTE_S = r'\"[A-Za-z0-9_\(\)\{\}\[\]\<\>\! \t]*\"'
+t_CTE_S = r'"[A-Za-z0-9_\(\)\{\}\[\]\<\>\! \t]*"'
 
 # Ignored characters
 t_ignore = " \t"
@@ -352,6 +352,7 @@ def p_declaracion_dimensiones(p):
     """
     global lista_dimensiones
     lista_dimensiones.append(p[2])
+    Memoria.Memoria.getInstance().generaEspacioConstantes(Utils.Tipo.Entero, p[2])
 
 
 def p_otra_var(p):
@@ -787,9 +788,9 @@ def p_a_string2(p):
     if tipo == Utils.Tipo.Entero or tipo == Utils.Tipo.Flotante:
         pila_tipos.append(Utils.Tipo.String)
         resultado = pila_operandos.pop()
-        cuadruplo_inicial[0] = Utils.Operador.getId('a_entero')
+        cuadruplo_inicial[0] = Utils.Operador.getId('a_string')
         cuadruplo_inicial[1] = resultado
-        cuadruplo_inicial[3] = Memoria.Memoria.getInstance().generaEspacioTemporal(Utils.Tipo.Entero)
+        cuadruplo_inicial[3] = Memoria.Memoria.getInstance().generaEspacioTemporal(Utils.Tipo.String)
         lista_cuadruplos.append(cuadruplo_inicial)
         pila_operandos.append(cuadruplo_inicial[3])
         cuadruplo_inicial = [None] * 4
@@ -995,7 +996,7 @@ def p_var_consume_id_var_cte(p):
 
 def p_acceso_variable_dimensionada(p):
     """
-    acceso_variable_dimensionada : fondo_falso_dimension acceso_arreglo acceso_variable_dimensionada
+    acceso_variable_dimensionada : fondo_falso_dimension acceso_arreglo acceso_variable_dimensionada_rec
                 | empty
     """
     global var_actual, contador_variable_dimensionada, pila_operandos
@@ -1003,32 +1004,41 @@ def p_acceso_variable_dimensionada(p):
     if len(p) > 2:
         if Utils.DEBUGGING_MODE:
             print("Sacar fondo falso de pila_dimensiones")
-        tipo = Utils.Tipo.Entero if p == 0 else Utils.Tipo.Flotante if p == 1 else Utils.Tipo.String
         cuadruplo_acceso = [None] * 4
-        tipo_ac = pila_tipos[-1]
-        tipo = Utils.Tipo.Entero if tipo_ac == 0 else Utils.Tipo.Flotante if tipo_ac == 1 else Utils.Tipo.String
-        temporal = Memoria.Memoria.getInstance().generaEspacioTemporal(tipo)
+        # Generar cuadruplo final de acceso al arreglo
         cuadruplo_acceso[0] = Utils.Operador.getId('+')
+        # Resultado de operaciones previas
         cuadruplo_acceso[1] = pila_operandos.pop()
-        cuadruplo_acceso[2] = Memoria.Memoria.getInstance().generaEspacioTemporal(tipo)
-        cuadruplo_acceso[3] = temporal
-        pila_operandos.append(temporal)
+        # La K es constante ya que nuestra indexacion siempre es de 0 a N
+        cuadruplo_acceso[2] = Memoria.Memoria.getInstance().generaEspacioConstantes(Utils.Tipo.Entero, 0)
+        # Limite superior del arreglo
+        cuadruplo_acceso[3] = Memoria.Memoria.getInstance().generaEspacioTemporal(Utils.Tipo.Entero)
+        pila_operandos.append(cuadruplo_acceso[3])
 
         cuadruplo_apuntador = [None] * 4
+        dir_base = pila_dimensiones[-1][0].getEspacioMemoria()
         cuadruplo_apuntador[0] = Utils.Operador.getId('+')
-        cuadruplo_apuntador[1] = temporal
-        print("Var actual:", var_actual)
-        cuadruplo_apuntador[2] = Memoria.Memoria.getInstance().generaEspacioConstantes(Utils.Tipo.Entero,
-                                                                                       var_actual.getEspacioMemoria())
-        cuadruplo_apuntador[3] = Memoria.Memoria.getInstance().generaEspacioTemporal(tipo)
-        pila_operandos.append("(" + str(cuadruplo_apuntador[3]) + ")")
+        cuadruplo_apuntador[1] = pila_operandos.pop()
+        # Cuadruplo con direccion base de la lista
+        cuadruplo_apuntador[2] = Memoria.Memoria.getInstance().generaEspacioConstantes(Utils.Tipo.Entero, dir_base)
+        cuadruplo_apuntador[3] = Memoria.Memoria.getInstance().generaEspacioTemporal(Utils.Tipo.Entero)
+        pila_operandos.append([cuadruplo_apuntador[3]])
         pila_operadores.pop()
+        lista_cuadruplos.append(cuadruplo_acceso)
+        lista_cuadruplos.append(cuadruplo_apuntador)
 
         # Obtener variable dimensionada anterior, en caso de que la haya
         if len(pila_dimensiones) > 0:
             fondo = pila_dimensiones.pop()
-            var_actual = fondo[0]
             contador_variable_dimensionada = fondo[1]
+
+
+def p_acceso_variable_dimensionada_rec(p):
+    """
+    acceso_variable_dimensionada_rec : acceso_arreglo acceso_variable_dimensionada_rec
+                | empty
+    """
+    pass
 
 
 def p_fondo_falso_dimension(p):
@@ -1051,18 +1061,16 @@ def p_acceso_arreglo(p):
     global contador_variable_dimensionada
     global var_actual
     global pila_tipos
-    dimension = var_actual.getDimension(contador_variable_dimensionada)
+    dimension = pila_dimensiones[-1][0].getDimension(contador_variable_dimensionada)
     cuadruplo_verificacion = [None] * 4
     cuadruplo_verificacion[0] = Utils.Operador.getId('ver')
     cuadruplo_verificacion[1] = Memoria.Memoria.getInstance().generaEspacioConstantes(Utils.Tipo.Entero, 0)
     cuadruplo_verificacion[2] = Memoria.Memoria.getInstance().generaEspacioConstantes(Utils.Tipo.Entero, dimension)
     cuadruplo_verificacion[3] = pila_operandos[-1]
     lista_cuadruplos.append(cuadruplo_verificacion)
-    tipo_ac = pila_tipos[-1]
-    tipo = Utils.Tipo.Entero if tipo_ac == 0 else Utils.Tipo.Flotante if tipo_ac == 1 else Utils.Tipo.String
-    if var_actual.getCantidadDimensiones() - 1 != contador_variable_dimensionada:
+    if pila_dimensiones[-1][0].getCantidadDimensiones() - 1 != contador_variable_dimensionada:
         aux = pila_operandos.pop()
-        temporal = Memoria.Memoria.getInstance().generaEspacioTemporal(tipo)
+        temporal = Memoria.Memoria.getInstance().generaEspacioTemporal(Utils.Tipo.Entero)
         cuadruplo_dimension = [None] * 4
         cuadruplo_dimension[0] = Utils.Operador.getId('*')
         cuadruplo_dimension[1] = aux
@@ -1073,7 +1081,7 @@ def p_acceso_arreglo(p):
     if contador_variable_dimensionada > 0:
         aux2 = pila_operandos.pop()
         aux1 = pila_operandos.pop()
-        temporal = Memoria.Memoria.getInstance().generaEspacioTemporal(tipo)
+        temporal = Memoria.Memoria.getInstance().generaEspacioTemporal(Utils.Tipo.Entero)
         cuadruplo_dimension = [None] * 4
         cuadruplo_dimension[0] = Utils.Operador.getId('+')
         cuadruplo_dimension[1] = aux1
@@ -1206,45 +1214,23 @@ def parse(source):
         content = content_file.read()
     parser = yacc.yacc()
     data = '''
-        entero global;
-        entero arreglo_global[5][5];
-        funcion entero fibonacci(){
-            entero num_uno, num_dos, num_tres;
-            entero arreglo_flotante[2][5];
-            entero contador;
-            arreglo_flotante[1][3] = arreglo_flotante[1][1];
-            num_uno = 1;
-            num_dos = 1;
-            mientras(contador < 10){
-                num_uno = num_dos;
-                num_dos = num_tres;
-                num_tres = num_uno + num_dos;
-                output(num_tres);
-                contador = contador + 1;
-            };
-            retorna num_tres;
-        }
-
-        funcion entero factorial_iterativo(){
-            entero num;
-            entero res;
-            num = 5;
-            res = 1;
-            mientras(num > 0){
-                output(num);
-                res = res * num;
-                num = num - 1;
-            };
-            output(res);
-            retorna res;
-        }
-
+        entero matriz_global[3][4];
         inicio funcion entero main(){
-            entero x;
-            flotante y;
-            string z;
-
-            factorial_iterativo();
+            entero i;
+            entero aa[3];
+            entero j;
+            i = 0;
+            mientras(i < 3){
+                aa[i] = (i + 1) * 5;
+                j = 0;
+                mientras(j < 4){
+                    matriz_global[i][j] = (i * 3) + j;
+                    j = j + 1;
+                    output(\"Hola\" + a_string(i));
+                    output((i * 3) + j);
+                };
+                i = i + 1;
+            };
         }
     '''
     parser.parse(data, debug=0)

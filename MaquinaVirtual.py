@@ -53,6 +53,7 @@ class MaquinaVirtual:
         id_a_entero = Utils.Operador.getId('a_entero')
         id_a_flotante = Utils.Operador.getId('a_flotante')
         id_a_string = Utils.Operador.getId('a_string')
+        id_verifica = Utils.Operador.getId('ver')
 
         offset_locales = [0, 0, 0]
 
@@ -70,12 +71,8 @@ class MaquinaVirtual:
         if Utils.DEBUGGING_MODE:
             Memoria.Memoria.getInstance().printVariablesActuales()
         lista_variables_funcion = []
-        lista_variables_main = [v.getTipo().value for v in
-                                TablaFunciones.TablaFunciones.getInstance().getListaVariablesDeMain().values()]
-        lista_variables_main = [[x == 0, x == 1, x == 2] for x in lista_variables_main]
-        lista_variables_main = [sum(x) for x in zip(*lista_variables_main)]
-        Memoria.Memoria.getInstance().darDeAltaLocales(lista_variables_main)
-        self.__cantidades_variables_locales_actuales = lista_variables_main
+        self.__cantidades_variables_locales_actuales = Memoria.Memoria.getInstance().darDeAltaLocales(
+            TablaFunciones.TablaFunciones.getInstance().getListaVariablesDeMain())
 
         i = 0
         while i < len(self.__lista_cuadruplos):
@@ -116,16 +113,12 @@ class MaquinaVirtual:
             elif operator == id_era:
                 scope = TablaFunciones.TablaFunciones.getInstance().getFuncion(self.__lista_cuadruplos[i][1]).getScope()
                 variables = TablaVariables.TablaVariables.getInstance().consigueVariablesPara(scope)
+
                 if Utils.DEBUGGING_MODE:
                     print("Variables de scope:", scope)
-                    print(variables)
                     print("variables locales de funciones: ")
                     print(variables)
-                lista_variables_funcion = [v.getTipo().value for v in
-                                           variables.values()]
-                lista_variables_funcion = [[x == 0, x == 1, x == 2] for x in lista_variables_funcion]
-                lista_variables_funcion = [sum(x) for x in zip(*lista_variables_funcion)]
-                Memoria.Memoria.getInstance().darDeAltaLocales(lista_variables_funcion)
+                Memoria.Memoria.getInstance().darDeAltaLocales(variables)
 
             elif operator == id_return:
                 # Obtener el nombre de la funcion actual, este se encuentra en la pila de ejecucion. Se inserta en gosub
@@ -244,8 +237,6 @@ class MaquinaVirtual:
                     valor_r = 1
                 else:
                     valor_r = 0
-                print("ESTAMOS EN GT")
-                print(valor1, valor2)
                 Memoria.Memoria.getInstance().setValorParaEspacio(dir_r, valor_r, offset_locales)
 
             elif operator == id_loet:
@@ -321,7 +312,6 @@ class MaquinaVirtual:
                 Memoria.Memoria.getInstance().setValorParaEspacio(dir_r, valor_r, offset_locales)
 
             elif operator == id_goto_f:
-                print("AQUI ESTA EL GOTOF+++++++++++++++++++++++++++++++++++++++++++++++++")
                 dir1 = self.__lista_cuadruplos[i][1]
                 valor1 = Memoria.Memoria.getInstance().getValorParaEspacio(dir1, offset_locales)
                 if valor1 == 0:
@@ -339,22 +329,6 @@ class MaquinaVirtual:
                 if data is not None:
                     Memoria.Memoria.getInstance().setValorParaEspacio(self.__lista_cuadruplos[i][3], data,
                                                                       offset_locales)
-                '''
-                data = input("Escribe valor de variable : " + str(self.__lista_cuadruplos[i][1]) + "\n")
-                print("------------------------------------------------------------------")
-                if type(data) is IntType and self.__lista_cuadruplos[i][1].value == 0:
-                    Memoria.Memoria.getInstance().setValorParaEspacio(self.__lista_cuadruplos[i][3], data,
-                                                                      offset_locales)
-                elif type(data) is FloatType and self.__lista_cuadruplos[i][1].value == 1:
-                    Memoria.Memoria.getInstance().setValorParaEspacio(self.__lista_cuadruplos[i][3], data,
-                                                                      offset_locales)
-                elif type(data) is StringType and self.__lista_cuadruplos[i][1].value == 2:
-                    Memoria.Memoria.getInstance().setValorParaEspacio(self.__lista_cuadruplos[i][3], data,
-                                                                      offset_locales)
-                else:
-                    raise TypeError('Tipo ingresado no corresponde a tipo declarado')
-
-                '''
 
             elif operator == id_output:
                 Interfaz.Interfaz.getInstance().muestra(Memoria.Memoria.getInstance().
@@ -374,6 +348,24 @@ class MaquinaVirtual:
                 var = Memoria.Memoria.getInstance().getValorParaEspacio(self.__lista_cuadruplos[i][1], offset_locales)
                 Memoria.Memoria.getInstance().setValorParaEspacio(self.__lista_cuadruplos[i][3], str(var),
                                                                   offset_locales)
+
+            elif operator == id_verifica:
+                dir1 = self.__lista_cuadruplos[i][1]
+                dir2 = self.__lista_cuadruplos[i][2]
+                dir3 = self.__lista_cuadruplos[i][3]
+                lim_inf = Memoria.Memoria.getInstance().getValorParaEspacio(dir1, offset_locales)
+                lim_sup = Memoria.Memoria.getInstance().getValorParaEspacio(dir2, offset_locales)
+                valor_checado = Memoria.Memoria.getInstance().getValorParaEspacio(dir3, offset_locales)
+                if Utils.DEBUGGING_MODE:
+                    print(Utils.bcolors.buildInfoMessage("Verificacion de limites de arreglo:"))
+                    print(Utils.bcolors.buildInfoMessage("lim_inf\tlim_sup\tchecado"))
+                    print(
+                        Utils.bcolors.buildInfoMessage(str(lim_inf) + "\t" + str(lim_sup) + "\t" + str(valor_checado)))
+
+                if not (lim_inf <= valor_checado < lim_sup):
+                    raise IndexError(Utils.bcolors.buildErrorMessage("Indice fuera de rango. El arreglo tiene " + str(
+                        lim_sup) + " elementos, indexados del " + str(lim_inf) + " al " + str(
+                        lim_sup - 1) + ". Se intento acceder al " + str(valor_checado)))
 
             i += 1
 

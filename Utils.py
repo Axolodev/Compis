@@ -1,6 +1,5 @@
 from enum import Enum
 
-
 class Tipo(Enum):
     Entero = 0
     Flotante = 1
@@ -63,5 +62,32 @@ class Operador:
     @staticmethod
     def getId(op):
         return Operador.__operadores[op]
+
+
+class bcolors:
+    HEADER = '\033[95m'
+    OKBLUE = '\033[94m'
+    OKGREEN = '\033[92m'
+    WARNING = '\033[93m'
+    FAIL = '\033[91m'
+    ENDC = '\033[0m'
+    BOLD = '\033[1m'
+    UNDERLINE = '\033[4m'
+
+    @staticmethod
+    def buildWarningMessage(message):
+        return bcolors.WARNING + message + bcolors.ENDC
+
+    @staticmethod
+    def buildSuccessMessage(message):
+        return bcolors.OKGREEN + message + bcolors.ENDC
+
+    @staticmethod
+    def buildInfoMessage(message):
+        return bcolors.OKBLUE + message + bcolors.ENDC
+
+    @staticmethod
+    def buildErrorMessage(message):
+        return bcolors.FAIL + message + bcolors.ENDC
 
 DEBUGGING_MODE = True

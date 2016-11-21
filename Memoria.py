@@ -3,6 +3,7 @@ import Utils
 import TablaVariables
 import operator
 
+
 class Memoria:
     OFFSET_INICIO_GLOBALES = 1000
 
@@ -44,6 +45,11 @@ class Memoria:
             if constante not in self.__bloque_constantes_compilacion:
                 self.__bloque_constantes_compilacion.add(constante)
             return constante
+
+        def getValorConstanteTests(self, espacio):
+            for k, v in self.__bloque_constantes_compilacion.items():
+                if v == espacio:
+                    return k
 
         def generaEspacioConstantes(self, tipo, valor):
             llave_de_constante = str(tipo.value) + "_" + str(valor)
@@ -154,10 +160,19 @@ class Memoria:
         def getValorParaEspacio(self, espacio, offset_actual_locales):
             if Utils.DEBUGGING_MODE:
                 print("Get de espacio:", espacio)
+            while isinstance(espacio, list):
+                espacio = self.getValorParaEspacio(espacio[0], offset_actual_locales)
+                if Utils.DEBUGGING_MODE:
+                    print(Utils.bcolors.buildInfoMessage("Espacio nuevo:" + str(espacio)))
+
             if espacio < Memoria.OFFSET_ENTEROS_TEMPORALES:
                 # Es global
                 valor_tipo = (espacio - Memoria.OFFSET_ENTEROS_GLOBALES) / Memoria.ESPACIO_GLOBALES
                 indice = (espacio - Memoria.OFFSET_ENTEROS_GLOBALES) % Memoria.ESPACIO_GLOBALES
+                if Utils.DEBUGGING_MODE:
+                    print(Utils.bcolors.buildSuccessMessage("Get de global:"))
+                    print(Utils.bcolors.buildSuccessMessage("\tValor:" + str(self.__bloque_global[valor_tipo][indice])))
+                    print(Utils.bcolors.buildSuccessMessage("\tEspacio:" + str(espacio)))
                 return self.__bloque_global[valor_tipo][indice]
 
             if espacio >= Memoria.OFFSET_ENTEROS_CONSTANTES:
@@ -211,6 +226,8 @@ class Memoria:
             :param offset_actual_locales: Offsets utilizados para manejar las variables locales
             :return: Nada.
             """
+            while isinstance(espacio, list):
+                espacio = self.getValorParaEspacio(espacio[0], offset_actual_locales)
             if Memoria.OFFSET_ENTEROS_GLOBALES <= espacio < Memoria.OFFSET_STRINGS_GLOBALES + Memoria.ESPACIO_GLOBALES:
                 # Es global
                 valor_tipo = (espacio - Memoria.OFFSET_ENTEROS_GLOBALES) / Memoria.ESPACIO_GLOBALES
@@ -272,18 +289,26 @@ class Memoria:
                     print("Pila de offsets", self.__pila_offsets_temporales)
                     print("_______________________________________________")
 
-        def darDeAltaLocales(self, lista):
-            counter = 0
-            if len(lista) > 0:
-                while counter < 3:
-                    tipo = Utils.Tipo.Entero
-                    if counter == 1:
-                        tipo = Utils.Tipo.Flotante
-                    if counter == 2:
-                        tipo = Utils.Tipo.String
-                    for i in range(0, lista[counter]):
-                        self.__bloque_local[counter].append(Utils.Tipo.getDefault(tipo))
-                    counter += 1
+        def darDeAltaLocales(self, variables):
+            if Utils.DEBUGGING_MODE:
+                print(Utils.bcolors.buildInfoMessage("Dando de alta variables locales"))
+                print(variables)
+                for k, v in variables.items():
+                    print(k, v)
+
+            # Iterar sobre todas las variables recibidas
+            for k, v in variables.items():
+                # Obtener las dimensiones de la variable
+                dim = v.getDimensiones()
+                if len(dim) > 0:
+                    # Agregar valor default N veces a la lista
+                    self.__bloque_local[v.getTipo().value].extend([Utils.Tipo.getDefault(v.getTipo())] * dim[-1])
+                else:
+                    # Agregar un solo valor
+                    self.__bloque_local[v.getTipo().value].append(Utils.Tipo.getDefault(v.getTipo()))
+            return [len(self.__bloque_local[0]), len(self.__bloque_local[1]), len(self.__bloque_local[2])]
+
+
 
         def liberarLocales(self, cantidades):
             counter = 0

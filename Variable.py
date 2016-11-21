@@ -3,6 +3,7 @@ import Memoria
 import Utils
 import TablaVariables
 
+
 class Variable:
     def __init__(self, tipo, nombre, scope, lista_dimensiones):
         if Utils.DEBUGGING_MODE:
@@ -57,8 +58,9 @@ class Variable:
         try:
             return self.__constantes_acceso[num_dimension]
         except IndexError:
-            raise IndexError("Se intento acceder a una variable con " + num_dimension + ", teniendo un total de " + len(
-                self.__constantes_acceso) + " dimensiones.")
+            raise IndexError(
+                "Se intento acceder a una variable con " + str(num_dimension) + ", teniendo un total de " + str(len(
+                    self.__constantes_acceso)) + " dimensiones.")
 
     def getCantidadDimensiones(self):
         return len(self.__constantes_acceso)
