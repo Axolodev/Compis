@@ -50,6 +50,9 @@ class MaquinaVirtual:
         id_different = Utils.Operador.getId('!=')
         id_goto_f = Utils.Operador.getId('gotoF')
         id_goto_t = Utils.Operador.getId('gotoT')
+        id_a_entero = Utils.Operador.getId('a_entero')
+        id_a_flotante = Utils.Operador.getId('a_flotante')
+        id_a_string = Utils.Operador.getId('a_string')
 
         offset_locales = [0, 0, 0]
 
@@ -325,6 +328,12 @@ class MaquinaVirtual:
                     i = self.__lista_cuadruplos[i][3] - 1
 
             elif operator == id_input:
+
+                data = Interfaz.Interfaz.getInstance().asigna(self.__lista_cuadruplos[i][1])
+                if data is not None:
+                    Memoria.Memoria.getInstance().setValorParaEspacio(self.__lista_cuadruplos[i][3], data,
+                                                                      offset_locales)
+                '''
                 data = input("Escribe valor de variable : " + str(self.__lista_cuadruplos[i][1]) + "\n")
                 print("------------------------------------------------------------------")
                 if type(data) is IntType and self.__lista_cuadruplos[i][1].value == 0:
@@ -339,10 +348,25 @@ class MaquinaVirtual:
                 else:
                     raise TypeError('Tipo ingresado no corresponde a tipo declarado')
 
+                '''
+
             elif operator == id_output:
-                print("Este es el valor que imprimiste")
-                print(Memoria.Memoria.getInstance().getValorParaEspacio(self.__lista_cuadruplos[i][3]))
-                print("-------------------------------------------------------------------")
+                Interfaz.Interfaz.getInstance().muestra(Memoria.Memoria.getInstance().
+                                                        getValorParaEspacio(self.__lista_cuadruplos[i][3]))
+
+            elif operator == id_a_entero:
+                var = Memoria.Memoria.getInstance().getValorParaEspacio(self.__lista_cuadruplos[i][1], offset_locales)
+                Memoria.Memoria.getInstance().setValorParaEspacio(self.__lista_cuadruplos[i][3], int(var),
+                                                                  offset_locales)
+
+            elif operator == id_a_flotante:
+                var = Memoria.Memoria.getInstance().getValorParaEspacio(self.__lista_cuadruplos[i][1], offset_locales)
+                Memoria.Memoria.getInstance().setValorParaEspacio(self.__lista_cuadruplos[i][3], float(var),
+                                                                  offset_locales)
+            elif operator == id_a_string:
+                var = Memoria.Memoria.getInstance().getValorParaEspacio(self.__lista_cuadruplos[i][1], offset_locales)
+                Memoria.Memoria.getInstance().setValorParaEspacio(self.__lista_cuadruplos[i][3], str(var),
+                                                                  offset_locales)
 
             i += 1
 

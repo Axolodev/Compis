@@ -792,9 +792,17 @@ def p_a_string2(p):
     a_string2 : expresion
     """
     global pila_tipos
+    global cuadruplo_inicial
     tipo = pila_tipos.pop()
     if tipo == Utils.Tipo.Entero or tipo == Utils.Tipo.Flotante:
         pila_tipos.append(Utils.Tipo.String)
+        resultado = pila_operandos.pop()
+        cuadruplo_inicial[0] = Utils.Operador.getId('a_entero')
+        cuadruplo_inicial[1] = resultado
+        cuadruplo_inicial[3] = Memoria.Memoria.getInstance().generaEspacioTemporal(Utils.Tipo.Entero)
+        lista_cuadruplos.append(cuadruplo_inicial)
+        pila_operandos.append(cuadruplo_inicial[3])
+        cuadruplo_inicial = [None] * 4
     else:
         warnings.warn("La expresion ya tiene como tipo de resultado un string. Seguro que quieres convertirlo?")
 
@@ -811,9 +819,17 @@ def p_a_entero2(p):
     a_entero2 : expresion
     """
     global pila_tipos
+    global cuadruplo_inicial
     tipo = pila_tipos.pop()
     if tipo == Utils.Tipo.Flotante or tipo == Utils.Tipo.String:
         pila_tipos.append(Utils.Tipo.Entero)
+        resultado = pila_operandos.pop()
+        cuadruplo_inicial[0] = Utils.Operador.getId('a_entero')
+        cuadruplo_inicial[1] = resultado
+        cuadruplo_inicial[3] = Memoria.Memoria.getInstance().generaEspacioTemporal(Utils.Tipo.Entero)
+        lista_cuadruplos.append(cuadruplo_inicial)
+        pila_operandos.append(cuadruplo_inicial[3])
+        cuadruplo_inicial = [None] * 4
     else:
         warnings.warn("La expresion ya tiene como tipo de resultado un entero. Seguro que quieres convertirlo?")
 
@@ -995,9 +1011,17 @@ def p_a_flotante2(p):
     a_flotante2 : expresion
     """
     global pila_tipos
+    global cuadruplo_inicial
     tipo = pila_tipos.pop()
     if tipo == Utils.Tipo.Entero or tipo == Utils.Tipo.String:
         pila_tipos.append(Utils.Tipo.Flotante)
+        resultado = pila_operandos.pop()
+        cuadruplo_inicial[0] = Utils.Operador.getId('a_flotante')
+        cuadruplo_inicial[1] = resultado
+        cuadruplo_inicial[3] = Memoria.Memoria.getInstance().generaEspacioTemporal(Utils.Tipo.Flotante)
+        lista_cuadruplos.append(cuadruplo_inicial)
+        pila_operandos.append(cuadruplo_inicial[3])
+        cuadruplo_inicial = [None] * 4
     else:
         warnings.warn("La expresion ya tiene como tipo de resultado un flotante. Seguro que quieres convertirlo?")
 
@@ -1034,7 +1058,7 @@ def p_consume_id_input(p):
     var = var_table.getVariable(p[1])
     global cuadruplo_inicial
     cuadruplo_inicial[0] = Utils.Operador.getId('input')
-    cuadruplo_inicial[1] = var.getTipo()
+    cuadruplo_inicial[1] = var.getTipo().value
     cuadruplo_inicial[3] = var.getEspacioMemoria()
     lista_cuadruplos.append(cuadruplo_inicial)
     cuadruplo_inicial = [None] * 4
@@ -1129,8 +1153,25 @@ def parse(source):
         }
 
         inicio funcion entero main(){
-            factorial_iterativo(1, 2);
-            fibonacci();
+            entero x;
+            flotante y;
+            string z;
+
+            x = a_entero(32.1);
+
+            y = a_flotante(21);
+
+            z = a_string(32);
+
+            mira(sur);
+            camina(10);
+            mira(32);
+            camina(4);
+            gira(este);
+            output(x);
+            input(x);
+            output(x);
+
         }
     '''
     parser.parse(data, debug=0)
