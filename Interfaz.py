@@ -30,18 +30,6 @@ class Interfaz():
             mv = MaquinaVirtual.MaquinaVirtual(_input)
             mv.ejecutar()
 
-        def assign(self):
-            valor_a_asignar = self.INPUT.get("1.0", "end-1c")
-            print (valor_a_asignar)
-            self.INPUT.delete("1.0", END)
-            self.OUTPUT.configure(state="normal")
-            self.OUTPUT.delete('1.0', END)
-            self.OUTPUT.configure(state="disabled")
-            self.ASSIGN.configure(state="disabled")
-            self.parse_texto = valor_a_asignar
-            self.boton_presionado = True
-
-
         def createWidgets(self):
             self.QUIT = Button(self)
             self.QUIT["text"] = "QUIT"

@@ -28,6 +28,7 @@ class MaquinaVirtual:
         id_ret = Utils.Operador.getId('ret')
         id_era = Utils.Operador.getId('era')
         id_gosub = Utils.Operador.getId('gosub')
+        id_param = Utils.Operador.getId('param')
         id_return = Utils.Operador.getId('return')
         id_camina = Utils.Operador.getId('camina')
         id_gira = Utils.Operador.getId('gira')
@@ -137,6 +138,14 @@ class MaquinaVirtual:
                 while self.__lista_cuadruplos[i + 1][0] != id_ret:
                     i += 1
 
+            elif operator == id_param:
+                offset_nueva_funcion = [x + y for x, y in
+                                        zip(offset_locales, self.__cantidades_variables_locales_actuales)]
+
+                Memoria.Memoria.getInstance().setValorParaEspacio(self.__lista_cuadruplos[i][3],
+                                                                  Memoria.Memoria.getInstance().getValorParaEspacio(
+                                                                      self.__lista_cuadruplos[i][1], offset_locales
+                                                                  ), offset_nueva_funcion)
             elif operator == id_gosub:
                 # Obtener el nombre de la funcion que se ejecutara
                 nombre_funcion = self.__lista_cuadruplos[i][1]

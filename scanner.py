@@ -475,7 +475,7 @@ def p_consume_id_funcion(p):
 
 def p_ejec_funcion_medio(p):
     """
-    ejec_funcion_medio : expresion ejec_funcion_cont
+    ejec_funcion_medio : expresion_parametro ejec_funcion_cont
                         | empty
     """
     global indiceParametro
@@ -487,24 +487,40 @@ def p_ejec_funcion_medio(p):
     cuadruplo_inicial = [None] * 4
 
 
-def p_ejec_funcion_cont(p):
+def p_expresion_parametro(p):
     """
-    ejec_funcion_cont : OP_COMA expresion ejec_funcion_cont
-                        | empty
+    expresion_parametro : expresion
     """
     global lista_param
     global pila_tipos
     global cuadruplo_inicial
     global indiceParametro
+
     lista_param.insert(0, pila_tipos.pop())
     funcion = func_table.getFuncion(variable_nombre_funcion)
     lista_variables = var_table.consigueVariablesPara(funcion.getScope())
+    print("LISTA DE VARIABLES")
+    print(lista_variables.values())
+    lista = list(zip(lista_variables.values()))
+    lista_memoria = [list(x)[0].getEspacioMemoria() for x in lista]
+    print(lista_memoria)
+    variables_ordenadas = sorted(lista_memoria)
+    print(variables_ordenadas)
+
     cuadruplo_inicial[0] = Utils.Operador.getId('param')
     cuadruplo_inicial[1] = pila_operandos.pop()
-    cuadruplo_inicial[3] = list(lista_variables.values())[indiceParametro].getNombre()
+    cuadruplo_inicial[3] = variables_ordenadas[indiceParametro]
     indiceParametro += 1
     lista_cuadruplos.append(cuadruplo_inicial)
     cuadruplo_inicial = [None] * 4
+
+
+def p_ejec_funcion_cont(p):
+    """
+    ejec_funcion_cont : OP_COMA expresion_parametro ejec_funcion_cont
+                        | empty
+    """
+    pass
 
 
 def p_funcion_predef(p):
