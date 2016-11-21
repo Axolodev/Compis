@@ -1225,12 +1225,13 @@ def parse(source):
             retorna num_tres;
         }
 
-        funcion entero factorial_iterativo(entero aaaa, entero bbbb){
+        funcion entero factorial_iterativo(){
             entero num;
             entero res;
             num = 5;
             res = 1;
             mientras(num > 0){
+                output(num);
                 res = res * num;
                 num = num - 1;
             };
@@ -1243,21 +1244,7 @@ def parse(source):
             flotante y;
             string z;
 
-            x = a_entero(32.1);
-
-            y = a_flotante(21);
-
-            z = a_string(32);
-
-            mira(sur);
-            camina(10);
-            mira(32);
-            camina(4);
-            gira(este);
-            output(x);
-            input(x);
-            output(x);
-
+            factorial_iterativo();
         }
     '''
     parser.parse(data, debug=0)

@@ -153,6 +153,9 @@ class MaquinaVirtual:
                 i = TablaFunciones.TablaFunciones.getInstance().getFuncion(nombre_funcion).getCuadruplo() - 1
                 # Obtener nuevo offset de locales
                 offset_locales = [x + y for x, y in zip(offset_locales, self.__cantidades_variables_locales_actuales)]
+                if Utils.DEBUGGING_MODE:
+                    print("Entrando a funcion:", nombre_funcion)
+                    print("\tOffsets:", offset_locales)
                 self.__cantidades_variables_locales_actuales = lista_variables_funcion
                 Memoria.Memoria.getInstance().congelarTemporalesParaNuevaFuncion()
 
@@ -180,8 +183,8 @@ class MaquinaVirtual:
                 dir1 = self.__lista_cuadruplos[i][1]
                 dir2 = self.__lista_cuadruplos[i][2]
                 dir_r = self.__lista_cuadruplos[i][3]
-                valor1 = Memoria.Memoria.getInstance().getValorParaEspacio(dir1)
-                valor2 = Memoria.Memoria.getInstance().getValorParaEspacio(dir2)
+                valor1 = Memoria.Memoria.getInstance().getValorParaEspacio(dir1, offset_locales)
+                valor2 = Memoria.Memoria.getInstance().getValorParaEspacio(dir2, offset_locales)
                 valor_r = valor1 * valor2
                 Memoria.Memoria.getInstance().setValorParaEspacio(dir_r, valor_r, offset_locales)
 
@@ -189,8 +192,8 @@ class MaquinaVirtual:
                 dir1 = self.__lista_cuadruplos[i][1]
                 dir2 = self.__lista_cuadruplos[i][2]
                 dir_r = self.__lista_cuadruplos[i][3]
-                valor1 = Memoria.Memoria.getInstance().getValorParaEspacio(dir1)
-                valor2 = Memoria.Memoria.getInstance().getValorParaEspacio(dir2)
+                valor1 = Memoria.Memoria.getInstance().getValorParaEspacio(dir1, offset_locales)
+                valor2 = Memoria.Memoria.getInstance().getValorParaEspacio(dir2, offset_locales)
                 if valor2 == 0 or valor2 == 0.0:
                     raise ZeroDivisionException('Intentaste hacer residuo con 0!')
                 valor_r = valor1 % valor2
@@ -200,8 +203,8 @@ class MaquinaVirtual:
                 dir1 = self.__lista_cuadruplos[i][1]
                 dir2 = self.__lista_cuadruplos[i][2]
                 dir_r = self.__lista_cuadruplos[i][3]
-                valor1 = Memoria.Memoria.getInstance().getValorParaEspacio(dir1)
-                valor2 = Memoria.Memoria.getInstance().getValorParaEspacio(dir2)
+                valor1 = Memoria.Memoria.getInstance().getValorParaEspacio(dir1, offset_locales)
+                valor2 = Memoria.Memoria.getInstance().getValorParaEspacio(dir2, offset_locales)
                 if valor2 == 0 or valor2 == 0.0:
                     raise ZeroDivisionException('Intentaste dividir entre 0!')
                 valor_r = valor1 / valor2
@@ -210,12 +213,12 @@ class MaquinaVirtual:
             elif operator == id_substract:
                 dir1 = self.__lista_cuadruplos[i][1]
                 dir_r = self.__lista_cuadruplos[i][3]
-                valor1 = Memoria.Memoria.getInstance().getValorParaEspacio(dir1)
+                valor1 = Memoria.Memoria.getInstance().getValorParaEspacio(dir1, offset_locales)
                 if self.__lista_cuadruplos[i][2] is None:
                     valor_r = - valor1
                 else:
                     dir2 = self.__lista_cuadruplos[i][2]
-                    valor2 = Memoria.Memoria.getInstance().getValorParaEspacio(dir2)
+                    valor2 = Memoria.Memoria.getInstance().getValorParaEspacio(dir2, offset_locales)
                     valor_r = valor1 - valor2
                 Memoria.Memoria.getInstance().setValorParaEspacio(dir_r, valor_r, offset_locales)
 
@@ -223,8 +226,8 @@ class MaquinaVirtual:
                 dir1 = self.__lista_cuadruplos[i][1]
                 dir2 = self.__lista_cuadruplos[i][2]
                 dir_r = self.__lista_cuadruplos[i][3]
-                valor1 = Memoria.Memoria.getInstance().getValorParaEspacio(dir1)
-                valor2 = Memoria.Memoria.getInstance().getValorParaEspacio(dir2)
+                valor1 = Memoria.Memoria.getInstance().getValorParaEspacio(dir1, offset_locales)
+                valor2 = Memoria.Memoria.getInstance().getValorParaEspacio(dir2, offset_locales)
                 if valor1 < valor2:
                     valor_r = 1
                 else:
@@ -235,20 +238,22 @@ class MaquinaVirtual:
                 dir1 = self.__lista_cuadruplos[i][1]
                 dir2 = self.__lista_cuadruplos[i][2]
                 dir_r = self.__lista_cuadruplos[i][3]
-                valor1 = Memoria.Memoria.getInstance().getValorParaEspacio(dir1)
-                valor2 = Memoria.Memoria.getInstance().getValorParaEspacio(dir2)
+                valor1 = Memoria.Memoria.getInstance().getValorParaEspacio(dir1, offset_locales)
+                valor2 = Memoria.Memoria.getInstance().getValorParaEspacio(dir2, offset_locales)
                 if valor1 > valor2:
                     valor_r = 1
                 else:
                     valor_r = 0
+                print("ESTAMOS EN GT")
+                print(valor1, valor2)
                 Memoria.Memoria.getInstance().setValorParaEspacio(dir_r, valor_r, offset_locales)
 
             elif operator == id_loet:
                 dir1 = self.__lista_cuadruplos[i][1]
                 dir2 = self.__lista_cuadruplos[i][2]
                 dir_r = self.__lista_cuadruplos[i][3]
-                valor1 = Memoria.Memoria.getInstance().getValorParaEspacio(dir1)
-                valor2 = Memoria.Memoria.getInstance().getValorParaEspacio(dir2)
+                valor1 = Memoria.Memoria.getInstance().getValorParaEspacio(dir1, offset_locales)
+                valor2 = Memoria.Memoria.getInstance().getValorParaEspacio(dir2, offset_locales)
                 if valor1 <= valor2:
                     valor_r = 1
                 else:
@@ -259,8 +264,8 @@ class MaquinaVirtual:
                 dir1 = self.__lista_cuadruplos[i][1]
                 dir2 = self.__lista_cuadruplos[i][2]
                 dir_r = self.__lista_cuadruplos[i][3]
-                valor1 = Memoria.Memoria.getInstance().getValorParaEspacio(dir1)
-                valor2 = Memoria.Memoria.getInstance().getValorParaEspacio(dir2)
+                valor1 = Memoria.Memoria.getInstance().getValorParaEspacio(dir1, offset_locales)
+                valor2 = Memoria.Memoria.getInstance().getValorParaEspacio(dir2, offset_locales)
                 if valor1 >= valor2:
                     valor_r = 1
                 else:
@@ -271,8 +276,8 @@ class MaquinaVirtual:
                 dir1 = self.__lista_cuadruplos[i][1]
                 dir2 = self.__lista_cuadruplos[i][2]
                 dir_r = self.__lista_cuadruplos[i][3]
-                valor1 = Memoria.Memoria.getInstance().getValorParaEspacio(dir1)
-                valor2 = Memoria.Memoria.getInstance().getValorParaEspacio(dir2)
+                valor1 = Memoria.Memoria.getInstance().getValorParaEspacio(dir1, offset_locales)
+                valor2 = Memoria.Memoria.getInstance().getValorParaEspacio(dir2, offset_locales)
                 if valor1 == valor2:
                     valor_r = 1
                 else:
@@ -283,8 +288,8 @@ class MaquinaVirtual:
                 dir1 = self.__lista_cuadruplos[i][1]
                 dir2 = self.__lista_cuadruplos[i][2]
                 dir_r = self.__lista_cuadruplos[i][3]
-                valor1 = Memoria.Memoria.getInstance().getValorParaEspacio(dir1)
-                valor2 = Memoria.Memoria.getInstance().getValorParaEspacio(dir2)
+                valor1 = Memoria.Memoria.getInstance().getValorParaEspacio(dir1, offset_locales)
+                valor2 = Memoria.Memoria.getInstance().getValorParaEspacio(dir2, offset_locales)
                 if valor1 != 0 and valor2 != 0:
                     valor_r = 1
                 else:
@@ -295,8 +300,8 @@ class MaquinaVirtual:
                 dir1 = self.__lista_cuadruplos[i][1]
                 dir2 = self.__lista_cuadruplos[i][2]
                 dir_r = self.__lista_cuadruplos[i][3]
-                valor1 = Memoria.Memoria.getInstance().getValorParaEspacio(dir1)
-                valor2 = Memoria.Memoria.getInstance().getValorParaEspacio(dir2)
+                valor1 = Memoria.Memoria.getInstance().getValorParaEspacio(dir1, offset_locales)
+                valor2 = Memoria.Memoria.getInstance().getValorParaEspacio(dir2, offset_locales)
                 if valor1 != 0 or valor2 != 0:
                     valor_r = 1
                 else:
@@ -307,8 +312,8 @@ class MaquinaVirtual:
                 dir1 = self.__lista_cuadruplos[i][1]
                 dir2 = self.__lista_cuadruplos[i][2]
                 dir_r = self.__lista_cuadruplos[i][3]
-                valor1 = Memoria.Memoria.getInstance().getValorParaEspacio(dir1)
-                valor2 = Memoria.Memoria.getInstance().getValorParaEspacio(dir2)
+                valor1 = Memoria.Memoria.getInstance().getValorParaEspacio(dir1, offset_locales)
+                valor2 = Memoria.Memoria.getInstance().getValorParaEspacio(dir2, offset_locales)
                 if valor1 != valor2:
                     valor_r = 1
                 else:
@@ -316,14 +321,15 @@ class MaquinaVirtual:
                 Memoria.Memoria.getInstance().setValorParaEspacio(dir_r, valor_r, offset_locales)
 
             elif operator == id_goto_f:
+                print("AQUI ESTA EL GOTOF+++++++++++++++++++++++++++++++++++++++++++++++++")
                 dir1 = self.__lista_cuadruplos[i][1]
-                valor1 = Memoria.Memoria.getInstance().getValorParaEspacio(dir1)
+                valor1 = Memoria.Memoria.getInstance().getValorParaEspacio(dir1, offset_locales)
                 if valor1 == 0:
                     i = self.__lista_cuadruplos[i][3] - 1
 
             elif operator == id_goto_t:
                 dir1 = self.__lista_cuadruplos[i][1]
-                valor1 = Memoria.Memoria.getInstance().getValorParaEspacio(dir1)
+                valor1 = Memoria.Memoria.getInstance().getValorParaEspacio(dir1, offset_locales)
                 if valor1 != 0:
                     i = self.__lista_cuadruplos[i][3] - 1
 
@@ -352,7 +358,8 @@ class MaquinaVirtual:
 
             elif operator == id_output:
                 Interfaz.Interfaz.getInstance().muestra(Memoria.Memoria.getInstance().
-                                                        getValorParaEspacio(self.__lista_cuadruplos[i][3]))
+                                                        getValorParaEspacio(self.__lista_cuadruplos[i][3],
+                                                                            offset_locales))
 
             elif operator == id_a_entero:
                 var = Memoria.Memoria.getInstance().getValorParaEspacio(self.__lista_cuadruplos[i][1], offset_locales)

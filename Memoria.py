@@ -151,7 +151,7 @@ class Memoria:
                     valor = valor[1:-1]
                 self.__bloque_constantes_ejecucion[tipo].append(valor)
 
-        def getValorParaEspacio(self, espacio, offset_actual_locales=None):
+        def getValorParaEspacio(self, espacio, offset_actual_locales):
             if Utils.DEBUGGING_MODE:
                 print("Get de espacio:", espacio)
             if espacio < Memoria.OFFSET_ENTEROS_TEMPORALES:
@@ -175,7 +175,17 @@ class Memoria:
                 valor_tipo = (espacio - Memoria.OFFSET_ENTEROS_LOCALES) / Memoria.ESPACIO_LOCALES
                 indice = (espacio - Memoria.OFFSET_ENTEROS_LOCALES) % Memoria.ESPACIO_LOCALES
                 if offset_actual_locales is not None and len(offset_actual_locales) > 0:
+                    if Utils.DEBUGGING_MODE:
+                        print("Get de local:")
+                        print("\tValor:", self.__bloque_local[valor_tipo][indice + offset_actual_locales[valor_tipo]])
+                        print("\tEspacio:", espacio)
+                        print("\tOffsets:", offset_actual_locales)
                     return self.__bloque_local[valor_tipo][indice + offset_actual_locales[valor_tipo]]
+                if Utils.DEBUGGING_MODE:
+                    print("Get de local:")
+                    print("\tValor:", self.__bloque_local[valor_tipo][indice])
+                    print("\tEspacio:", espacio)
+                    print("\tOffsets:", offset_actual_locales)
                 return self.__bloque_local[valor_tipo][indice]
 
             # Es temporal
@@ -214,11 +224,6 @@ class Memoria:
 
             # Manejo de locales
             if Memoria.OFFSET_ENTEROS_LOCALES <= espacio < Memoria.OFFSET_STRINGS_LOCALES + Memoria.ESPACIO_LOCALES:
-                if Utils.DEBUGGING_MODE:
-                    print("_______________________________________________")
-                    print(offset_actual_locales)
-                    print(self.__bloque_local)
-                    print("_______________________________________________")
                 valor_tipo = (espacio - Memoria.OFFSET_ENTEROS_LOCALES) / Memoria.ESPACIO_LOCALES
                 indice = (espacio - Memoria.OFFSET_ENTEROS_LOCALES) % Memoria.ESPACIO_LOCALES
 
@@ -226,6 +231,11 @@ class Memoria:
                     self.__bloque_local[valor_tipo][indice + offset_actual_locales[valor_tipo]] = valor
                 else:
                     self.__bloque_local[valor_tipo][indice] = valor
+                if Utils.DEBUGGING_MODE:
+                    print("______________Set a variable local_____________")
+                    print(offset_actual_locales)
+                    print(self.__bloque_local)
+                    print("_______________________________________________")
 
             # Aqui se manejan los temporales
             if Memoria.OFFSET_ENTEROS_TEMPORALES <= espacio < Memoria.OFFSET_STRINGS_TEMPORALES + \
