@@ -16,6 +16,7 @@ class Variable:
         self.__valor = None
         self.__espacio_memoria = 0
         self.__constantes_acceso = []
+        self.__lista_dimensiones = lista_dimensiones
         if lista_dimensiones is not None and len(lista_dimensiones) > 0:
             acum_dimensiones = 1
             for dimension in lista_dimensiones:
@@ -53,6 +54,14 @@ class Variable:
 
     def getScope(self):
         return self.__scope
+
+    def getLimSuperior(self, indice):
+        try:
+            return self.__lista_dimensiones[indice]
+        except IndexError:
+            raise IndexError(
+                "Se intento acceder a una variable con " + str(indice) + ", teniendo un total de " + str(len(
+                    self.__lista_dimensiones)) + " dimensiones.")
 
     def getDimension(self, num_dimension):
         try:

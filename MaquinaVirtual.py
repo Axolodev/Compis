@@ -370,7 +370,6 @@ class MaquinaVirtual:
                     print(Utils.bcolors.buildInfoMessage("lim_inf\tlim_sup\tchecado"))
                     print(
                         Utils.bcolors.buildInfoMessage(str(lim_inf) + "\t" + str(lim_sup) + "\t" + str(valor_checado)))
-
                 if not (lim_inf <= valor_checado < lim_sup):
                     raise IndexError(Utils.bcolors.buildErrorMessage("Indice fuera de rango. El arreglo tiene " + str(
                         lim_sup) + " elementos, indexados del " + str(lim_inf) + " al " + str(

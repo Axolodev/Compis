@@ -1007,7 +1007,6 @@ def p_var_consume_id_var_cte(p):
     var = var_table.getVariable(p[1])
     var_actual = var
     genera_operando({"tipo": var.getTipo(), "valor": var.getEspacioMemoria()})
-    contador_variable_dimensionada = 0
 
 
 def p_acceso_variable_dimensionada(p):
@@ -1066,6 +1065,7 @@ def p_fondo_falso_dimension(p):
     if Utils.DEBUGGING_MODE:
         print("Meter fondo falso a pila_dimensiones")
     pila_dimensiones.append([var_actual, contador_variable_dimensionada])
+    contador_variable_dimensionada = 0
     pila_operadores.append("(")
 
 
@@ -1077,11 +1077,18 @@ def p_acceso_arreglo(p):
     global contador_variable_dimensionada
     global var_actual
     global pila_tipos
+    lim_superior = pila_dimensiones[-1][0].getLimSuperior(contador_variable_dimensionada)
+    if Utils.DEBUGGING_MODE:
+        print(Utils.bcolors.buildInfoMessage("Chequeo de limites"))
+        print(Utils.bcolors.buildInfoMessage(pila_dimensiones[-1][0].getNombre()))
+        print(Utils.bcolors.buildInfoMessage(str(contador_variable_dimensionada)))
+        print(Utils.bcolors.buildInfoMessage(str(lim_superior)))
+        print(Utils.bcolors.buildInfoMessage("Cuadruplo:" + str(len(lista_cuadruplos))))
     dimension = pila_dimensiones[-1][0].getDimension(contador_variable_dimensionada)
     cuadruplo_verificacion = [None] * 4
     cuadruplo_verificacion[0] = Utils.Operador.getId('ver')
     cuadruplo_verificacion[1] = Memoria.Memoria.getInstance().generaEspacioConstantes(Utils.Tipo.Entero, 0)
-    cuadruplo_verificacion[2] = Memoria.Memoria.getInstance().generaEspacioConstantes(Utils.Tipo.Entero, dimension)
+    cuadruplo_verificacion[2] = Memoria.Memoria.getInstance().generaEspacioConstantes(Utils.Tipo.Entero, lim_superior)
     cuadruplo_verificacion[3] = pila_operandos[-1]
     lista_cuadruplos.append(cuadruplo_verificacion)
     if pila_dimensiones[-1][0].getCantidadDimensiones() - 1 != contador_variable_dimensionada:
@@ -1240,16 +1247,41 @@ def parse(source):
                 aa[i] = (i + 1) * 5;
                 j = 0;
                 mientras(j < 4){
-                    matriz_global[i][j] = (i * 3) + j;
+                    matriz_global[i][j] = (j + 1) + (i * 4);
+                    output(j);
                     j = j + 1;
-                    output(\"Hola\" + a_string(i));
-                    output((i * 3) + j);
                 };
                 i = i + 1;
             };
         }
     '''
-    parser.parse(data, debug=0)
+    matrix_test = '''
+        entero matriz_global[3][4][3];
+        inicio funcion entero main(){
+            entero i;
+            entero arreglo[3];
+            entero j;
+            entero k;
+            entero contador;
+            contador = 0;
+            i = 0;
+            mientras(i < 3){
+                j = 0;
+                mientras(j < 4){
+                    k = 0;
+                    mientras(k < 3){
+                        contador = contador + 1;
+                        matriz_global[i][j][k] = contador;
+                        output(matriz_global[i][j][k]);
+                        k = k + 1;
+                    };
+                    j = j + 1;
+                };
+                i = i + 1;
+            };
+        }
+    '''
+    parser.parse(matrix_test, debug=0)
     return lista_cuadruplos
 
 
