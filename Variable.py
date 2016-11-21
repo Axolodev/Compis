@@ -1,10 +1,9 @@
 from __future__ import print_function
 import Memoria
 import Utils
-
+import TablaVariables
 
 class Variable:
-
     def __init__(self, tipo, nombre, scope, lista_dimensiones):
         if Utils.DEBUGGING_MODE:
             print("Nombre:", nombre)
@@ -26,7 +25,7 @@ class Variable:
                 acum_dimensiones /= dimension
                 lista_constantes_acceso.append(acum_dimensiones)
             lista_constantes_acceso[-1] = k
-            self.__constantes_acceso = lista_dimensiones
+            self.__constantes_acceso = lista_constantes_acceso
         if tipo != Utils.Tipo.Vacio:
             self.__espacio_memoria = Memoria.Memoria.getInstance().generaEspacioVariable(scope, tipo, lista_dimensiones)
         if Utils.DEBUGGING_MODE:
@@ -53,6 +52,19 @@ class Variable:
 
     def getScope(self):
         return self.__scope
+
+    def getDimension(self, num_dimension):
+        try:
+            return self.__constantes_acceso[num_dimension]
+        except IndexError:
+            raise IndexError("Se intento acceder a una variable con " + num_dimension + ", teniendo un total de " + len(
+                self.__constantes_acceso) + " dimensiones.")
+
+    def getCantidadDimensiones(self):
+        return len(self.__constantes_acceso)
+
+    def getDimensiones(self):
+        return self.__constantes_acceso
 
     def __str__(self):
         to_str = self.__nombre

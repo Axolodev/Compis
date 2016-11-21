@@ -89,12 +89,15 @@ tipo_actual = Utils.Tipo.Vacio
 lista_dimensiones = []
 tipo_funcion_actual = Utils.Tipo.Vacio
 nombre_funcion_actual = None
+contador_variable_dimensionada = 0
+var_actual = None
 
 # Pilas auxiliares
 pila_tipos = []
 pila_operadores = []
 pila_operandos = []
 pila_saltos = []
+pila_dimensiones = []
 
 # Lista de cuadruplos
 lista_cuadruplos = []
@@ -377,19 +380,6 @@ def p_estatuto_rec(p):
                 | empty
     """
     pass
-
-
-def p_acceso_variable_dimensionada(p):
-    """
-    acceso_variable_dimensionada : acceso_arreglo acceso_variable_dimensionada
-                | empty
-    """
-
-
-def p_acceso_arreglo(p):
-    """
-    acceso_arreglo : OP_CORCHETE_IZQ expresion OP_CORCHETE_DER
-    """
 
 
 def p_asignacion(p):
@@ -995,8 +985,103 @@ def p_var_consume_id_var_cte(p):
     """
     var_consume_id_var_cte : ID
     """
+    global var_actual
+    global contador_variable_dimensionada
     var = var_table.getVariable(p[1])
+    var_actual = var
     genera_operando({"tipo": var.getTipo(), "valor": var.getEspacioMemoria()})
+    contador_variable_dimensionada = 0
+
+
+def p_acceso_variable_dimensionada(p):
+    """
+    acceso_variable_dimensionada : fondo_falso_dimension acceso_arreglo acceso_variable_dimensionada
+                | empty
+    """
+    global var_actual, contador_variable_dimensionada, pila_operandos
+    # Generar cuadruplos de acceso
+    if len(p) > 2:
+        if Utils.DEBUGGING_MODE:
+            print("Sacar fondo falso de pila_dimensiones")
+        tipo = Utils.Tipo.Entero if p == 0 else Utils.Tipo.Flotante if p == 1 else Utils.Tipo.String
+        cuadruplo_acceso = [None] * 4
+        tipo_ac = pila_tipos[-1]
+        tipo = Utils.Tipo.Entero if tipo_ac == 0 else Utils.Tipo.Flotante if tipo_ac == 1 else Utils.Tipo.String
+        temporal = Memoria.Memoria.getInstance().generaEspacioTemporal(tipo)
+        cuadruplo_acceso[0] = Utils.Operador.getId('+')
+        cuadruplo_acceso[1] = pila_operandos.pop()
+        cuadruplo_acceso[2] = Memoria.Memoria.getInstance().generaEspacioTemporal(tipo)
+        cuadruplo_acceso[3] = temporal
+        pila_operandos.append(temporal)
+
+        cuadruplo_apuntador = [None] * 4
+        cuadruplo_apuntador[0] = Utils.Operador.getId('+')
+        cuadruplo_apuntador[1] = temporal
+        print("Var actual:", var_actual)
+        cuadruplo_apuntador[2] = Memoria.Memoria.getInstance().generaEspacioConstantes(Utils.Tipo.Entero,
+                                                                                       var_actual.getEspacioMemoria())
+        cuadruplo_apuntador[3] = Memoria.Memoria.getInstance().generaEspacioTemporal(tipo)
+        pila_operandos.append("(" + str(cuadruplo_apuntador[3]) + ")")
+        pila_operadores.pop()
+
+        # Obtener variable dimensionada anterior, en caso de que la haya
+        if len(pila_dimensiones) > 0:
+            fondo = pila_dimensiones.pop()
+            var_actual = fondo[0]
+            contador_variable_dimensionada = fondo[1]
+
+
+def p_fondo_falso_dimension(p):
+    """
+    fondo_falso_dimension : empty
+    """
+    global pila_dimensiones
+    global var_actual, contador_variable_dimensionada
+    if Utils.DEBUGGING_MODE:
+        print("Meter fondo falso a pila_dimensiones")
+    pila_dimensiones.append([var_actual, contador_variable_dimensionada])
+    pila_operadores.append("(")
+
+
+def p_acceso_arreglo(p):
+    """
+    acceso_arreglo :  OP_CORCHETE_IZQ expresion OP_CORCHETE_DER
+    """
+    global pila_operandos
+    global contador_variable_dimensionada
+    global var_actual
+    global pila_tipos
+    dimension = var_actual.getDimension(contador_variable_dimensionada)
+    cuadruplo_verificacion = [None] * 4
+    cuadruplo_verificacion[0] = Utils.Operador.getId('ver')
+    cuadruplo_verificacion[1] = Memoria.Memoria.getInstance().generaEspacioConstantes(Utils.Tipo.Entero, 0)
+    cuadruplo_verificacion[2] = Memoria.Memoria.getInstance().generaEspacioConstantes(Utils.Tipo.Entero, dimension)
+    cuadruplo_verificacion[3] = pila_operandos[-1]
+    lista_cuadruplos.append(cuadruplo_verificacion)
+    tipo_ac = pila_tipos[-1]
+    tipo = Utils.Tipo.Entero if tipo_ac == 0 else Utils.Tipo.Flotante if tipo_ac == 1 else Utils.Tipo.String
+    if var_actual.getCantidadDimensiones() - 1 != contador_variable_dimensionada:
+        aux = pila_operandos.pop()
+        temporal = Memoria.Memoria.getInstance().generaEspacioTemporal(tipo)
+        cuadruplo_dimension = [None] * 4
+        cuadruplo_dimension[0] = Utils.Operador.getId('*')
+        cuadruplo_dimension[1] = aux
+        cuadruplo_dimension[2] = Memoria.Memoria.getInstance().generaEspacioConstantes(Utils.Tipo.Entero, dimension)
+        cuadruplo_dimension[3] = temporal
+        lista_cuadruplos.append(cuadruplo_dimension)
+        pila_operandos.append(temporal)
+    if contador_variable_dimensionada > 0:
+        aux2 = pila_operandos.pop()
+        aux1 = pila_operandos.pop()
+        temporal = Memoria.Memoria.getInstance().generaEspacioTemporal(tipo)
+        cuadruplo_dimension = [None] * 4
+        cuadruplo_dimension[0] = Utils.Operador.getId('+')
+        cuadruplo_dimension[1] = aux1
+        cuadruplo_dimension[2] = aux2
+        cuadruplo_dimension[3] = temporal
+        lista_cuadruplos.append(cuadruplo_dimension)
+        pila_operandos.append(temporal)
+    contador_variable_dimensionada += 1
 
 
 def p_a_flotante(p):
@@ -1122,11 +1207,12 @@ def parse(source):
     parser = yacc.yacc()
     data = '''
         entero global;
-        entero arreglo_global[10];
+        entero arreglo_global[5][5];
         funcion entero fibonacci(){
             entero num_uno, num_dos, num_tres;
             entero arreglo_flotante[2][5];
             entero contador;
+            arreglo_flotante[1][3] = arreglo_flotante[1][1];
             num_uno = 1;
             num_dos = 1;
             mientras(contador < 10){

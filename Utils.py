@@ -56,6 +56,7 @@ class Operador:
         'ret': 302,
         'param': 303,
         'era': 304,
+        'ver': 400,
         'end': 999,
     }
 

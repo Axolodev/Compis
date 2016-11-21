@@ -17,7 +17,6 @@ class TablaVariables:
         def nuevaVariable(self, tipo, nombre, lista_dimensiones=None, scope=None):
             if scope is None:
                 scope = str(self.tablaFunciones.getScopeActual())
-            #
             if (scope + "_" + str(nombre)) in self.__listaVariables or (
                         "0_" + str(nombre)) in self.__listaVariables:
                 raise KeyError("Ya existe una variable con este nombre")
@@ -32,7 +31,7 @@ class TablaVariables:
                 return self.__listaVariables[str(self.tablaFunciones.getScopeActual()) + "_" + str(nombre)]
             elif ("0_" + str(nombre)) in self.__listaVariables:
                 return self.__listaVariables["0_" + str(nombre)]
-            raise KeyError("La variable no existe")
+            raise KeyError("La variable " + str(nombre) + " no existe")
 
         def setValorAVariable(self, nombre, valor):
             var = self.__listaVariables.get(str(self.tablaFunciones.getScopeActual()) + "_" + str(nombre))

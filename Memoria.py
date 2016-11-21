@@ -1,7 +1,7 @@
 from __future__ import print_function
 import Utils
+import TablaVariables
 import operator
-
 
 class Memoria:
     OFFSET_INICIO_GLOBALES = 1000
@@ -103,7 +103,13 @@ class Memoria:
 
         def generaEspaciosParaGlobales(self, lista_globales):
             for k, gl in lista_globales.items():
-                self.__bloque_global[gl.getTipo().value].insert(0, Utils.Tipo.getDefault(gl.getTipo()))
+                name = k[k.index('_') + 1:]
+                dim = TablaVariables.TablaVariables.getInstance().getVariable(name).getDimensiones()
+                if len(dim) > 0:
+                    for x in range(0, dim[-1]):
+                        self.__bloque_global[gl.getTipo().value].insert(0, Utils.Tipo.getDefault(gl.getTipo()))
+                else:
+                    self.__bloque_global[gl.getTipo().value].insert(0, Utils.Tipo.getDefault(gl.getTipo()))
 
         def printVariablesActuales(self):
             print("Globales:")
@@ -146,6 +152,8 @@ class Memoria:
                 self.__bloque_constantes_ejecucion[tipo].append(valor)
 
         def getValorParaEspacio(self, espacio, offset_actual_locales=None):
+            if Utils.DEBUGGING_MODE:
+                print("Get de espacio:", espacio)
             if espacio < Memoria.OFFSET_ENTEROS_TEMPORALES:
                 # Es global
                 valor_tipo = (espacio - Memoria.OFFSET_ENTEROS_GLOBALES) / Memoria.ESPACIO_GLOBALES
@@ -234,14 +242,15 @@ class Memoria:
 
                 if len(self.__pila_offsets_temporales) > 0:
                     t = self.__pila_offsets_temporales[-1][valor_tipo]
+                    # TODO: hacer este mismo parche para locales y globales, es necesario para que funcionen arreglos.
                     while len(self.__bloque_temporal[valor_tipo]) - t <= indice:
                         self.__bloque_temporal[valor_tipo].append(valor)
                         self.__offsets_temporales[valor_tipo] += 1
                     else:
                         self.__bloque_temporal[valor_tipo][indice + t] = valor
                 else:
-                    while len(self.__bloque_temporal[
-                                  valor_tipo]) <= indice:  # PARCHE para que funcionen condiciones if/else
+                    # PARCHE para que funcionen condiciones if/else
+                    while len(self.__bloque_temporal[valor_tipo]) <= indice:
                         self.__bloque_temporal[valor_tipo].append(valor)
                         self.__offsets_temporales[valor_tipo] += 1
                     else:
