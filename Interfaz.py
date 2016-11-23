@@ -14,11 +14,10 @@ class Interfaz():
             self.root = Tkinter.Tk()
             self.root.title("Draw with Jr. Lang!")
             self.root.geometry("1920x1080")
-            self.__canvas = Tkinter.Canvas(self.root, width=2000, height=400)
-            self.__canvas.pack(side=BOTTOM)
-            self.__turtle = turtle.RawTurtle(self.__canvas)
+            cv = Tkinter.Canvas(self.root, width=2000, height=400)
+            cv.pack(side=BOTTOM)
+            self.__turtle = turtle.RawTurtle(cv)
             self.__turtle.speed(5)
-            self.__turtle_screen = turtle.TurtleScreen(self.__canvas)
 
             self.__turtle.shape("turtle")
             self.__turtle.color("green")
@@ -104,3 +103,6 @@ class Interfaz():
         if not Interfaz.instancia:
             Interfaz.instancia = Interfaz.__Interfaz()
         return Interfaz.instancia
+
+
+
