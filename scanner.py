@@ -327,7 +327,6 @@ def p_op_punto_coma(p):
     global pila_tipos
     global pila_operandos
     pila_tipos = []
-    pila_operandos = []
 
 
 def p_def_var(p):
@@ -1002,7 +1001,8 @@ def p_var_consume_id_var_cte(p):
     global contador_variable_dimensionada
     var = var_table.getVariable(p[1])
     var_actual = var
-    genera_operando({"tipo": var.getTipo(), "valor": var.getEspacioMemoria()})
+    if len(var.getDimensiones()) == 0:
+        genera_operando({"tipo": var.getTipo(), "valor": var.getEspacioMemoria()})
 
 
 def p_acceso_variable_dimensionada(p):
@@ -1343,12 +1343,10 @@ def parse(source):
         entero arreglo_find[5];
 
         funcion entero factorial_recursivo(entero num){
-            entero temp;
             si(num == 1){
                 retorna 1;
             };
-            temp = num*factorial_recursivo(num-1);
-            retorna temp;
+            retorna num*factorial_recursivo(num-1);
         }
         funcion entero fibonacci_rec(entero num){
             si(num == 1 || num == 2){
@@ -1418,7 +1416,91 @@ def parse(source):
             camina_cuadrados_it(50);
         }
     """
-    parser.parse(recursive_fact, debug=0)
+
+    mat_mult = """
+        entero r[3][3];
+
+        inicio funcion entero main(){
+            entero i, j, k;
+            entero m1[3][3];
+            entero m2[3][3];
+
+            i = 0;
+            j = 0;
+            k = 0;
+            mientras(i < 3){
+                j = 0;
+                mientras(j < 3){
+                    m1[i][j] = (i * 3) + (j + 1);
+                    m2[j][i] = (i * 3) + (j + 1);
+                    j = j + 1;
+                };
+                i = i + 1;
+            };
+
+            i = 0;
+            mientras(i < 3) {
+                j = 0;
+                mientras(j < 3){
+                    k = 0;
+                    mientras(k < 3){
+                        r[i][j] = r[i][j] + m1[i][k] * m1[k][j];
+                        k = k + 1;
+                    };
+                    j = j + 1;
+                };
+                i = i + 1;
+            };
+
+            i = 0;
+            j = 0;
+            k = 0;
+            mientras(i < 3){
+                j = 0;
+                mientras(j < 3){
+                    output(r[i][j]);
+                    j = j + 1;
+                };
+                i = i + 1;
+            };
+        }
+    """
+
+    array_sort = """
+        entero arreglo[3];
+
+        inicio funcion entero m(){
+            entero c;
+            entero i;
+            entero temporal;
+            mientras (c < 3){
+                arreglo[c] = (6 - c) * (6 - c);
+                output(arreglo[c]);
+                c = c + 1;
+            };
+
+            c = 0;
+            mientras(c < 3){
+                i = c + 1;
+                mientras(i < 3){
+                    si(arreglo[i] < arreglo[c]){
+                        temporal = arreglo[c];
+                        arreglo[c] = arreglo[i];
+                        arreglo[i] = temporal;
+                    };
+                    i = i + 1;
+                };
+                c = c + 1;
+            };
+
+            c = 0;
+            mientras(c < 3){
+                output(arreglo[c]);
+                c = c + 1;
+            };
+        }
+    """
+    parser.parse(array_sort, debug=0)
     return lista_cuadruplos
 
 

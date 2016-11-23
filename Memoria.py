@@ -229,6 +229,7 @@ class Memoria:
             """
             while isinstance(espacio, list):
                 espacio = self.getValorParaEspacio(espacio[0], offset_actual_locales)
+
             if Memoria.OFFSET_ENTEROS_GLOBALES <= espacio < Memoria.OFFSET_STRINGS_GLOBALES + Memoria.ESPACIO_GLOBALES:
                 # Es global
                 valor_tipo = (espacio - Memoria.OFFSET_ENTEROS_GLOBALES) / Memoria.ESPACIO_GLOBALES

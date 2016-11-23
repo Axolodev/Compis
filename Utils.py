@@ -90,4 +90,9 @@ class bcolors:
     def buildErrorMessage(message):
         return bcolors.FAIL + message + bcolors.ENDC
 
+    @staticmethod
+    def buildPinkMessage(message):
+        return bcolors.HEADER + message + bcolors.ENDC
+
+
 DEBUGGING_MODE = False

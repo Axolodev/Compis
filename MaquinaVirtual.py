@@ -84,7 +84,7 @@ class MaquinaVirtual:
         while i < len(self.__lista_cuadruplos):
             operator = self.__lista_cuadruplos[i][0]
             if Utils.DEBUGGING_MODE:
-                print(i, self.__lista_cuadruplos[i])
+                print(Utils.bcolors.buildPinkMessage(str(i) + ":" +  str(self.__lista_cuadruplos[i])))
 
             if operator == id_goto:
                 if Utils.DEBUGGING_MODE:
@@ -105,7 +105,7 @@ class MaquinaVirtual:
                 valor = Memoria.Memoria.getInstance().getValorParaEspacio(dir1,
                                                                           offset_locales)
                 if Utils.DEBUGGING_MODE:
-                    print(self.__lista_cuadruplos[i])
+                    print(Utils.bcolors.buildWarningMessage("AsignacionAsignacionAsignacion"))
                 Memoria.Memoria.getInstance().setValorParaEspacio(dir2, valor, offset_locales)
 
             elif operator == id_ret:
