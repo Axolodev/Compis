@@ -148,8 +148,6 @@ class MaquinaVirtual:
                     print(Utils.bcolors.buildErrorMessage("Cantidades totales de variables:" + str(v)))
                     print(Utils.bcolors.buildErrorMessage("Offsets:" + str(offset_locales)))
 
-
-
             elif operator == id_param:
                 offset_nueva_funcion = [x + y for x, y in
                                         zip(offset_locales, self.__cantidades_variables_locales_actuales)]
@@ -393,3 +391,5 @@ class MaquinaVirtual:
 
         if Utils.DEBUGGING_MODE:
             Memoria.Memoria.getInstance().printVariablesActuales()
+            for cuadruplo in self.__lista_cuadruplos:
+                print (cuadruplo)

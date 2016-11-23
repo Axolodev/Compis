@@ -94,5 +94,4 @@ class bcolors:
     def buildPinkMessage(message):
         return bcolors.HEADER + message + bcolors.ENDC
 
-
 DEBUGGING_MODE = False
