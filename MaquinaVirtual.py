@@ -55,6 +55,7 @@ class MaquinaVirtual:
         id_a_flotante = Utils.Operador.getId('a_flotante')
         id_a_string = Utils.Operador.getId('a_string')
         id_verifica = Utils.Operador.getId('ver')
+        id_end = Utils.Operador.getId('end')
 
         offset_locales = [0, 0, 0]
 
@@ -74,6 +75,10 @@ class MaquinaVirtual:
         lista_variables_funcion = []
         self.__cantidades_variables_locales_actuales = Memoria.Memoria.getInstance().darDeAltaLocales(
             TablaFunciones.TablaFunciones.getInstance().getListaVariablesDeMain())
+        if Utils.DEBUGGING_MODE:
+            print(Utils.bcolors.buildSuccessMessage("Entrando a main."))
+            print(Utils.bcolors.buildSuccessMessage(
+                "Variables locales actuales:" + str(self.__cantidades_variables_locales_actuales)))
 
         i = 0
         while i < len(self.__lista_cuadruplos):
@@ -111,15 +116,6 @@ class MaquinaVirtual:
                     i = funcion_padre[0]
                     self.__cantidades_variables_locales_actuales = funcion_padre[1]
 
-            elif operator == id_era:
-                scope = TablaFunciones.TablaFunciones.getInstance().getFuncion(self.__lista_cuadruplos[i][1]).getScope()
-                variables = TablaVariables.TablaVariables.getInstance().consigueVariablesPara(scope)
-
-                if Utils.DEBUGGING_MODE:
-                    print("Variables de scope:", scope)
-                    print("variables locales de funciones: ")
-                    print(variables)
-                Memoria.Memoria.getInstance().darDeAltaLocales(variables)
 
             elif operator == id_return:
                 # Obtener el nombre de la funcion actual, este se encuentra en la pila de ejecucion. Se inserta en gosub
@@ -137,6 +133,22 @@ class MaquinaVirtual:
                 # Encontrar el ret correspondiente de la funcion
                 while self.__lista_cuadruplos[i + 1][0] != id_ret:
                     i += 1
+
+            elif operator == id_era:
+                scope = TablaFunciones.TablaFunciones.getInstance().getFuncion(self.__lista_cuadruplos[i][1]).getScope()
+                variables = TablaVariables.TablaVariables.getInstance().consigueVariablesPara(scope)
+                v = Memoria.Memoria.getInstance().darDeAltaLocales(variables)
+                lista_variables_funcion = v
+                if Utils.DEBUGGING_MODE:
+                    print("Variables de scope:", scope)
+                    print("variables locales de funciones: ")
+                    print(variables)
+                    print(Utils.bcolors.buildErrorMessage("Aqui hay error"))
+                    print(Utils.bcolors.buildErrorMessage("Variables de funcion:" + str(lista_variables_funcion)))
+                    print(Utils.bcolors.buildErrorMessage("Cantidades totales de variables:" + str(v)))
+                    print(Utils.bcolors.buildErrorMessage("Offsets:" + str(offset_locales)))
+
+
 
             elif operator == id_param:
                 offset_nueva_funcion = [x + y for x, y in
@@ -156,8 +168,9 @@ class MaquinaVirtual:
                 # Obtener nuevo offset de locales
                 offset_locales = [x + y for x, y in zip(offset_locales, self.__cantidades_variables_locales_actuales)]
                 if Utils.DEBUGGING_MODE:
-                    print("Entrando a funcion:", nombre_funcion)
-                    print("\tOffsets:", offset_locales)
+                    print(Utils.bcolors.buildInfoMessage("Entrando a funcion:" + nombre_funcion))
+                    print(Utils.bcolors.buildInfoMessage("\tOffsets:" + str(offset_locales)))
+                # Error aqui. No se esta actualizando la lista de varaiables de funcion en ningun punto.
                 self.__cantidades_variables_locales_actuales = lista_variables_funcion
                 Memoria.Memoria.getInstance().congelarTemporalesParaNuevaFuncion()
 
@@ -167,16 +180,16 @@ class MaquinaVirtual:
 
             elif operator == id_mira:
                 Interfaz.Interfaz.getInstance().mira(
-                    Memoria.Memoria.getInstance().getValorParaEspacio(self.__lista_cuadruplos[i][3]))
+                    Memoria.Memoria.getInstance().getValorParaEspacio(self.__lista_cuadruplos[i][3], offset_locales))
 
             elif operator == id_gira:
                 Interfaz.Interfaz.getInstance().gira(
-                    Memoria.Memoria.getInstance().getValorParaEspacio(self.__lista_cuadruplos[i][3]))
+                    Memoria.Memoria.getInstance().getValorParaEspacio(self.__lista_cuadruplos[i][3], offset_locales))
 
             elif operator == id_salta_a:
                 Interfaz.Interfaz.getInstance().salta(
-                    Memoria.Memoria.getInstance().getValorParaEspacio(self.__lista_cuadruplos[i][1]),
-                    Memoria.Memoria.getInstance().getValorParaEspacio(self.__lista_cuadruplos[i][2]))
+                    Memoria.Memoria.getInstance().getValorParaEspacio(self.__lista_cuadruplos[i][1], offset_locales),
+                    Memoria.Memoria.getInstance().getValorParaEspacio(self.__lista_cuadruplos[i][2], offset_locales))
 
             elif operator == id_reiniciar:
                 Interfaz.Interfaz.getInstance().reinicia()
@@ -374,7 +387,8 @@ class MaquinaVirtual:
                     raise IndexError(Utils.bcolors.buildErrorMessage("Indice fuera de rango. El arreglo tiene " + str(
                         lim_sup) + " elementos, indexados del " + str(lim_inf) + " al " + str(
                         lim_sup - 1) + ". Se intento acceder al " + str(valor_checado)))
-
+            elif operator == id_end:
+                print("El programa termino su ejecucion!")
             i += 1
 
         if Utils.DEBUGGING_MODE:

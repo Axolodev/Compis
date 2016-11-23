@@ -2,6 +2,7 @@ from __future__ import print_function
 import Utils
 import TablaVariables
 import operator
+import copy
 
 
 class Memoria:
@@ -293,9 +294,10 @@ class Memoria:
             if Utils.DEBUGGING_MODE:
                 print(Utils.bcolors.buildInfoMessage("Dando de alta variables locales"))
                 print(variables)
+                print(self.__bloque_local)
                 for k, v in variables.items():
-                    print(k, v)
-
+                    print(k, v.getEspacioMemoria())
+            cantidad_anterior = copy.deepcopy(self.__bloque_local)
             # Iterar sobre todas las variables recibidas
             for k, v in variables.items():
                 # Obtener las dimensiones de la variable
@@ -306,9 +308,11 @@ class Memoria:
                 else:
                     # Agregar un solo valor
                     self.__bloque_local[v.getTipo().value].append(Utils.Tipo.getDefault(v.getTipo()))
-            return [len(self.__bloque_local[0]), len(self.__bloque_local[1]), len(self.__bloque_local[2])]
-
-
+            if Utils.DEBUGGING_MODE:
+                print(Utils.bcolors.buildWarningMessage("bloque_local:"))
+                print(Utils.bcolors.buildWarningMessage(str(cantidad_anterior)))
+                print(Utils.bcolors.buildWarningMessage(str(self.__bloque_local)))
+            return [len(x) - len(y) for x, y in zip(self.__bloque_local, cantidad_anterior)]
 
         def liberarLocales(self, cantidades):
             counter = 0

@@ -499,13 +499,9 @@ def p_expresion_parametro(p):
     lista_param.insert(0, pila_tipos.pop())
     funcion = func_table.getFuncion(variable_nombre_funcion)
     lista_variables = var_table.consigueVariablesPara(funcion.getScope())
-    print("LISTA DE VARIABLES")
-    print(lista_variables.values())
     lista = list(zip(lista_variables.values()))
     lista_memoria = [list(x)[0].getEspacioMemoria() for x in lista]
-    print(lista_memoria)
     variables_ordenadas = sorted(lista_memoria)
-    print(variables_ordenadas)
 
     cuadruplo_inicial[0] = Utils.Operador.getId('param')
     cuadruplo_inicial[1] = pila_operandos.pop()
@@ -723,10 +719,10 @@ def p_factor(p):
             raise ArithmeticError('Tipo string no puede ser negativo')
         elif p[1] == '-':
             global cuadruplo_inicial
-            cuadruplo_inicial[0] = '-'
+            cuadruplo_inicial[0] = Utils.Operador.getId('-')
             cuadruplo_inicial[1] = pila_operandos.pop()
             cuadruplo_inicial[2] = None
-            cuadruplo_inicial[3] = -cuadruplo_inicial[1]
+            cuadruplo_inicial[3] = Memoria.Memoria.getInstance().generaEspacioTemporal(tipo)
             lista_cuadruplos.append(cuadruplo_inicial)
             pila_operandos.append(cuadruplo_inicial[3])
             cuadruplo_inicial = [None] * 4
@@ -1221,7 +1217,6 @@ def p_salta_a(p):
 
 def p_error(p):
     print("\nSyntax error with token of type " + p.type + " with value " + p.value + " in line " + str(p.lineno))
-    pass
 
 
 def genera_operando(operando_a_generar):
@@ -1257,6 +1252,49 @@ def parse(source):
     '''
     matrix_test = '''
         entero matriz_global[3][4][3];
+
+        funcion entero fibonacci_rec(entero num){
+            si(num == 1 || num == 2){
+                retorna 1;
+            };
+            retorna fibonacci_rec(num - 1) + fibonacci_rec(num - 2);
+        }
+
+        funcion entero factorial_rec(entero num){
+            output(num);
+            output(num == 1);
+            si(num == 1){
+                retorna 1;
+            };
+            retorna num * factorial_rec(num - 1);
+        }
+
+        funcion entero factorial_iter(entero num){
+            entero x;
+            x = 1;
+            mientras(num > 0){
+                x = x * num;
+                num = num - 1;
+            };
+            retorna x;
+        }
+
+        funcion entero fibonacci_iter(){
+            entero num_uno, num_dos, num_tres;
+            entero arreglo_flotante[2][5];
+            entero contador;
+            arreglo_flotante[1][3] = arreglo_flotante[1][1];
+            num_uno = 1;
+            num_dos = 1;
+            mientras(contador < 7){
+                num_uno = num_dos;
+                num_dos = num_tres;
+                num_tres = num_uno + num_dos;
+                contador = contador + 1;
+            };
+            retorna num_tres;
+        }
+
         inicio funcion entero main(){
             entero i;
             entero arreglo[3];
@@ -1272,16 +1310,115 @@ def parse(source):
                     mientras(k < 3){
                         contador = contador + 1;
                         matriz_global[i][j][k] = contador;
-                        output(matriz_global[i][j][k]);
                         k = k + 1;
                     };
                     j = j + 1;
                 };
                 i = i + 1;
             };
+
+
+            output(factorial_rec(5));
+            output(0);
+            output(factorial_iter(5));
+            output(fibonacci_iter());
         }
     '''
-    parser.parse(matrix_test, debug=0)
+
+    recursive_test = """
+        funcion entero factorial_rec(entero num){
+            entero temp;
+            si(num == 1){
+                retorna 1;
+            };
+            temp = num * factorial_rec(num - 1);
+            retorna temp;
+        }
+        inicio funcion entero main(){
+            output(factorial_rec(4));
+        }
+    """
+
+    recursive_fact = """
+        entero arreglo_find[5];
+
+        funcion entero factorial_recursivo(entero num){
+            entero temp;
+            si(num == 1){
+                retorna 1;
+            };
+            temp = num*factorial_recursivo(num-1);
+            retorna temp;
+        }
+        funcion entero fibonacci_rec(entero num){
+            si(num == 1 || num == 2){
+                retorna 1;
+            };
+            retorna fibonacci_rec(num - 1) + fibonacci_rec(num - 2);
+        }
+
+        funcion entero camina_cuadrados_rec(entero x){
+            entero y;
+            si (x == 1){
+                retorna 1;
+            };
+            y = camina_cuadrados_rec(x - 1) * 2;
+            camina(y);
+            gira(-90);
+            retorna y;
+        }
+
+        funcion entero factorial_iter(entero num){
+            entero x;
+            x = 1;
+            mientras(num > 0){
+                x = x * num;
+                num = num - 1;
+            };
+            retorna x;
+        }
+
+        funcion entero fibonacci_iter(){
+            entero num_uno, num_dos, num_tres;
+            entero contador;
+            num_uno = 1;
+            num_dos = 1;
+            mientras(contador < 6){
+                camina(contador * 5);
+                num_uno = num_dos;
+                num_dos = num_tres;
+                num_tres = num_uno + num_dos;
+                contador = contador + 1;
+            };
+            retorna num_tres;
+        }
+
+        funcion camina_cuadrados_it(entero x){
+            entero contador;
+            contador = 0;
+            mientras(contador < x){
+                camina(-contador * 2);
+                gira(90);
+                contador = contador + 1;
+            };
+        }
+
+        inicio funcion entero main(){
+            entero x;
+            entero y;
+            x = 6;
+            y = 4;
+            output(fibonacci_iter());
+            output(fibonacci_rec(y));
+
+            output(factorial_recursivo(x));
+            output(factorial_iter(x));
+
+            camina_cuadrados_rec(10);
+            camina_cuadrados_it(50);
+        }
+    """
+    parser.parse(recursive_fact, debug=0)
     return lista_cuadruplos
 
 
