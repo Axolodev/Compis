@@ -90,7 +90,7 @@ class Interfaz():
 
         def muestra(self, valor):
             self.OUTPUT.configure(state="normal")
-            self.OUTPUT.insert(END, "Este es el valor que imprimiste: " + str(valor) + "\n")
+            self.OUTPUT.insert(END, str(valor) + "\n")
             self.OUTPUT.configure(state="disabled")
 
         def destroy(self):

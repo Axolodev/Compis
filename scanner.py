@@ -153,6 +153,8 @@ def p_empty(p):
     """empty :"""
     pass
 
+# regla inicial de la gramatica
+
 
 def p_inicio(p):
     """inicio : crear_cuadruplo_inicio crear_var crear_funciones encontrar_posicion_cuadruplo_de_inicio funcion"""
@@ -190,6 +192,9 @@ def p_encontrar_posicion_cuadruplo_de_inicio(p):
     cuadruplo_inicial = [None] * 4
 
 
+# se crea el cuadruplo del main
+
+
 def p_crear_cuadruplo_inicio(p):
     """
     crear_cuadruplo_inicio :
@@ -207,6 +212,8 @@ def p_crear_funciones(p):
     """
     pass
 
+# se genera una variable con el nombre de la funcion
+
 
 def p_consumir_nombre_funcion(p):
     """
@@ -216,6 +223,8 @@ def p_consumir_nombre_funcion(p):
     global tipo_funcion_actual
     nombre_funcion_actual = p[1]
     var_table.nuevaVariable(tipo_funcion_actual, p[1], None, scope="0")
+
+# cuando se resuelve la regla de funcion, se agrega el cuadruplo de ret a lista de cuadruplos
 
 
 def p_funcion(p):
@@ -232,6 +241,8 @@ def p_funcion(p):
     lista_cuadruplos.append(cuadruplo_inicial)
     cuadruplo_inicial = [None] * 4
 
+# se crea una nueva funcion
+
 
 def p_dar_de_alta_funcion(p):
     """
@@ -245,6 +256,8 @@ def p_dar_de_alta_funcion(p):
     nombre_funcion_actual = None
     lista_param = []
 
+# se obtiene el tipo de la funcion
+
 
 def p_tipo_funcion(p):
     """
@@ -254,6 +267,8 @@ def p_tipo_funcion(p):
     func_table.nuevoScope()
     global tipo_funcion_actual
     tipo_funcion_actual = tipo_actual
+
+# se obtiene el tipo actual
 
 
 def p_tipo(p):
@@ -278,6 +293,8 @@ def p_parametos(p):
                 | empty
     """
     pass
+
+# se crea una variable nueva por cada parametro
 
 
 def p_consume_parametro_de_funcion(p):
@@ -319,6 +336,8 @@ def p_crear_var(p):
     """
     pass
 
+# se reinician pilas auxiliares
+
 
 def p_op_punto_coma(p):
     """
@@ -328,6 +347,8 @@ def p_op_punto_coma(p):
     global pila_operandos
     pila_tipos = []
     pila_operandos = []
+
+# se genera una variable nueva
 
 
 def p_def_var(p):
@@ -344,6 +365,8 @@ def p_def_dimensiones(p):
     def_dimensiones : declaracion_dimensiones def_dimensiones
                 | empty
     """
+
+# se obtiene el espacio necesario para las dimensiones de la matriz
 
 
 def p_declaracion_dimensiones(p):
@@ -382,7 +405,7 @@ def p_estatuto_rec(p):
     """
     pass
 
-
+# se genera cuadruplo de asignacion
 def p_asignacion(p):
     """
     asignacion : var_consume_id_var_cte acceso_variable_dimensionada OP_ASIGNACION expresion
@@ -390,12 +413,15 @@ def p_asignacion(p):
     global cuadruplo_inicial
     tipo_operando = pila_tipos.pop()
     tipo_resultado = pila_tipos.pop()
+    # en caso de haber error de semantica, se marca
     CuboSemantico.CuboSemantico.getTipo("=", tipo_operando, tipo_resultado)
     cuadruplo_inicial[0] = Utils.Operador.getId('=')
     cuadruplo_inicial[1] = pila_operandos.pop()
     cuadruplo_inicial[3] = pila_operandos.pop()
     lista_cuadruplos.append(cuadruplo_inicial)
     cuadruplo_inicial = [None] * 4
+
+# se genera cuadruplo goto de ciclo
 
 
 def p_ciclo(p):
@@ -413,6 +439,8 @@ def p_ciclo(p):
     cuadruplo_inicial[3] = len(lista_cuadruplos)
     cuadruplo_inicial = [None] * 4
 
+# se obtiene el cuadruplo a donde debe saltar el ciclo al terminar
+
 
 def p_consume_par_izq_ciclo(p):
     """
@@ -420,7 +448,7 @@ def p_consume_par_izq_ciclo(p):
     """
     pila_saltos.append(len(lista_cuadruplos))
 
-
+# se invoca funcion
 def p_ejec_funcion(p):
     """
     ejec_funcion : consume_id_funcion consume_par_izq genera_era ejec_funcion_medio OP_PARENTESIS_DER
@@ -430,8 +458,10 @@ def p_ejec_funcion(p):
     global pila_operadores
     i = 0
     pila_operadores.pop()
+    # verificar operadores
     func_table.checaParam(variable_nombre_funcion, lista_param)
     lista_param = []
+    # se obtiene la variable correspondiente al retorno de la funcion
     var = var_table.getVariable(variable_nombre_funcion)
     pila_tipos.append(var.getTipo())
     if Utils.DEBUGGING_MODE:
@@ -439,16 +469,18 @@ def p_ejec_funcion(p):
         print("Cuadruplos:")
         print("Pila de tipos despues de funcion:\n", pila_tipos)
         print("------------------------")
-
+    # se genera espacio temporal
     espacio = Memoria.Memoria.getInstance().generaEspacioTemporal(var.getTipo())
+    # se agrega a la pila de operandos
     pila_operandos.append(espacio)
+    # se genera cuadruplo de asignacion con la direccion donde estara el resultado
     cuadruplo_inicial[0] = Utils.Operador.getId('=')
     cuadruplo_inicial[1] = var.getEspacioMemoria()
     cuadruplo_inicial[3] = espacio
     lista_cuadruplos.append(cuadruplo_inicial)
     cuadruplo_inicial = [None] * 4
 
-
+# se genera cuadruplo era
 def p_genera_era(p):
     """
     genera_era :
@@ -472,7 +504,7 @@ def p_consume_id_funcion(p):
         raise NameError("La funcion no existe")
     variable_nombre_funcion = p[1]
 
-
+# se genera cuadruplo gosub
 def p_ejec_funcion_medio(p):
     """
     ejec_funcion_medio : expresion_parametro ejec_funcion_cont
@@ -486,6 +518,8 @@ def p_ejec_funcion_medio(p):
     lista_cuadruplos.append(cuadruplo_inicial)
     cuadruplo_inicial = [None] * 4
 
+# se obtienen parametros de funcion
+
 
 def p_expresion_parametro(p):
     """
@@ -495,14 +529,18 @@ def p_expresion_parametro(p):
     global pila_tipos
     global cuadruplo_inicial
     global indiceParametro
-
+    # se agrega el tipo del resultado de la expresion al inicio de la lista de parametros
     lista_param.insert(0, pila_tipos.pop())
+    # se obtiene la funcion con el nombre de la variable global
     funcion = func_table.getFuncion(variable_nombre_funcion)
+    # se obtienen las variables para esa funcion
     lista_variables = var_table.consigueVariablesPara(funcion.getScope())
     lista = list(zip(lista_variables.values()))
+    # se obtienen los espacios de memoria de las variables
     lista_memoria = [list(x)[0].getEspacioMemoria() for x in lista]
+    # se ordena la lista para que corresponda con los parametros
     variables_ordenadas = sorted(lista_memoria)
-
+    # se genera cuadruplo param
     cuadruplo_inicial[0] = Utils.Operador.getId('param')
     cuadruplo_inicial[1] = pila_operandos.pop()
     cuadruplo_inicial[3] = variables_ordenadas[indiceParametro]
@@ -531,19 +569,26 @@ def p_funcion_predef(p):
     """
     pass
 
-
+# funcion que sirve para generar cuadruplos de acuerdo a los operadores que reciba
 def genera_cuadruplo(lista_op):
     global cuadruplo_inicial
+    # si hay una operacion pendiente
     if len(pila_operadores) > 0:
         operador = pila_operadores.pop()
+        # si el operador se encuentra en la lista recibida
         if operador in lista_op:
+            # se obtiene el tipo del operando 2
             tipo_2 = pila_tipos.pop()
+            # se obtiene el tipo del operando 1
             tipo_1 = pila_tipos.pop()
             operando2 = pila_operandos.pop()
             operando1 = pila_operandos.pop()
+            # se verifica la semantica entre el operador, tipo 1 y tipo 2
             tipo_resultado = CuboSemantico.CuboSemantico.getTipo(operador, tipo_1, tipo_2)
             pila_tipos.append(tipo_resultado)
+            # se genera espacio de memoria de acuerdo al tipo del resultado
             espacio = Memoria.Memoria.getInstance().generaEspacioTemporal(tipo_resultado)
+            # se genera cuadruplo con operador pendiente
             cuadruplo_inicial[0] = Utils.Operador.getId(operador)
             cuadruplo_inicial[1] = operando1
             cuadruplo_inicial[2] = operando2
@@ -735,6 +780,8 @@ def p_consume_par_izq(p):
     """
     pila_operadores.append("(")
 
+# funcion para generar cuadruplo de caminar
+
 
 def p_camina(p):
     """
@@ -752,6 +799,8 @@ def p_camina(p):
     lista_cuadruplos.append(cuadruplo_inicial)
     cuadruplo_inicial = [None] * 4
 
+# funcion para generar cuadruplo gira
+
 
 def p_gira(p):
     """
@@ -766,6 +815,8 @@ def p_gira(p):
     cuadruplo_inicial[3] = metros
     lista_cuadruplos.append(cuadruplo_inicial)
     cuadruplo_inicial = [None] * 4
+
+# funcion para generar cuadruplo mira
 
 
 def p_mira(p):
@@ -788,6 +839,8 @@ def p_a_string(p):
     a_string : KW_A_STRING OP_PARENTESIS_IZQ a_string2 OP_PARENTESIS_DER
     """
     pass
+
+# funcion que genera cuadruplo a_string
 
 
 def p_a_string2(p):
@@ -843,16 +896,18 @@ def p_condicion(p):
     """
     pass
 
-
+# funcion donde se genera cuadruplo gotoF de condicion
 def p_consume_par_der(p):
     """
     consume_par_der : OP_PARENTESIS_DER
     """
     tipo = pila_tipos.pop()
+    # si se intenta validar con string, marcar error
     if tipo == Utils.Tipo.String:
         raise TypeError('Tipo string no puede ser usado como condicion')
     resultado = pila_operandos.pop()
     global cuadruplo_inicial
+    # generar cuadruplo
     cuadruplo_inicial[0] = Utils.Operador.getId('gotoF')
     cuadruplo_inicial[1] = resultado
     lista_cuadruplos.append(cuadruplo_inicial)
@@ -1231,194 +1286,186 @@ def parse(source):
     with open('../Compis/source.txt', 'r') as content_file:
         content = content_file.read()
     parser = yacc.yacc()
-    data = '''
-        entero matriz_global[3][4];
-        inicio funcion entero main(){
-            entero i;
-            entero aa[3];
-            entero j;
-            i = 0;
-            mientras(i < 3){
-                aa[i] = (i + 1) * 5;
-                j = 0;
-                mientras(j < 4){
-                    matriz_global[i][j] = (j + 1) + (i * 4);
-                    output(j);
-                    j = j + 1;
-                };
-                i = i + 1;
-            };
-        }
-    '''
     matrix_test = '''
         entero matriz_global[3][4][3];
+         inicio funcion entero main(){
 
-        funcion entero fibonacci_rec(entero num){
-            si(num == 1 || num == 2){
-                retorna 1;
+             entero i;
+             entero arreglo[3];
+             entero j;
+             entero k;
+             entero contador;
+             contador = 0;
+             i = 0;
+             mientras(i < 3){
+                 j = 0;
+                 mientras(j < 4){
+                     k = 0;
+                     mientras(k < 3){
+                         contador = contador + 1;
+                         matriz_global[i][j][k] = contador;
+                         output(matriz_global[i][j][k]);
+                         k = k + 1;
+                     };
+                      j = j + 1;
+
+                  };
+                  i = i + 1;
+              };
+          }
+    '''
+    fibo_rec = '''
+        funcion entero fibo_rec(entero num){
+            si(num == 0){
+                retorna 0;
             };
-            retorna fibonacci_rec(num - 1) + fibonacci_rec(num - 2);
-        }
 
-        funcion entero factorial_rec(entero num){
-            output(num);
-            output(num == 1);
             si(num == 1){
                 retorna 1;
             };
-            retorna num * factorial_rec(num - 1);
-        }
 
-        funcion entero factorial_iter(entero num){
-            entero x;
-            x = 1;
-            mientras(num > 0){
-                x = x * num;
-                num = num - 1;
-            };
-            retorna x;
-        }
-
-        funcion entero fibonacci_iter(){
-            entero num_uno, num_dos, num_tres;
-            entero arreglo_flotante[2][5];
-            entero contador;
-            arreglo_flotante[1][3] = arreglo_flotante[1][1];
-            num_uno = 1;
-            num_dos = 1;
-            mientras(contador < 7){
-                num_uno = num_dos;
-                num_dos = num_tres;
-                num_tres = num_uno + num_dos;
-                contador = contador + 1;
-            };
-            retorna num_tres;
+            retorna fibo_rec(num-1) + fibo_rec(num-2);
         }
 
         inicio funcion entero main(){
-            entero i;
-            entero arreglo[3];
-            entero j;
-            entero k;
+            entero x;
+            x = 10;
+            output(fibo_rec(x));
+        }
+    '''
+
+    fact_rec = '''
+        funcion entero fact_rec(entero num){
+            entero temp;
+
+            si(num==1){
+            retorna 1;
+
+            };
+            temp = num *fact_rec(num-1);
+            retorna temp;
+        }
+
+        inicio funcion entero main(){
+            entero x;
+            x = 10;
+            output(fact_rec(x));
+        }
+    '''
+    find_vector = '''
+        entero arreglo[3];
+
+        inicio funcion entero main(){
             entero contador;
+            arreglo[0] = 5;
+            arreglo[1] = 4;
+            arreglo[2] = 6;
             contador = 0;
-            i = 0;
-            mientras(i < 3){
-                j = 0;
-                mientras(j < 4){
-                    k = 0;
-                    mientras(k < 3){
-                        contador = contador + 1;
-                        matriz_global[i][j][k] = contador;
-                        k = k + 1;
-                    };
-                    j = j + 1;
+
+            mientras(contador < 3){
+                si(arreglo[contador] == 4){
+                    output(contador);
                 };
+                contador = contador +1;
+            };
+        }
+    '''
+    mult_mat = '''
+            entero matrizA[5][5];
+            entero matrizB[5][5];
+            entero matrizR[5][5];
+
+            inicio funcion entero main(){
+                entero i;
+                entero j;
+                entero k;
+
+                entero contador;
+                contador = 0;
+                i = 0;
+                mientras(i < 5){
+                    j = 0;
+                    mientras(j < 5){
+                        contador = contador + 1;
+                        matrizA[i][j] = contador;
+                        matrizB[i][j] = contador;
+                        output(matrizA[i][j]);
+                        output(matrizB[i][j]);
+                        j = j +1;
+                    };
+                    i = i +1;
+
+                };
+
+                i = 0;
+                mientras(i < 5){
+                    j = 0;
+                    mientras(j < 5){
+                        k = 0;
+                        mientras(k < 5){
+
+                            matrizR[i][j] = matrizR[i][j] + matrizA[i][k] * matrizB[k][j];
+                            k = k + 1;
+                        };
+                        j = j +1;
+                    };
+                    i = i + 1;
+                };
+
+                i = 0;
+                mientras(i < 5){
+                    j = 0;
+                    mientras(j < 5){
+                        output(matrizR[i][j]);
+                        j = j +1;
+                    };
+                    i = i +1;
+
+                };
+
+
+            }
+        '''
+    sort = '''
+        entero arreglo[5];
+
+        inicio funcion entero main(){
+            entero temp;
+           entero i;
+           entero j;
+            entero contador;
+            arreglo[0] = 3;
+            arreglo[1] = 2;
+            arreglo[2] = 1;
+            arreglo[3] = 4;
+            arreglo[4] = 5;
+            i = 0;
+            j = 0;
+            mientras(i < 5 ){
+                    mientras(j < 5){
+                        si(arreglo[j] > arreglo[i]){
+                            temp = arreglo[1];
+                            arreglo[i] = arreglo[j];
+                            arreglo[j] = temp;
+
+                        };
+                        j = j +1;
+                    };
+                i = i + 1;
+            };
+
+            i = 0;
+            j = 0;
+            mientras(i < 5 ){
+                output(arreglo[i]);
                 i = i + 1;
             };
 
 
-            output(factorial_rec(5));
-            output(0);
-            output(factorial_iter(5));
-            output(fibonacci_iter());
         }
     '''
 
-    recursive_test = """
-        funcion entero factorial_rec(entero num){
-            entero temp;
-            si(num == 1){
-                retorna 1;
-            };
-            temp = num * factorial_rec(num - 1);
-            retorna temp;
-        }
-        inicio funcion entero main(){
-            output(factorial_rec(4));
-        }
-    """
-
-    recursive_fact = """
-        entero arreglo_find[5];
-
-        funcion entero factorial_recursivo(entero num){
-            entero temp;
-            si(num == 1){
-                retorna 1;
-            };
-            temp = num*factorial_recursivo(num-1);
-            retorna temp;
-        }
-        funcion entero fibonacci_rec(entero num){
-            si(num == 1 || num == 2){
-                retorna 1;
-            };
-            retorna fibonacci_rec(num - 1) + fibonacci_rec(num - 2);
-        }
-
-        funcion entero camina_cuadrados_rec(entero x){
-            entero y;
-            si (x == 1){
-                retorna 1;
-            };
-            y = camina_cuadrados_rec(x - 1) * 2;
-            camina(y);
-            gira(-90);
-            retorna y;
-        }
-
-        funcion entero factorial_iter(entero num){
-            entero x;
-            x = 1;
-            mientras(num > 0){
-                x = x * num;
-                num = num - 1;
-            };
-            retorna x;
-        }
-
-        funcion entero fibonacci_iter(){
-            entero num_uno, num_dos, num_tres;
-            entero contador;
-            num_uno = 1;
-            num_dos = 1;
-            mientras(contador < 6){
-                camina(contador * 5);
-                num_uno = num_dos;
-                num_dos = num_tres;
-                num_tres = num_uno + num_dos;
-                contador = contador + 1;
-            };
-            retorna num_tres;
-        }
-
-        funcion camina_cuadrados_it(entero x){
-            entero contador;
-            contador = 0;
-            mientras(contador < x){
-                camina(-contador * 2);
-                gira(90);
-                contador = contador + 1;
-            };
-        }
-
-        inicio funcion entero main(){
-            entero x;
-            entero y;
-            x = 6;
-            y = 4;
-            output(fibonacci_iter());
-            output(fibonacci_rec(y));
-
-            output(factorial_recursivo(x));
-            output(factorial_iter(x));
-
-            camina_cuadrados_rec(10);
-            camina_cuadrados_it(50);
-        }
-    """
-    parser.parse(recursive_fact, debug=0)
+    parser.parse(matrix_test, debug=0)
     return lista_cuadruplos
 
 

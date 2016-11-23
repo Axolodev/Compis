@@ -90,4 +90,4 @@ class bcolors:
     def buildErrorMessage(message):
         return bcolors.FAIL + message + bcolors.ENDC
 
-DEBUGGING_MODE = False
+DEBUGGING_MODE = True
